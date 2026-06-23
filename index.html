@@ -29,6 +29,15 @@
 
     <!-- ===== Hero ===== -->
     <section class="hero">
+
+        <!-- Ceas live + constelatia zodiacala a zilei (dreapta) -->
+        <div class="sky-widget" aria-hidden="true">
+            <div class="sky-date" id="sky-date">--.--.----</div>
+            <div class="sky-time" id="sky-time">--:--:--</div>
+            <svg class="sky-constellation" id="sky-constellation" viewBox="0 0 100 100"></svg>
+            <div class="sky-sign" id="sky-sign">—</div>
+        </div>
+
         <img src="NovaHubLogo.png" class="hero-logo" alt="Nova-Star Group">
         <span class="eyebrow">Un univers · trei lumi</span>
         <h1>Nova-Star Group</h1>
@@ -122,6 +131,95 @@
             s.style.setProperty("--delay", (Math.random() * 5) + "s");
             cer.appendChild(s);
         }
+    </script>
+
+    <!-- ===== Ceas live + constelatia zodiacala a zilei ===== -->
+    <script>
+        // Fiecare zodie: nume RO, simbol, data de inceput [luna, zi],
+        // si forma constelatiei (puncte = stele, linii = conexiuni) intr-un patrat 0..100.
+        const SIGNS = [
+            { ro: "Vărsător",  sym: "♒", start: [1, 20],
+              points: [[86,30],[68,34],[50,38],[42,28],[58,27],[50,52],[42,62],[36,74],[42,88]],
+              lines: [[0,1],[1,2],[2,3],[2,4],[2,5],[5,6],[6,7],[7,8]] },
+            { ro: "Pești",     sym: "♓", start: [2, 19],
+              points: [[80,80],[62,68],[45,60],[30,55],[18,49],[12,60],[22,66],[27,55],[72,52],[66,32],[76,18]],
+              lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,4],[0,8],[8,9],[9,10]] },
+            { ro: "Berbec",    sym: "♈", start: [3, 21],
+              points: [[84,30],[70,25],[56,30],[40,44],[24,55],[34,74]],
+              lines: [[0,1],[1,2],[2,3],[3,4],[4,5]] },
+            { ro: "Taur",      sym: "♉", start: [4, 20],
+              points: [[18,26],[16,54],[37,44],[47,54],[64,40],[81,44],[89,28],[53,72],[74,68]],
+              lines: [[0,2],[1,2],[2,3],[3,4],[4,5],[5,6],[3,7],[5,8]] },
+            { ro: "Gemeni",    sym: "♊", start: [5, 21],
+              points: [[20,13],[25,23],[38,23],[66,16],[29,45],[14,62],[25,86],[47,65],[56,86],[68,30],[79,63],[87,50]],
+              lines: [[0,1],[1,2],[2,3],[1,4],[4,5],[5,6],[4,7],[7,8],[2,7],[3,9],[9,11],[9,10]] },
+            { ro: "Rac",       sym: "♋", start: [6, 21],
+              points: [[38,14],[34,44],[35,60],[18,82],[82,86]],
+              lines: [[0,1],[1,2],[2,3],[2,4]] },
+            { ro: "Leu",       sym: "♌", start: [7, 23],
+              points: [[10,76],[38,50],[35,82],[71,71],[73,49],[80,33],[85,19],[90,22]],
+              lines: [[0,1],[0,2],[1,2],[1,4],[2,3],[3,4],[4,5],[5,6],[6,7]] },
+            { ro: "Fecioară",  sym: "♍", start: [8, 23],
+              points: [[22,12],[32,43],[46,58],[62,53],[88,40],[80,19],[12,49],[28,74],[16,88]],
+              lines: [[0,1],[1,2],[2,3],[3,4],[3,5],[2,6],[2,7],[7,8]] },
+            { ro: "Balanță",   sym: "♎", start: [9, 23],
+              points: [[36,12],[74,13],[86,55],[40,42],[14,67],[70,88]],
+              lines: [[0,1],[1,2],[0,2],[0,3],[3,4],[2,5]] },
+            { ro: "Scorpion",  sym: "♏", start: [10, 23],
+              points: [[14,16],[30,12],[24,30],[31,42],[35,54],[43,64],[55,71],[67,72],[76,64],[80,53]],
+              lines: [[0,2],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9]] },
+            { ro: "Săgetător", sym: "♐", start: [11, 22],
+              points: [[14,50],[30,72],[40,48],[52,26],[74,34],[82,55],[64,70]],
+              lines: [[0,2],[2,3],[3,4],[4,5],[5,6],[6,1],[1,0],[1,2]] },
+            { ro: "Capricorn", sym: "♑", start: [12, 22],
+              points: [[82,24],[66,32],[48,52],[36,70],[20,52],[34,36]],
+              lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]] }
+        ];
+
+        // Ce zodie e la data primita
+        function zodiaCurenta(date) {
+            const val = (date.getMonth() + 1) * 100 + date.getDate();
+            let cur = SIGNS[SIGNS.length - 1];   // Capricorn acopera 22 dec - 19 ian
+            for (const s of SIGNS) {
+                if (val >= s.start[0] * 100 + s.start[1]) cur = s;
+            }
+            return cur;
+        }
+
+        const elData = document.getElementById("sky-date");
+        const elOra  = document.getElementById("sky-time");
+        const elSvg  = document.getElementById("sky-constellation");
+        const elSemn = document.getElementById("sky-sign");
+        const pad = (n) => String(n).padStart(2, "0");
+
+        function actualizeaza() {
+            const now = new Date();
+
+            // data + ora reala
+            elData.textContent = pad(now.getDate()) + "." + pad(now.getMonth() + 1) + "." + now.getFullYear();
+            elOra.textContent  = pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+
+            // constelatia zilei curente (automat dupa data)
+            const s = zodiaCurenta(now);
+            elSemn.textContent = s.sym + "  " + s.ro;
+
+            // cerul se roteste 15° pe ora, ca in realitate
+            const unghi = (now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600) * 15;
+
+            let interior = "";
+            for (const [a, b] of s.lines) {
+                const p = s.points;
+                interior += '<line x1="' + p[a][0] + '" y1="' + p[a][1] +
+                            '" x2="' + p[b][0] + '" y2="' + p[b][1] + '" class="cst-line"/>';
+            }
+            for (const p of s.points) {
+                interior += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.3" class="cst-star"/>';
+            }
+            elSvg.innerHTML = '<g transform="rotate(' + unghi.toFixed(2) + ' 50 50)">' + interior + '</g>';
+        }
+
+        actualizeaza();
+        setInterval(actualizeaza, 1000);
     </script>
 
     <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->

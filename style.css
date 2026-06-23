@@ -89,12 +89,67 @@ body {
 
 /* logo-ul firmei pe cardul ei din pagina principala */
 .card-logo {
-    height: 56px;
-    width: auto;
-    max-width: 75%;
-    border-radius: 10px;
+    height: 90px;          /* inaltime fixa, frumoasa */
+    width: auto;           /* latimea se ajusteaza singura = NU se deformeaza */
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 12px;
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+}
+
+/* ===== Widget: ceas live + constelatia zodiacala a zilei ===== */
+.sky-widget {
+    position: absolute;
+    top: 64px;
+    right: 50px;
+    width: 215px;
+    text-align: center;
+    z-index: 2;
+    /* fara chenar/fundal - sta direct pe cerul cu stele */
+}
+.sky-date {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.sky-time {
+    font-size: 24px;
+    color: var(--logo);
+    font-weight: 700;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;   /* cifrele nu mai "sar" */
+}
+.sky-constellation {
+    width: 100%;
+    height: 150px;
+    display: block;
+    margin: 8px 0 4px;
+}
+.cst-line {
+    stroke: rgba(142, 162, 255, 0.45);
+    stroke-width: 0.7;
+    stroke-linecap: round;
+}
+.cst-star {
+    fill: #ffffff;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.85));
+}
+.sky-sign {
+    font-size: 15px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+}
+/* pe ecrane mici: nu mai sta in dreapta absolut, ci sub continut */
+@media (max-width: 1024px) {
+    .sky-widget {
+        position: static;
+        right: auto;
+        top: auto;
+        margin: 26px auto 0;
+        width: 240px;
+    }
 }
 
 .nav-links {
@@ -583,7 +638,8 @@ footer a {
     top: 0; left: 0;
     width: 140px;
     height: 2px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.9), transparent);
+    /* capul luminos in dreapta (directia picajului), coada se estompeaza in urma */
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9));
     border-radius: 999px;
     opacity: 0;
     transform: rotate(20deg);
