@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NorthStar Studio — Nova-Star Group</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== Cer cu stele (animat) ===== -->
+    <div class="stars" id="stars" aria-hidden="true">
+        <span class="shooting"></span>
+        <span class="shooting s2"></span>
+    </div>
+
+    <!-- ===== Bara de sus (la fel pe toate paginile) ===== -->
+    <header class="navbar">
+        <a href="index.html" class="logo">✦ Nova-Star Group</a>
+        <nav class="nav-links">
+            <a href="nova-play.html">Nova Play and Learn</a>
+            <a href="nova-solutions.html">Asociația Nova Solutions</a>
+            <a href="northstar.html">NorthStar Studio</a>
+            <a href="#jocuri">Jocuri</a>
+            <a href="login.html" id="auth-link" class="nav-cta">Conectare</a>
+        </nav>
+    </header>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+        <span class="eyebrow">Creație</span>
+        <h1>NorthStar Studio</h1>
+        <p>Studio de creație — jocuri și media.</p>
+    </section>
+
+    <!-- ===== Despre ===== -->
+    <section class="sectiune">
+        <h2>Despre studio</h2>
+        <div class="despre">
+            <div>
+                <p>Aici scrii despre NorthStar Studio: ce creați, ce servicii oferiți și ce vă face diferiți.</p>
+                <p>Un paragraf despre echipă, viziune sau stilul vostru de lucru.</p>
+            </div>
+            <!-- Inlocuieste cu: <img src="imagini/studio-despre.jpg" alt="NorthStar Studio"> -->
+            <div class="foto-placeholder">Adaugă o imagine aici</div>
+        </div>
+    </section>
+
+    <!-- ===== Jocurile noastre (cu download) ===== -->
+    <section id="jocuri" class="jocuri">
+        <div class="section-title">
+            <h2>Jocurile noastre</h2>
+            <p>Descarcă-le direct de aici.</p>
+        </div>
+
+        <div class="game-list">
+
+            <div class="game">
+                <!-- Inlocuieste cu: <img src="imagini/joc1.jpg" alt="Nume joc"> -->
+                <div class="foto-placeholder">Imagine joc</div>
+                <h3>Aventura în spațiu</h3>
+                <a href="#" class="btn download-btn">Descarcă</a>
+            </div>
+
+            <div class="game">
+                <div class="foto-placeholder">Imagine joc</div>
+                <h3>Învață alfabetul</h3>
+                <a href="#" class="btn download-btn">Descarcă</a>
+            </div>
+
+            <div class="game">
+                <div class="foto-placeholder">Imagine joc</div>
+                <h3>Matematică distractivă</h3>
+                <a href="#" class="btn download-btn">Descarcă</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section class="sectiune">
+        <h2>Contact</h2>
+        <div class="contact-box">
+            <p><strong>Email:</strong> adaugă-l aici</p>
+            <p><strong>Telefon:</strong> adaugă-l aici</p>
+            <p><strong>Portofoliu / social media:</strong> adaugă linkul aici</p>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        <p>© 2026 NorthStar Studio · parte din <a href="index.html">Nova-Star Group</a></p>
+    </footer>
+
+    <!-- ===== Script: genereaza steluțele care licăresc ===== -->
+    <script>
+        const cer = document.getElementById("stars");
+        const NR_STELE = 120;
+        for (let i = 0; i < NR_STELE; i++) {
+            const s = document.createElement("span");
+            s.className = "star";
+            s.style.left = Math.random() * 100 + "%";
+            s.style.top  = Math.random() * 100 + "%";
+            const marime = Math.random() * 2 + 1;
+            s.style.width = marime + "px";
+            s.style.height = marime + "px";
+            s.style.setProperty("--dur", (Math.random() * 4 + 2) + "s");
+            s.style.setProperty("--delay", (Math.random() * 5) + "s");
+            cer.appendChild(s);
+        }
+    </script>
+
+    <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->
+    <script type="module" src="nova-auth.js"></script>
+
+</body>
+</html>

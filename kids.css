@@ -1,0 +1,376 @@
+/* ============================================================
+   kids.css — stil COLORAT, vesel, pentru copii
+   Folosit DOAR pe: nova-play.html si nova-solutions.html
+   (hub-ul si NorthStar raman pe tema dark din style.css)
+
+   Fiecare pagina pune o clasa pe <body>:
+     class="theme-play"        -> tema portocaliu/galben (soare)
+     class="theme-solutions"   -> tema verde/turcoaz (natura)
+   ============================================================ */
+
+:root {
+    --ink:       #2b2150;   /* text inchis, prietenos (nu negru dur) */
+    --ink-soft:  #5a5278;   /* text secundar */
+    --white:     #ffffff;
+    --card:      #ffffff;
+
+    /* culori vesele folosite peste tot */
+    --red:    #ff6b6b;
+    --orange: #ff9f43;
+    --yellow: #ffd93d;
+    --green:  #6bd968;
+    --teal:   #2ec4a0;
+    --blue:   #4dabf7;
+    --purple: #b197fc;
+    --pink:   #ff8fab;
+
+    /* implicit (suprascris de tema fiecarei pagini) */
+    --accent:  var(--orange);
+    --accent2: var(--yellow);
+}
+
+/* tema Nova Play and Learn = soare (portocaliu + galben) */
+.theme-play {
+    --accent:  #ff7a59;
+    --accent2: #ffd93d;
+}
+
+/* tema Asociatia Nova Solutions = natura (verde + turcoaz) */
+.theme-solutions {
+    --accent:  #2ec4a0;
+    --accent2: #6bd968;
+}
+
+/* ---- Reset ---- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* fundal luminos cu "baloane" colorate jucause */
+    background-color: #fff7ed;
+    background-image:
+        radial-gradient(circle at 12% 18%, var(--accent2) 0, transparent 16%),
+        radial-gradient(circle at 88% 12%, var(--pink) 0, transparent 14%),
+        radial-gradient(circle at 78% 82%, var(--blue) 0, transparent 16%),
+        radial-gradient(circle at 18% 88%, var(--accent) 0, transparent 15%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "Comic Sans MS", "Segoe UI", Verdana, sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+}
+
+/* ============================================================
+   BARA DE SUS
+   ============================================================ */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 26px;
+    background-color: var(--white);
+    border-bottom: 4px solid var(--accent);
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 6px 20px -10px rgba(0,0,0,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 15px;
+    padding: 7px 14px;
+    border-radius: 999px;          /* pastile rotunde */
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.nav-links a:hover {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
+/* butonul de Conectare - plin cu culoare, sa iasa in evidenta */
+.nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--accent);
+    color: var(--white) !important;
+    font-weight: 700;
+}
+.nav-cta:hover {
+    background-color: var(--accent2);
+    color: var(--ink) !important;
+}
+
+/* poza rotunda (avatar) din bara de sus */
+.nav-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--white);
+}
+.nav-avatar-litera {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    border: none;
+}
+
+/* ============================================================
+   HERO (titlul mare)
+   ============================================================ */
+.hero {
+    text-align: center;
+    padding: 70px 20px 50px;
+}
+
+.hero .eyebrow {
+    display: inline-block;
+    background-color: var(--accent2);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: 52px;
+    line-height: 1.1;
+    color: var(--accent);
+    text-shadow: 3px 3px 0 var(--accent2);
+}
+
+.hero p {
+    font-size: 20px;
+    color: var(--ink-soft);
+    margin: 18px auto 0;
+    max-width: 600px;
+}
+
+/* ============================================================
+   SECTIUNI DE CONTINUT
+   ============================================================ */
+.sectiune {
+    max-width: 1000px;
+    margin: 22px auto;
+    padding: 28px;
+    background-color: var(--white);
+    border-radius: 26px;
+    box-shadow: 0 14px 34px -22px rgba(43,33,80,0.5);
+}
+
+.sectiune h2 {
+    color: var(--accent);
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+/* o linie vesela sub titlu */
+.sectiune h2::after {
+    content: "";
+    display: block;
+    width: 70px;
+    height: 5px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+.sectiune p {
+    color: var(--ink-soft);
+    font-size: 17px;
+    margin-bottom: 14px;
+}
+
+/* "Despre" = doua coloane */
+.despre {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+}
+
+/* Galerie */
+.galerie {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+}
+
+/* Loc pentru imagine */
+.foto-placeholder {
+    border: 4px dashed var(--accent);
+    border-radius: 22px;
+    background-color: #fffdf7;
+    color: var(--accent);
+    font-weight: 700;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 15px;
+    padding: 20px;
+}
+
+img {
+    max-width: 100%;
+    border-radius: 22px;
+    display: block;
+}
+
+/* Cutie de contact */
+.contact-box {
+    background-color: #fffdf7;
+    border: 3px solid var(--accent2);
+    border-radius: 22px;
+    padding: 24px;
+}
+.contact-box p {
+    margin-bottom: 10px;
+    color: var(--ink);
+    font-size: 17px;
+}
+
+/* Buton vesel (daca apare) */
+.btn {
+    display: inline-block;
+    background-color: var(--accent);
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 0 -1px rgba(0,0,0,0.15);
+    transition: transform 0.12s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(2px); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+    text-align: center;
+    padding: 34px 20px;
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-top: 30px;
+}
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* ============================================================
+   JUCARII CARE SE MISCA  🎈🚀🧸
+   Strat de emoji care plutesc pe tot ecranul, in spatele continutului.
+   ============================================================ */
+
+/* containerul care acopera tot ecranul */
+.floaties {
+    position: fixed;
+    inset: 0;                 /* sus/jos/stanga/dreapta = 0 */
+    overflow: hidden;
+    pointer-events: none;     /* nu blocheaza click-urile */
+    z-index: 0;               /* in spatele continutului */
+}
+
+/* fiecare jucarie */
+.floaty {
+    position: absolute;
+    bottom: -80px;            /* pornesc de sub ecran */
+    font-size: 42px;
+    opacity: 0.85;
+    animation: plutire linear infinite;
+    will-change: transform;
+}
+
+/* pozitia pe orizontala + viteza diferita pt fiecare jucarie */
+.floaty:nth-child(1) { left:  6%; font-size: 38px; animation-duration: 16s; animation-delay:  0s; }
+.floaty:nth-child(2) { left: 20%; font-size: 52px; animation-duration: 22s; animation-delay:  4s; }
+.floaty:nth-child(3) { left: 34%; font-size: 34px; animation-duration: 18s; animation-delay:  9s; }
+.floaty:nth-child(4) { left: 48%; font-size: 46px; animation-duration: 25s; animation-delay:  2s; }
+.floaty:nth-child(5) { left: 62%; font-size: 40px; animation-duration: 20s; animation-delay:  7s; }
+.floaty:nth-child(6) { left: 76%; font-size: 56px; animation-duration: 24s; animation-delay: 12s; }
+.floaty:nth-child(7) { left: 88%; font-size: 36px; animation-duration: 17s; animation-delay:  5s; }
+.floaty:nth-child(8) { left: 95%; font-size: 44px; animation-duration: 21s; animation-delay: 10s; }
+
+/* urca de jos pana sus, se leagana stanga-dreapta si se rotesc */
+@keyframes plutire {
+    0%   { transform: translateY(0)       translateX(0)    rotate(0deg);   }
+    25%  { transform: translateY(-25vh)   translateX(30px) rotate(90deg);  }
+    50%  { transform: translateY(-50vh)   translateX(-20px) rotate(180deg);}
+    75%  { transform: translateY(-75vh)   translateX(25px) rotate(270deg); }
+    100% { transform: translateY(-110vh)  translateX(0)    rotate(360deg); }
+}
+
+/* continutul sa stea peste jucarii */
+.navbar, .hero, .sectiune, footer { position: relative; z-index: 1; }
+
+/* titlul care se leagana vesel */
+.hero h1 { animation: leganare 3s ease-in-out infinite; transform-origin: center; }
+@keyframes leganare {
+    0%, 100% { transform: rotate(-2deg); }
+    50%      { transform: rotate(2deg);  }
+}
+
+/* eticheta de sus care sare un pic */
+.hero .eyebrow { animation: saritura 2.2s ease-in-out infinite; }
+@keyframes saritura {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
+}
+
+/* chenarele de poza pulseaza usor cand treci cu mouse-ul */
+.foto-placeholder { transition: transform 0.2s ease; }
+.foto-placeholder:hover { transform: scale(1.04) rotate(-1deg); }
+
+/* daca utilizatorul a cerut mai putina miscare (setare sistem), oprim animatiile */
+@media (prefers-reduced-motion: reduce) {
+    .floaty, .hero h1, .hero .eyebrow { animation: none; }
+}
+
+/* ============================================================
+   RESPONSIVE — pe telefon o singura coloana
+   ============================================================ */
+@media (max-width: 700px) {
+    .hero h1 { font-size: 38px; }
+    .hero { padding: 50px 20px 36px; }
+    .despre { grid-template-columns: 1fr; }
+    .navbar { padding: 12px 16px; }
+}

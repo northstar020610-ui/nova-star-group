@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova-Star Group</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== Cer cu stele (animat) ===== -->
+    <div class="stars" id="stars" aria-hidden="true">
+        <span class="shooting"></span>
+        <span class="shooting s2"></span>
+    </div>
+
+    <!-- ===== Bara de sus: logo (Home) + cele 3 firme ===== -->
+    <header class="navbar">
+        <a href="index.html" class="logo">✦ Nova-Star Group</a>
+        <nav class="nav-links">
+            <a href="nova-play.html">Nova Play and Learn</a>
+            <a href="nova-solutions.html">Asociația Nova Solutions</a>
+            <a href="northstar.html">NorthStar Studio</a>
+            <a href="#jocuri">Jocuri</a>
+            <a href="login.html" id="auth-link" class="nav-cta">Conectare</a>
+        </nav>
+    </header>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+        <span class="eyebrow">Un univers · trei lumi</span>
+        <h1>Nova-Star Group</h1>
+        <p>Casa comună a celor trei proiecte ale noastre. Joacă, învață, creează — totul la un loc.</p>
+    </section>
+
+    <!-- ===== Intro ===== -->
+    <section class="intro">
+        <p>Nova-Star Group reunește trei inițiative diferite, fiecare cu povestea, scopul și culoarea ei. Alege o lume mai jos pentru a afla mai multe.</p>
+    </section>
+
+    <!-- ===== Cele 3 entitati ===== -->
+    <section id="entitati" class="entitati">
+
+        <article class="card card-play">
+            <span class="tag tag-color">Educație</span>
+            <h2>Nova Play and Learn</h2>
+            <p>Jocuri și activități educative care îi ajută pe copii să învețe distrându-se.</p>
+            <a href="nova-play.html" class="card-link">Intră →</a>
+        </article>
+
+        <article class="card card-solutions">
+            <span class="tag tag-color">Asociație</span>
+            <h2>Asociația Nova Solutions</h2>
+            <p>Proiecte sociale și inițiative comunitare pentru oamenii din jurul nostru.</p>
+            <a href="nova-solutions.html" class="card-link">Intră →</a>
+        </article>
+
+        <article class="card card-studio">
+            <span class="tag tag-color">Creație</span>
+            <h2>NorthStar Studio</h2>
+            <p>Studio de creație: jocuri și media. Aici se nasc jocurile pe care le poți descărca.</p>
+            <a href="northstar.html" class="card-link">Intră →</a>
+        </article>
+
+    </section>
+
+    <!-- ===== Jocuri descarcabile ===== -->
+    <section id="jocuri" class="jocuri">
+        <div class="section-title">
+            <h2>Jocuri pentru copii</h2>
+            <p>Realizate de NorthStar Studio — descarcă-le direct de aici.</p>
+        </div>
+
+        <div class="game-list">
+
+            <div class="game">
+                <!-- Inlocuieste cu: <img src="imagini/joc1.jpg" alt="Aventura in spatiu"> -->
+                <div class="foto-placeholder">Imagine joc</div>
+                <h3>Aventura în spațiu</h3>
+                <a href="#" class="btn download-btn">Descarcă</a>
+            </div>
+
+            <div class="game">
+                <div class="foto-placeholder">Imagine joc</div>
+                <h3>Învață alfabetul</h3>
+                <a href="#" class="btn download-btn">Descarcă</a>
+            </div>
+
+            <div class="game">
+                <div class="foto-placeholder">Imagine joc</div>
+                <h3>Matematică distractivă</h3>
+                <a href="#" class="btn download-btn">Descarcă</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        <p>© 2026 Nova-Star Group · Nova Play and Learn · Asociația Nova Solutions · NorthStar Studio</p>
+    </footer>
+
+    <!-- ===== Script: genereaza steluțele care licăresc ===== -->
+    <script>
+        // cream 120 de steluțe in pozitii aleatorii, cu marime si licarire diferite
+        const cer = document.getElementById("stars");
+        const NR_STELE = 120;
+        for (let i = 0; i < NR_STELE; i++) {
+            const s = document.createElement("span");
+            s.className = "star";
+            s.style.left = Math.random() * 100 + "%";
+            s.style.top  = Math.random() * 100 + "%";
+            const marime = Math.random() * 2 + 1;          // 1px .. 3px
+            s.style.width = marime + "px";
+            s.style.height = marime + "px";
+            s.style.setProperty("--dur", (Math.random() * 4 + 2) + "s");   // 2s..6s
+            s.style.setProperty("--delay", (Math.random() * 5) + "s");
+            cer.appendChild(s);
+        }
+    </script>
+
+    <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->
+    <script type="module" src="nova-auth.js"></script>
+
+</body>
+</html>
