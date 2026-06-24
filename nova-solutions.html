@@ -64,11 +64,70 @@
         </div>
     </section>
 
-    <!-- ===== Proiecte ===== -->
+    <!-- ===== Donatii ===== -->
     <section class="sectiune">
-        <h2>Proiecte</h2>
-        <p>Descrie aici proiectele sociale și activitățile asociației.</p>
-        <p>Poți enumera fiecare proiect într-un paragraf separat.</p>
+        <h2>Susține-ne 💚</h2>
+        <p>Fiecare donație ne ajută să ducem mai departe proiectele pentru comunitate. Îți mulțumim!</p>
+        <div class="donatii">
+            <div class="suma-btns">
+                <button class="suma-btn" type="button">25 lei</button>
+                <button class="suma-btn" type="button">50 lei</button>
+                <button class="suma-btn" type="button">100 lei</button>
+                <button class="suma-btn" type="button">Altă sumă</button>
+            </div>
+            <a href="#" id="donate-btn" class="btn btn-donate" target="_blank" rel="noopener">💳 Donează cu cardul / Google Pay</a>
+            <p class="donate-note">Plată securizată prin Stripe · suma o alegi pe pagina următoare</p>
+        </div>
+    </section>
+
+    <!-- ===== Inscriere voluntari ===== -->
+    <section class="sectiune">
+        <h2>Devino voluntar 🙋</h2>
+        <p>Vrei să ne dai o mână de ajutor? Lasă-ne datele tale și te contactăm.</p>
+        <form id="voluntar-form" class="form-voluntar">
+            <label>Nume și prenume
+                <input type="text" id="vol-nume" placeholder="Numele tău" required>
+            </label>
+            <label>Email
+                <input type="email" id="vol-email" placeholder="email@exemplu.ro" required>
+            </label>
+            <label>Telefon (opțional)
+                <input type="tel" id="vol-tel" placeholder="07xx xxx xxx">
+            </label>
+            <label>Cum vrei să ajuți?
+                <textarea id="vol-mesaj" rows="4" placeholder="Scrie pe scurt cu ce ai vrea să ajuți..."></textarea>
+            </label>
+            <button type="submit" class="btn">Trimite înscrierea</button>
+            <p id="vol-msg" class="form-msg"></p>
+        </form>
+    </section>
+
+    <!-- ===== Evenimente / stiri ===== -->
+    <section class="sectiune">
+        <h2>Evenimente & știri 📅</h2>
+        <div class="evenimente">
+            <article class="eveniment">
+                <div class="ev-data"><span class="ev-zi">15</span><span class="ev-luna">IUL</span></div>
+                <div class="ev-info">
+                    <h3>Titlu eveniment</h3>
+                    <p>Descriere scurtă — înlocuiește cu detaliile evenimentului tău.</p>
+                </div>
+            </article>
+            <article class="eveniment">
+                <div class="ev-data"><span class="ev-zi">02</span><span class="ev-luna">AUG</span></div>
+                <div class="ev-info">
+                    <h3>Al doilea eveniment</h3>
+                    <p>Descriere scurtă — înlocuiește cu detaliile tale.</p>
+                </div>
+            </article>
+            <article class="eveniment">
+                <div class="ev-data"><span class="ev-zi">20</span><span class="ev-luna">AUG</span></div>
+                <div class="ev-info">
+                    <h3>Al treilea eveniment</h3>
+                    <p>Descriere scurtă — înlocuiește cu detaliile tale.</p>
+                </div>
+            </article>
+        </div>
     </section>
 
     <!-- ===== Contact ===== -->
@@ -85,6 +144,51 @@
     <footer>
         <p>© 2026 Asociația „Nova Solutions" · parte din <a href="index.html">Nova-Star Group</a></p>
     </footer>
+
+    <!-- ===== Interactiuni: donatii + formular voluntari ===== -->
+    <script>
+        // ===== Donatii Stripe (Google Pay apare automat pe pagina Stripe) =====
+        // INLOCUIESTE cu linkul tau Stripe de donatie (ex: https://donate.stripe.com/xxxxxxxx)
+        const STRIPE_LINK = "";
+
+        const donateBtn = document.getElementById("donate-btn");
+        if (STRIPE_LINK) donateBtn.href = STRIPE_LINK;
+        donateBtn.addEventListener("click", (e) => {
+            if (!STRIPE_LINK) {
+                e.preventDefault();
+                alert("Linkul de donații Stripe nu e configurat încă. Îl adăugăm după ce creezi contul Stripe. 🙂");
+            }
+        });
+
+        // sume donatie - selectie vizuala (sugestie; suma finala se alege pe Stripe)
+        document.querySelectorAll(".suma-btn").forEach((b) => {
+            b.addEventListener("click", () => {
+                document.querySelectorAll(".suma-btn").forEach((x) => x.classList.remove("activ"));
+                b.classList.add("activ");
+            });
+        });
+
+        // formular voluntari - trimite prin email (mailto)
+        const formVol = document.getElementById("voluntar-form");
+        formVol.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const nume  = document.getElementById("vol-nume").value;
+            const email = document.getElementById("vol-email").value;
+            const tel   = document.getElementById("vol-tel").value;
+            const mesaj = document.getElementById("vol-mesaj").value;
+
+            const subiect = encodeURIComponent("Înscriere voluntar — " + nume);
+            const corp = encodeURIComponent(
+                "Nume: " + nume + "\nEmail: " + email + "\nTelefon: " + tel + "\n\nMesaj:\n" + mesaj
+            );
+            // INLOCUIESTE cu emailul real al asociatiei:
+            window.location.href = "mailto:contact@nova-solutions.ro?subject=" + subiect + "&body=" + corp;
+
+            document.getElementById("vol-msg").textContent =
+                "Mulțumim, " + nume + "! Se deschide aplicația de email ca să trimiți înscrierea.";
+            formVol.reset();
+        });
+    </script>
 
     <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->
     <script type="module" src="nova-auth.js"></script>

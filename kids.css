@@ -283,6 +283,118 @@ img {
     font-size: 17px;
 }
 
+/* ===== Sectiune donatii ===== */
+.donatii { text-align: center; }
+.suma-btns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 18px 0;
+}
+.suma-btn {
+    border: 3px solid var(--accent);
+    background: #ffffff;
+    color: var(--accent);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 17px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+}
+.suma-btn:hover { transform: translateY(-2px); }
+.suma-btn.activ { background: var(--accent); color: #ffffff; }
+
+.btn-donate {
+    background: var(--accent2);
+    color: var(--ink) !important;
+    font-size: 18px;
+    padding: 14px 34px;
+    margin-top: 6px;
+}
+
+.cont-bancar {
+    margin-top: 24px;
+    background: #fffdf7;
+    border: 2px dashed var(--accent);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: left;
+    display: inline-block;
+}
+.cont-bancar p { margin-bottom: 6px; color: var(--ink); font-size: 16px; }
+.cont-bancar span { font-family: monospace; font-size: 15px; }
+
+.donate-note { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+
+/* ===== Formular voluntari ===== */
+.form-voluntar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 520px;
+}
+.form-voluntar label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 16px;
+}
+.form-voluntar input,
+.form-voluntar textarea {
+    font-family: inherit;
+    font-size: 16px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 2px solid var(--accent2);
+    background: #fffdf7;
+    color: var(--ink);
+}
+.form-voluntar input:focus,
+.form-voluntar textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+.form-voluntar .btn { align-self: flex-start; }
+.form-msg { color: var(--accent); font-weight: 700; min-height: 22px; }
+
+/* ===== Evenimente ===== */
+.evenimente {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.eveniment {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #fffdf7;
+    border: 2px solid var(--accent2);
+    border-radius: 18px;
+    padding: 16px 18px;
+}
+.ev-data {
+    flex-shrink: 0;
+    width: 66px;
+    height: 66px;
+    border-radius: 16px;
+    background: var(--accent);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.ev-zi { font-size: 24px; font-weight: 700; }
+.ev-luna { font-size: 13px; letter-spacing: 1px; margin-top: 3px; }
+.ev-info h3 { color: var(--accent); font-size: 19px; margin-bottom: 4px; }
+.ev-info p { color: var(--ink-soft); font-size: 15px; margin: 0; }
+
 /* Buton vesel (daca apare) */
 .btn {
     display: inline-block;
