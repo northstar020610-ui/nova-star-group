@@ -59,41 +59,53 @@
     <section id="jocuri" class="jocuri">
         <div class="section-title">
             <h2>Jocurile noastre</h2>
-            <p>Urmărește stadiul de dezvoltare al fiecărui joc.</p>
+            <p>Joacă-le direct în browser.</p>
         </div>
 
         <div class="game-list">
 
-            <div class="game">
-                <!-- Inlocuieste cu: <img src="imagini/joc1.jpg" alt="Nume joc"> -->
-                <div class="foto-placeholder">📷 În curând</div>
-                <h3>Aventura în spațiu</h3>
-                <div class="stadiu" data-etapa="1">
+            <div class="game"
+                 data-title="Joc de Memorie"
+                 data-desc="Antrenează memoria potrivind perechile de cartonașe, cu o evoluție pas cu pas pentru cei mici."
+                 data-img=""
+                 data-play="jocuri/joc-memorie-copii.html">
+                <div class="foto-placeholder game-cover">🧠 Joc de Memorie</div>
+                <h3>Joc de Memorie</h3>
+                <div class="stadiu" data-etapa="4">
                     <div class="st-bar"><span></span><span></span><span></span><span></span></div>
                     <p class="st-text"></p>
                 </div>
+                <span class="vezi">Joacă →</span>
             </div>
 
-            <div class="game">
-                <div class="foto-placeholder">📷 În curând</div>
-                <h3>Învață alfabetul</h3>
-                <div class="stadiu" data-etapa="1">
+            <div class="game"
+                 data-title="Joc de Logică"
+                 data-desc="Pune mintea la lucru cu provocări de logică distractive, potrivite pentru copii."
+                 data-img=""
+                 data-play="jocuri/joc-logica-copii.html">
+                <div class="foto-placeholder game-cover">🧩 Joc de Logică</div>
+                <h3>Joc de Logică</h3>
+                <div class="stadiu" data-etapa="4">
                     <div class="st-bar"><span></span><span></span><span></span><span></span></div>
                     <p class="st-text"></p>
                 </div>
-            </div>
-
-            <div class="game">
-                <div class="foto-placeholder">📷 În curând</div>
-                <h3>Matematică distractivă</h3>
-                <div class="stadiu" data-etapa="1">
-                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
-                    <p class="st-text"></p>
-                </div>
+                <span class="vezi">Joacă →</span>
             </div>
 
         </div>
     </section>
+
+    <!-- ===== Modal detalii joc ===== -->
+    <div class="modal" id="game-modal" hidden>
+        <div class="modal-box">
+            <button class="modal-close" id="modal-close" aria-label="Închide">✕</button>
+            <div class="modal-img" id="modal-img"></div>
+            <h3 id="modal-title"></h3>
+            <p class="modal-desc" id="modal-desc"></p>
+            <p class="modal-stage" id="modal-stage"></p>
+            <a class="btn" id="modal-download">⏳ În curând</a>
+        </div>
+    </div>
 
     <!-- ===== Contact ===== -->
     <section class="sectiune">
@@ -128,9 +140,11 @@
         }
     </script>
 
-    <!-- ===== Stadiu de dezvoltare jocuri (4 etape) ===== -->
+    <!-- ===== Stadiu jocuri + modal detalii ===== -->
     <script>
         const ETAPE = ["Concept", "Design", "Dezvoltare", "Lansare"];
+
+        // coloreaza barele de stadiu de pe carduri
         document.querySelectorAll(".stadiu").forEach((el) => {
             const n = Math.min(Math.max(parseInt(el.dataset.etapa) || 1, 1), 4);
             el.querySelectorAll(".st-bar span").forEach((s, i) => {
@@ -138,6 +152,53 @@
             });
             el.querySelector(".st-text").textContent = "Etapa " + n + " din 4 · " + ETAPE[n - 1];
         });
+
+        // modal detalii joc (imagine + descriere + download)
+        const modal   = document.getElementById("game-modal");
+        const mImg    = document.getElementById("modal-img");
+        const mTitle  = document.getElementById("modal-title");
+        const mDesc   = document.getElementById("modal-desc");
+        const mStage  = document.getElementById("modal-stage");
+        const mDl     = document.getElementById("modal-download");
+
+        function deschideJoc(g) {
+            mTitle.textContent = g.dataset.title || "";
+            mDesc.textContent  = g.dataset.desc || "";
+            const img = g.dataset.img;
+            mImg.innerHTML = img ? '<img src="' + img + '" alt="">' : "📷 Imagine în curând";
+            const st = g.querySelector(".stadiu");
+            const et = st ? Math.min(Math.max(parseInt(st.dataset.etapa) || 1, 1), 4) : 1;
+            mStage.textContent = "Stadiu: Etapa " + et + " din 4 · " + ETAPE[et - 1];
+            const play = g.dataset.play;
+            const dl = g.dataset.download;
+            if (play) {
+                mDl.href = play;
+                mDl.target = "_blank";
+                mDl.rel = "noopener";
+                mDl.textContent = "▶️ Joacă acum";
+                mDl.classList.remove("download-btn", "btn-disabled");
+            } else if (dl) {
+                mDl.href = dl;
+                mDl.removeAttribute("target");
+                mDl.textContent = "⬇️ Descarcă";
+                mDl.classList.add("download-btn");      // protejat de login (nova-auth.js)
+                mDl.classList.remove("btn-disabled");
+            } else {
+                mDl.removeAttribute("href");
+                mDl.removeAttribute("target");
+                mDl.textContent = "⏳ În curând";
+                mDl.classList.remove("download-btn");
+                mDl.classList.add("btn-disabled");
+            }
+            modal.hidden = false;
+        }
+
+        document.querySelectorAll(".game").forEach((g) => {
+            g.addEventListener("click", () => deschideJoc(g));
+        });
+        document.getElementById("modal-close").addEventListener("click", () => { modal.hidden = true; });
+        modal.addEventListener("click", (e) => { if (e.target === modal) modal.hidden = true; });
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") modal.hidden = true; });
     </script>
 
     <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joc de Logică – Evoluție Pas cu Pas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+  :root {
+    --purple: #8B5CF6;
+    --bg: #FFF9F0;
+    --shadow: 0 4px 16px rgba(0,0,0,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px 40px;
+  }
+
+  header { text-align: center; margin-bottom: 16px; }
+  header h1 { font-size: 2rem; font-weight: 900; color: #5B3FA6; letter-spacing: -0.5px; }
+  header p { font-size: 1rem; color: #888; margin-top: 4px; }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .btn-group { display: flex; gap: 6px; background: #EDE9FF; border-radius: 50px; padding: 4px; }
+
+  .btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: #7C5CBF;
+  }
+
+  .btn.active { background: var(--purple); color: white; box-shadow: 0 2px 8px rgba(139,92,246,0.4); }
+  .btn:hover:not(.active) { background: #D9D1F7; }
+
+  .stats { display: flex; gap: 20px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+
+  .stat { background: white; border-radius: 14px; padding: 8px 22px; text-align: center; box-shadow: var(--shadow); min-width: 90px; }
+  .stat-val { font-size: 1.6rem; font-weight: 900; color: #5B3FA6; line-height: 1; }
+  .stat-lbl { font-size: 0.75rem; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Game card */
+  #game-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  #prompt {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #5B3FA6;
+    line-height: 1.4;
+  }
+
+  #challenge-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .option {
+    width: 76px;
+    height: 76px;
+    background: #F5F3FF;
+    border: 3px solid #EDE9FF;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  @media (max-width: 480px) {
+    .option { width: 64px; height: 64px; font-size: 2rem; }
+  }
+
+  .option:hover { transform: scale(1.07); border-color: #C4B5FD; }
+
+  .option.correct {
+    background: #D1FAE5;
+    border-color: #6DD97B;
+    animation: pop 0.3s;
+  }
+
+  .option.wrong {
+    background: #FFE0DC;
+    border-color: #FF7F6B;
+    animation: shake 0.3s;
+  }
+
+  @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  .sequence-item {
+    width: 64px;
+    height: 64px;
+    background: #F5F3FF;
+    border: 3px solid #EDE9FF;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+  }
+
+  .sequence-item.blank {
+    background: #FFF3CD;
+    border-color: #FFD84D;
+    font-size: 1.6rem;
+    color: #C9A100;
+    font-weight: 900;
+  }
+
+  .arrow-sep { font-size: 1.4rem; color: #ccc; }
+
+  #feedback {
+    font-size: 1rem;
+    font-weight: 700;
+    min-height: 24px;
+    color: #6DD97B;
+  }
+
+  #next-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(139,92,246,0.4);
+    transition: transform 0.15s;
+    display: none;
+  }
+
+  #next-btn.visible { display: inline-block; }
+  #next-btn:hover { transform: scale(1.05); }
+
+  .footer { font-size: 0.78rem; color: #ccc; margin-top: 16px; text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧩 Joc de Logică</h1>
+  <p>Gândește, alege, descoperă!</p>
+</header>
+
+<div class="controls">
+  <div class="btn-group" id="mode-btns">
+    <button class="btn active" data-mode="mix">🎲 Mix</button>
+    <button class="btn" data-mode="sort">🎨 Sortează</button>
+    <button class="btn" data-mode="odd">🔍 Ce nu se potrivește</button>
+    <button class="btn" data-mode="pattern">➡️ Completează șirul</button>
+  </div>
+  <div class="btn-group" id="diff-btns">
+    <button class="btn active" data-diff="easy">Ușor</button>
+    <button class="btn" data-diff="medium">Mediu</button>
+    <button class="btn" data-diff="hard">Greu</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="score-val">0</div><div class="stat-lbl">Corecte</div></div>
+  <div class="stat"><div class="stat-val" id="streak-val">0</div><div class="stat-lbl">Serie</div></div>
+  <div class="stat"><div class="stat-val" id="round-val">1</div><div class="stat-lbl">Runda</div></div>
+</div>
+
+<div id="game-card">
+  <div id="prompt"></div>
+  <div id="challenge-area"></div>
+  <div id="feedback"></div>
+  <button id="next-btn" onclick="nextRound()">Următor ➡️</button>
+</div>
+
+<div class="footer">Evoluție Pas cu Pas © 2026</div>
+
+<script>
+const SHAPES = ['🔴','🔵','🟢','🟡','🟣','🟠'];
+const SHAPE_NAMES = {'🔴':'roșu','🔵':'albastru','🟢':'verde','🟡':'galben','🟣':'violet','🟠':'portocaliu'};
+const FORM_SHAPES = ['⭐','⬛','🔶','⬤','🔺','⬢'];
+
+const ANIMALS = ['🐶','🐱','🐰','🐻','🦁','🐸','🐵','🐷'];
+const FRUITS = ['🍎','🍌','🍓','🍇','🍊','🍉','🍋','🥝'];
+const VEHICLES = ['🚗','🚕','🚙','🚌','🚲','✈️','🚀','⛵'];
+const TOOLS = ['🔨','🪛','🔧','🪚','🔩','🪜'];
+const NUMBERS = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣'];
+
+let currentMode = 'mix';
+let currentDiff = 'easy';
+let score = 0;
+let streak = 0;
+let round = 1;
+let answered = false;
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+function sample(arr, n) { return shuffle(arr).slice(0, n); }
+
+// --- GAME TYPE: SORT BY COLOR/SHAPE ---
+function genSort() {
+  const diffSize = { easy: 4, medium: 5, hard: 6 };
+  const n = diffSize[currentDiff];
+  const useColor = Math.random() < 0.5;
+  const pool = useColor ? SHAPES : FORM_SHAPES;
+  const targetCount = Math.min(n, pool.length);
+  const chosen = sample(pool, targetCount);
+  const target = chosen[0];
+
+  // Build options: some matching target, some not
+  let options = [];
+  const matchCount = Math.floor(targetCount / 2) + 1;
+  for (let i = 0; i < matchCount; i++) options.push(target);
+  for (let i = 0; i < targetCount - matchCount; i++) {
+    let other;
+    do { other = rand(chosen); } while (other === target);
+    options.push(other);
+  }
+  options = shuffle(options);
+
+  const label = useColor ? `culoarea ${SHAPE_NAMES[target] || ''}` : 'această formă';
+
+  return {
+    prompt: `🎯 Apasă pe toate elementele cu ${label}: ${target}`,
+    type: 'multi',
+    options: options.map(o => ({ emoji: o, correct: o === target })),
+  };
+}
+
+// --- GAME TYPE: ODD ONE OUT ---
+function genOdd() {
+  const diffSize = { easy: 3, medium: 4, hard: 5 };
+  const n = diffSize[currentDiff];
+  const groups = [ANIMALS, FRUITS, VEHICLES, TOOLS];
+  const mainGroup = rand(groups);
+  let otherGroup;
+  do { otherGroup = rand(groups); } while (otherGroup === mainGroup);
+
+  const items = sample(mainGroup, n - 1);
+  const odd = rand(otherGroup);
+  const options = shuffle([...items, odd]);
+
+  return {
+    prompt: `🔍 Care element nu se potrivește cu celelalte?`,
+    type: 'single',
+    options: options.map(o => ({ emoji: o, correct: o === odd })),
+  };
+}
+
+// --- GAME TYPE: PATTERN COMPLETION ---
+function genPattern() {
+  const diffLen = { easy: 4, medium: 6, hard: 8 };
+  const len = diffLen[currentDiff];
+  const patternTypes = currentDiff === 'easy' ? ['ab'] : currentDiff === 'medium' ? ['ab', 'abc'] : ['ab', 'abc', 'aab'];
+  const ptype = rand(patternTypes);
+  const pool = Math.random() < 0.5 ? SHAPES : ANIMALS;
+  const a = rand(pool);
+  let b, c;
+  do { b = rand(pool); } while (b === a);
+  do { c = rand(pool); } while (c === a || c === b);
+
+  let seq = [];
+  if (ptype === 'ab') {
+    for (let i = 0; i < len; i++) seq.push(i % 2 === 0 ? a : b);
+  } else if (ptype === 'abc') {
+    for (let i = 0; i < len; i++) seq.push([a, b, c][i % 3]);
+  } else if (ptype === 'aab') {
+    for (let i = 0; i < len; i++) seq.push([a, a, b][i % 3]);
+  }
+
+  const correctAnswer = seq[seq.length - 1];
+  seq[seq.length - 1] = null; // blank to fill
+
+  // generate wrong options
+  const candidatesPool = pool.filter(x => x !== correctAnswer);
+  const wrongs = sample(candidatesPool, 2);
+  const options = shuffle([correctAnswer, ...wrongs]);
+
+  return {
+    prompt: `➡️ Ce vine în continuare în șir?`,
+    type: 'pattern',
+    sequence: seq,
+    options: options.map(o => ({ emoji: o, correct: o === correctAnswer })),
+  };
+}
+
+function generateChallenge() {
+  let mode = currentMode;
+  if (mode === 'mix') {
+    mode = rand(['sort', 'odd', 'pattern']);
+  }
+  if (mode === 'sort') return genSort();
+  if (mode === 'odd') return genOdd();
+  return genPattern();
+}
+
+let challenge = null;
+
+function renderChallenge() {
+  challenge = generateChallenge();
+  answered = false;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('next-btn').classList.remove('visible');
+  document.getElementById('prompt').textContent = challenge.prompt;
+
+  const area = document.getElementById('challenge-area');
+  area.innerHTML = '';
+
+  if (challenge.type === 'pattern') {
+    challenge.sequence.forEach(item => {
+      const div = document.createElement('div');
+      if (item === null) {
+        div.className = 'sequence-item blank';
+        div.textContent = '?';
+      } else {
+        div.className = 'sequence-item';
+        div.textContent = item;
+      }
+      area.appendChild(div);
+    });
+    const optWrap = document.createElement('div');
+    optWrap.style.display = 'flex';
+    optWrap.style.gap = '14px';
+    optWrap.style.flexWrap = 'wrap';
+    optWrap.style.justifyContent = 'center';
+    optWrap.style.width = '100%';
+    optWrap.style.marginTop = '8px';
+    challenge.options.forEach(opt => {
+      const div = document.createElement('div');
+      div.className = 'option';
+      div.textContent = opt.emoji;
+      div.addEventListener('click', () => onAnswer(div, opt, false));
+      optWrap.appendChild(div);
+    });
+    area.appendChild(optWrap);
+    return;
+  }
+
+  // single or multi
+  challenge.options.forEach(opt => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.textContent = opt.emoji;
+    div.addEventListener('click', () => onAnswer(div, opt, challenge.type === 'multi'));
+    area.appendChild(div);
+  });
+}
+
+function onAnswer(el, opt, isMulti) {
+  if (answered && !isMulti) return;
+  if (isMulti) {
+    if (el.classList.contains('correct') || el.classList.contains('wrong')) return;
+    if (opt.correct) {
+      el.classList.add('correct');
+      checkMultiDone();
+    } else {
+      el.classList.add('wrong');
+      finishRound(false);
+    }
+  } else {
+    answered = true;
+    if (opt.correct) {
+      el.classList.add('correct');
+      finishRound(true);
+    } else {
+      el.classList.add('wrong');
+      // highlight correct
+      document.querySelectorAll('.option').forEach(o => {
+        const matchOpt = challenge.options.find(c => c.emoji === o.textContent);
+        if (matchOpt && matchOpt.correct) o.classList.add('correct');
+      });
+      finishRound(false);
+    }
+  }
+}
+
+function checkMultiDone() {
+  const correctTotal = challenge.options.filter(o => o.correct).length;
+  const correctClicked = document.querySelectorAll('.option.correct').length;
+  if (correctClicked === correctTotal) {
+    finishRound(true);
+  }
+}
+
+function finishRound(success) {
+  answered = true;
+  document.querySelectorAll('.option').forEach(o => o.style.pointerEvents = 'none');
+  const fb = document.getElementById('feedback');
+  if (success) {
+    score++;
+    streak++;
+    const msgs = ['Bravo! 🎉', 'Super! ⭐', 'Excelent! 🌟', 'Perfect! 👏', 'Foarte bine! 🥳'];
+    fb.textContent = rand(msgs);
+    fb.style.color = '#6DD97B';
+  } else {
+    streak = 0;
+    fb.textContent = 'Mai încearcă! 💪';
+    fb.style.color = '#FF7F6B';
+  }
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('streak-val').textContent = streak;
+  document.getElementById('next-btn').classList.add('visible');
+}
+
+function nextRound() {
+  round++;
+  document.getElementById('round-val').textContent = round;
+  renderChallenge();
+}
+
+// Mode buttons
+document.getElementById('mode-btns').querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#mode-btns .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+    renderChallenge();
+  });
+});
+
+// Difficulty buttons
+document.getElementById('diff-btns').querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#diff-btns .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentDiff = btn.dataset.diff;
+    renderChallenge();
+  });
+});
+
+renderChallenge();
+</script>
+</body>
+</html>

@@ -96,15 +96,21 @@
     <section class="sectiune">
         <h2>Susține-ne 💚</h2>
         <p>Fiecare donație ne ajută să ducem mai departe proiectele pentru comunitate. Îți mulțumim!</p>
+
+        <ul class="de-ce-list">
+            <li>✅ <strong>Ajuți familii reale</strong> care îngrijesc copii cu dizabilități</li>
+            <li>✅ <strong>Orice sumă contează</strong> — tu alegi cât donezi</li>
+            <li>✅ <strong>Transparență</strong> — fondurile merg către misiunea asociației</li>
+        </ul>
+
         <div class="donatii">
-            <div class="suma-btns">
-                <button class="suma-btn" type="button">25 lei</button>
-                <button class="suma-btn" type="button">50 lei</button>
-                <button class="suma-btn" type="button">100 lei</button>
-                <button class="suma-btn" type="button">Altă sumă</button>
-            </div>
             <a href="#" id="donate-btn" class="btn btn-donate" target="_blank" rel="noopener">💳 Donează cu cardul / Google Pay</a>
             <p class="donate-note">Plată securizată prin Stripe · suma o alegi pe pagina următoare</p>
+            <div class="trust-row">
+                <span>🔒 Plată securizată</span>
+                <span>💳 Card &amp; Google Pay</span>
+                <span>⚡ În câteva secunde</span>
+            </div>
         </div>
     </section>
 
@@ -168,14 +174,6 @@
                 e.preventDefault();
                 alert("Linkul de donații Stripe nu e configurat încă. Îl adăugăm după ce creezi contul Stripe. 🙂");
             }
-        });
-
-        // sume donatie - selectie vizuala (sugestie; suma finala se alege pe Stripe)
-        document.querySelectorAll(".suma-btn").forEach((b) => {
-            b.addEventListener("click", () => {
-                document.querySelectorAll(".suma-btn").forEach((x) => x.classList.remove("activ"));
-                b.classList.add("activ");
-            });
         });
 
         // formular voluntari - trimite pe WhatsApp

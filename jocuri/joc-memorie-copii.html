@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joc de Memorie – Evoluție Pas cu Pas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+  :root {
+    --sky: #6EC6F5;
+    --sun: #FFD84D;
+    --grass: #6DD97B;
+    --coral: #FF7F6B;
+    --purple: #B47FE3;
+    --bg: #FFF9F0;
+    --card-back: #8B5CF6;
+    --card-radius: 16px;
+    --shadow: 0 4px 16px rgba(0,0,0,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px 40px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #5B3FA6;
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    font-size: 1rem;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 6px;
+    background: #EDE9FF;
+    border-radius: 50px;
+    padding: 4px;
+  }
+
+  .btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: #7C5CBF;
+  }
+
+  .btn.active {
+    background: var(--card-back);
+    color: white;
+    box-shadow: 0 2px 8px rgba(139,92,246,0.4);
+  }
+
+  .btn:hover:not(.active) { background: #D9D1F7; }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    background: white;
+    border-radius: 14px;
+    padding: 8px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-width: 90px;
+  }
+
+  .stat-val {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #5B3FA6;
+    line-height: 1;
+  }
+
+  .stat-lbl {
+    font-size: 0.75rem;
+    color: #aaa;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Grid */
+  #grid {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  /* Card */
+  .card {
+    width: 80px;
+    height: 80px;
+    perspective: 600px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 480px) {
+    .card { width: 62px; height: 62px; }
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+    border-radius: var(--card-radius);
+  }
+
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+  .card.matched .card-inner { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--card-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+    font-size: 2rem;
+  }
+
+  .card-back::after {
+    content: '⭐';
+    opacity: 0.3;
+    font-size: 1.4rem;
+  }
+
+  .card-front {
+    background: white;
+    transform: rotateY(180deg);
+    font-size: 2.4rem;
+    border: 3px solid #EDE9FF;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .card-front { font-size: 1.8rem; }
+  }
+
+  .card-front small {
+    font-size: 0.52rem;
+    color: #999;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    text-align: center;
+    padding: 0 4px;
+    line-height: 1.2;
+  }
+
+  .card.matched .card-face.card-front {
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    border-color: #6DD97B;
+  }
+
+  /* Win screen */
+  #win-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    background: white;
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    max-width: 340px;
+    width: 100%;
+  }
+
+  #win-screen.visible { display: flex; }
+
+  #win-screen h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #5B3FA6;
+  }
+
+  #win-screen p {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  #win-screen .big-emoji { font-size: 4rem; }
+
+  #restart-btn {
+    background: var(--card-back);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(139,92,246,0.4);
+    transition: transform 0.15s;
+  }
+
+  #restart-btn:hover { transform: scale(1.05); }
+
+  /* Timer bar */
+  #timer-bar-wrap {
+    width: min(500px, 94vw);
+    height: 10px;
+    background: #EDE9FF;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  #timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6EC6F5, #8B5CF6);
+    border-radius: 10px;
+    transition: width 1s linear;
+    width: 100%;
+  }
+
+  .footer {
+    font-size: 0.78rem;
+    color: #ccc;
+    margin-top: 10px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 Joc de Memorie</h1>
+  <p>Găsește toate perechile!</p>
+</header>
+
+<div class="controls">
+  <div class="btn-group" id="theme-btns">
+    <button class="btn active" data-theme="all">🌈 Toate</button>
+    <button class="btn" data-theme="animals">🐾 Animale</button>
+    <button class="btn" data-theme="fruits">🍎 Fructe</button>
+    <button class="btn" data-theme="emotions">😊 Emoții</button>
+    <button class="btn" data-theme="home">🏠 Casă</button>
+  </div>
+  <div class="btn-group" id="diff-btns">
+    <button class="btn active" data-diff="easy">Ușor</button>
+    <button class="btn" data-diff="medium">Mediu</button>
+    <button class="btn" data-diff="hard">Greu</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="moves-val">0</div><div class="stat-lbl">Mutări</div></div>
+  <div class="stat"><div class="stat-val" id="pairs-val">0</div><div class="stat-lbl">Perechi</div></div>
+  <div class="stat"><div class="stat-val" id="time-val">0s</div><div class="stat-lbl">Timp</div></div>
+</div>
+
+<div id="timer-bar-wrap"><div id="timer-bar"></div></div>
+
+<div id="grid"></div>
+
+<div id="win-screen">
+  <div class="big-emoji">🎉</div>
+  <h2>Felicitări!</h2>
+  <p id="win-msg">Ai găsit toate perechile!</p>
+  <button id="restart-btn" onclick="restartGame()">🔄 Joacă din nou</button>
+</div>
+
+<div class="footer">Evoluție Pas cu Pas © 2026</div>
+
+<script>
+const THEMES = {
+  animals:   [['🐶','Câine'],['🐱','Pisică'],['🐸','Broaște'],['🦊','Vulpe'],['🐮','Vacă'],['🐧','Pinguin'],['🦁','Leu'],['🐘','Elefant'],['🦋','Fluture'],['🐢','Broasc. ț.']],
+  fruits:    [['🍎','Măr'],['🍌','Banană'],['🍓','Căpșună'],['🍇','Struguri'],['🍊','Portocală'],['🍉','Pepene'],['🍋','Lămâie'],['🥝','Kiwi'],['🍒','Cireașă'],['🥦','Broccoli']],
+  emotions:  [['😊','Fericit'],['😢','Trist'],['😠','Supărat'],['😨','Speriat'],['😴','Somnoros'],['🤩','Uimit'],['🥰','Iubitor'],['😎','Cool'],['🤔','Gânditor'],['😂','Vesel']],
+  home:      [['🛁','Cadă'],['🛏️','Pat'],['🪑','Scaun'],['📺','TV'],['📚','Cărți'],['🍳','Tigaie'],['🧸','Urs de pluș'],['🪴','Plantă'],['🕯️','Lumânare'],['🧺','Coș']]
+};
+
+const DIFFICULTY = {
+  easy:   { pairs: 6,  cols: 4, timeLimit: 0 },
+  medium: { pairs: 10, cols: 5, timeLimit: 0 },
+  hard:   { pairs: 16, cols: 6, timeLimit: 0 }
+};
+
+let currentTheme = 'all';
+let currentDiff = 'easy';
+let flipped = [];
+let matched = 0;
+let moves = 0;
+let locked = false;
+let timerInterval = null;
+let elapsed = 0;
+let totalPairs = 0;
+
+function getCards(theme, pairCount) {
+  let pool = [];
+  if (theme === 'all') {
+    Object.values(THEMES).forEach(arr => pool.push(...arr));
+  } else {
+    pool = [...THEMES[theme]];
+  }
+  // shuffle pool
+  pool = pool.sort(() => Math.random() - 0.5);
+  const selected = pool.slice(0, pairCount);
+  const cards = [...selected, ...selected].sort(() => Math.random() - 0.5);
+  return cards;
+}
+
+function buildGrid(cards, cols) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  grid.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  cards.forEach(([emoji, label], i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.emoji = emoji;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-face card-back"></div>
+        <div class="card-face card-front">${emoji}<small>${label}</small></div>
+      </div>`;
+    card.addEventListener('click', () => onCardClick(card));
+    grid.appendChild(card);
+  });
+}
+
+function onCardClick(card) {
+  if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  if (flipped.length === 2) return;
+
+  card.classList.add('flipped');
+  flipped.push(card);
+
+  if (flipped.length === 2) {
+    moves++;
+    document.getElementById('moves-val').textContent = moves;
+    locked = true;
+    const [a, b] = flipped;
+    if (a.dataset.emoji === b.dataset.emoji) {
+      a.classList.add('matched');
+      b.classList.add('matched');
+      matched++;
+      document.getElementById('pairs-val').textContent = matched;
+      flipped = [];
+      locked = false;
+      if (matched === totalPairs) showWin();
+    } else {
+      setTimeout(() => {
+        a.classList.remove('flipped');
+        b.classList.remove('flipped');
+        flipped = [];
+        locked = false;
+      }, 900);
+    }
+  }
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  elapsed = 0;
+  timerInterval = setInterval(() => {
+    elapsed++;
+    document.getElementById('time-val').textContent = elapsed + 's';
+  }, 1000);
+}
+
+function showWin() {
+  clearInterval(timerInterval);
+  const grid = document.getElementById('grid');
+  grid.style.display = 'none';
+  const win = document.getElementById('win-screen');
+  win.classList.add('visible');
+  const stars = moves <= totalPairs + 2 ? '⭐⭐⭐' : moves <= totalPairs + 6 ? '⭐⭐' : '⭐';
+  document.getElementById('win-msg').textContent =
+    `${moves} mutări · ${elapsed}s · ${stars}`;
+}
+
+function startGame() {
+  const diff = DIFFICULTY[currentDiff];
+  totalPairs = diff.pairs;
+  matched = 0;
+  moves = 0;
+  flipped = [];
+  locked = false;
+  document.getElementById('moves-val').textContent = '0';
+  document.getElementById('pairs-val').textContent = '0';
+  document.getElementById('time-val').textContent = '0s';
+  document.getElementById('win-screen').classList.remove('visible');
+  document.getElementById('grid').style.display = 'grid';
+  const cards = getCards(currentTheme, totalPairs);
+  buildGrid(cards, diff.cols);
+  startTimer();
+}
+
+function restartGame() { startGame(); }
+
+// Theme buttons
+document.getElementById('theme-btns').querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#theme-btns .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTheme = btn.dataset.theme;
+    startGame();
+  });
+});
+
+// Difficulty buttons
+document.getElementById('diff-btns').querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#diff-btns .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentDiff = btn.dataset.diff;
+    startGame();
+  });
+});
+
+startGame();
+</script>
+</body>
+</html>
