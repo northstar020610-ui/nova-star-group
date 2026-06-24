@@ -82,7 +82,7 @@
     <section id="jocuri" class="jocuri">
         <div class="section-title">
             <h2>Jocuri pentru copii</h2>
-            <p>Realizate de NorthStar Studio — descarcă-le direct de aici.</p>
+            <p>Realizate de NorthStar Studio · urmărește stadiul de dezvoltare.</p>
         </div>
 
         <div class="game-list">
@@ -91,19 +91,28 @@
                 <!-- Inlocuieste cu: <img src="imagini/joc1.jpg" alt="Aventura in spatiu"> -->
                 <div class="foto-placeholder">Imagine joc</div>
                 <h3>Aventura în spațiu</h3>
-                <a href="#" class="btn download-btn">Descarcă</a>
+                <div class="stadiu" data-etapa="1">
+                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
+                    <p class="st-text"></p>
+                </div>
             </div>
 
             <div class="game">
                 <div class="foto-placeholder">Imagine joc</div>
                 <h3>Învață alfabetul</h3>
-                <a href="#" class="btn download-btn">Descarcă</a>
+                <div class="stadiu" data-etapa="1">
+                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
+                    <p class="st-text"></p>
+                </div>
             </div>
 
             <div class="game">
                 <div class="foto-placeholder">Imagine joc</div>
                 <h3>Matematică distractivă</h3>
-                <a href="#" class="btn download-btn">Descarcă</a>
+                <div class="stadiu" data-etapa="1">
+                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
+                    <p class="st-text"></p>
+                </div>
             </div>
 
         </div>
@@ -220,6 +229,18 @@
 
         actualizeaza();
         setInterval(actualizeaza, 1000);
+    </script>
+
+    <!-- ===== Stadiu de dezvoltare jocuri (4 etape) ===== -->
+    <script>
+        const ETAPE = ["Concept", "Design", "Dezvoltare", "Lansare"];
+        document.querySelectorAll(".stadiu").forEach((el) => {
+            const n = Math.min(Math.max(parseInt(el.dataset.etapa) || 1, 1), 4);
+            el.querySelectorAll(".st-bar span").forEach((s, i) => {
+                if (i < n) s.classList.add("activ");
+            });
+            el.querySelector(".st-text").textContent = "Etapa " + n + " din 4 · " + ETAPE[n - 1];
+        });
     </script>
 
     <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->

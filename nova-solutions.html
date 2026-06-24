@@ -111,7 +111,7 @@
     <!-- ===== Inscriere voluntari ===== -->
     <section class="sectiune">
         <h2>Devino voluntar 🙋</h2>
-        <p>Vrei să ne dai o mână de ajutor? Lasă-ne datele tale și te contactăm.</p>
+        <p>Vrei să ne dai o mână de ajutor? Completează datele și ni le trimiți direct pe WhatsApp.</p>
         <form id="voluntar-form" class="form-voluntar">
             <label>Nume și prenume
                 <input type="text" id="vol-nume" placeholder="Numele tău" required>
@@ -125,7 +125,7 @@
             <label>Cum vrei să ajuți?
                 <textarea id="vol-mesaj" rows="4" placeholder="Scrie pe scurt cu ce ai vrea să ajuți..."></textarea>
             </label>
-            <button type="submit" class="btn">Trimite înscrierea</button>
+            <button type="submit" class="btn">💬 Trimite pe WhatsApp</button>
             <p id="vol-msg" class="form-msg"></p>
         </form>
     </section>
@@ -133,28 +133,10 @@
     <!-- ===== Evenimente / stiri ===== -->
     <section class="sectiune">
         <h2>Evenimente & știri 📅</h2>
-        <div class="evenimente">
-            <article class="eveniment">
-                <div class="ev-data"><span class="ev-zi">15</span><span class="ev-luna">IUL</span></div>
-                <div class="ev-info">
-                    <h3>Titlu eveniment</h3>
-                    <p>Descriere scurtă — înlocuiește cu detaliile evenimentului tău.</p>
-                </div>
-            </article>
-            <article class="eveniment">
-                <div class="ev-data"><span class="ev-zi">02</span><span class="ev-luna">AUG</span></div>
-                <div class="ev-info">
-                    <h3>Al doilea eveniment</h3>
-                    <p>Descriere scurtă — înlocuiește cu detaliile tale.</p>
-                </div>
-            </article>
-            <article class="eveniment">
-                <div class="ev-data"><span class="ev-zi">20</span><span class="ev-luna">AUG</span></div>
-                <div class="ev-info">
-                    <h3>Al treilea eveniment</h3>
-                    <p>Descriere scurtă — înlocuiește cu detaliile tale.</p>
-                </div>
-            </article>
+        <div class="coming-soon">
+            <span class="cs-emoji">🚧</span>
+            <h3>Coming soon</h3>
+            <p>Pregătim primele evenimente și știri. Revino curând!</p>
         </div>
     </section>
 
@@ -162,9 +144,9 @@
     <section class="sectiune">
         <h2>Contact</h2>
         <div class="contact-box">
-            <p><strong>Email:</strong> adaugă-l aici</p>
-            <p><strong>Telefon:</strong> adaugă-l aici</p>
-            <p><strong>Adresă / sediu:</strong> adaugă-o aici</p>
+            <p><strong>Email:</strong> <a href="mailto:asociatianovasolutions@gmail.com">asociatianovasolutions@gmail.com</a></p>
+            <p><strong>Telefon / WhatsApp:</strong> <a href="https://wa.me/40744198194" target="_blank" rel="noopener">+40 744 198 194</a></p>
+            <p><strong>Sediu:</strong> Sat Drăgutești, nr. 103, jud. Gorj</p>
         </div>
     </section>
 
@@ -196,7 +178,10 @@
             });
         });
 
-        // formular voluntari - trimite prin email (mailto)
+        // formular voluntari - trimite pe WhatsApp
+        // Numarul asociatiei, format international FARA + si fara spatii (ex: 40712345678)
+        const WHATSAPP_NUMBER = "40744198194";
+
         const formVol = document.getElementById("voluntar-form");
         formVol.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -205,15 +190,17 @@
             const tel   = document.getElementById("vol-tel").value;
             const mesaj = document.getElementById("vol-mesaj").value;
 
-            const subiect = encodeURIComponent("Înscriere voluntar — " + nume);
-            const corp = encodeURIComponent(
-                "Nume: " + nume + "\nEmail: " + email + "\nTelefon: " + tel + "\n\nMesaj:\n" + mesaj
+            const text = encodeURIComponent(
+                "Înscriere voluntar — Nova Solutions\n\n" +
+                "Nume: " + nume + "\n" +
+                "Email: " + email + "\n" +
+                "Telefon: " + tel + "\n" +
+                "Mesaj: " + mesaj
             );
-            // INLOCUIESTE cu emailul real al asociatiei:
-            window.location.href = "mailto:contact@nova-solutions.ro?subject=" + subiect + "&body=" + corp;
+            window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + text, "_blank");
 
             document.getElementById("vol-msg").textContent =
-                "Mulțumim, " + nume + "! Se deschide aplicația de email ca să trimiți înscrierea.";
+                "Mulțumim, " + nume + "! Se deschide WhatsApp ca să trimiți înscrierea.";
             formVol.reset();
         });
     </script>

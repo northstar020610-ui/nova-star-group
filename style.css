@@ -373,6 +373,24 @@ body {
     margin-bottom: 16px;
 }
 
+/* ===== Stadiu de dezvoltare (jocuri) — 4 etape ===== */
+.stadiu { margin-top: 4px; }
+.st-bar { display: flex; gap: 5px; }
+.st-bar span {
+    flex: 1;
+    height: 7px;
+    border-radius: 99px;
+    background: #2a3357;
+    transition: background 0.2s ease;
+}
+.st-bar span.activ { background: var(--studio); }
+.st-text {
+    margin-top: 9px;
+    font-size: 12px;
+    color: var(--studio);
+    font-weight: 600;
+}
+
 .btn {
     display: inline-block;
     background-color: #3b63c4;
@@ -453,6 +471,8 @@ img {
     padding: 24px;
 }
 .contact-box p { margin-bottom: 8px; }
+.contact-box a { color: var(--logo); text-decoration: none; font-weight: 600; }
+.contact-box a:hover { text-decoration: underline; }
 
 /* ============================================================
    FOOTER

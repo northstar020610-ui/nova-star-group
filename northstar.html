@@ -52,7 +52,7 @@
     <section id="jocuri" class="jocuri">
         <div class="section-title">
             <h2>Jocurile noastre</h2>
-            <p>Descarcă-le direct de aici.</p>
+            <p>Urmărește stadiul de dezvoltare al fiecărui joc.</p>
         </div>
 
         <div class="game-list">
@@ -61,19 +61,28 @@
                 <!-- Inlocuieste cu: <img src="imagini/joc1.jpg" alt="Nume joc"> -->
                 <div class="foto-placeholder">Imagine joc</div>
                 <h3>Aventura în spațiu</h3>
-                <a href="#" class="btn download-btn">Descarcă</a>
+                <div class="stadiu" data-etapa="1">
+                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
+                    <p class="st-text"></p>
+                </div>
             </div>
 
             <div class="game">
                 <div class="foto-placeholder">Imagine joc</div>
                 <h3>Învață alfabetul</h3>
-                <a href="#" class="btn download-btn">Descarcă</a>
+                <div class="stadiu" data-etapa="1">
+                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
+                    <p class="st-text"></p>
+                </div>
             </div>
 
             <div class="game">
                 <div class="foto-placeholder">Imagine joc</div>
                 <h3>Matematică distractivă</h3>
-                <a href="#" class="btn download-btn">Descarcă</a>
+                <div class="stadiu" data-etapa="1">
+                    <div class="st-bar"><span></span><span></span><span></span><span></span></div>
+                    <p class="st-text"></p>
+                </div>
             </div>
 
         </div>
@@ -83,9 +92,9 @@
     <section class="sectiune">
         <h2>Contact</h2>
         <div class="contact-box">
-            <p><strong>Email:</strong> adaugă-l aici</p>
-            <p><strong>Telefon:</strong> adaugă-l aici</p>
-            <p><strong>Portofoliu / social media:</strong> adaugă linkul aici</p>
+            <p><strong>Email:</strong> <a href="mailto:northstardevstudio@gmail.com">northstardevstudio@gmail.com</a></p>
+            <p><strong>Telefon:</strong> <a href="tel:+40744198194">+40 744 198 194</a></p>
+            <p><strong>Sediu:</strong> Sat Drăgutești, nr. 103, jud. Gorj</p>
         </div>
     </section>
 
@@ -110,6 +119,18 @@
             s.style.setProperty("--delay", (Math.random() * 5) + "s");
             cer.appendChild(s);
         }
+    </script>
+
+    <!-- ===== Stadiu de dezvoltare jocuri (4 etape) ===== -->
+    <script>
+        const ETAPE = ["Concept", "Design", "Dezvoltare", "Lansare"];
+        document.querySelectorAll(".stadiu").forEach((el) => {
+            const n = Math.min(Math.max(parseInt(el.dataset.etapa) || 1, 1), 4);
+            el.querySelectorAll(".st-bar span").forEach((s, i) => {
+                if (i < n) s.classList.add("activ");
+            });
+            el.querySelector(".st-text").textContent = "Etapa " + n + " din 4 · " + ETAPE[n - 1];
+        });
     </script>
 
     <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->

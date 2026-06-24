@@ -282,6 +282,12 @@ img {
     color: var(--ink);
     font-size: 17px;
 }
+.contact-box a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+}
+.contact-box a:hover { text-decoration: underline; }
 
 /* ===== Sectiune donatii ===== */
 .donatii { text-align: center; }
@@ -343,6 +349,18 @@ img {
 .share-btns { display: flex; flex-wrap: wrap; gap: 12px; }
 .share-fb { background: #1877f2; color: #ffffff !important; }
 .share-wa { background: #25d366; color: #ffffff !important; }
+
+/* ===== Coming soon (evenimente) ===== */
+.coming-soon {
+    text-align: center;
+    background: #fffdf7;
+    border: 2px dashed var(--accent);
+    border-radius: 20px;
+    padding: 36px 20px;
+}
+.cs-emoji { font-size: 44px; display: block; margin-bottom: 8px; }
+.coming-soon h3 { color: var(--accent); font-size: 24px; margin-bottom: 6px; }
+.coming-soon p { color: var(--ink-soft); margin: 0; }
 
 /* ===== Formular voluntari ===== */
 .form-voluntar {
