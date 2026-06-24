@@ -46,12 +46,25 @@
         <h2>Despre asociație</h2>
         <div class="despre">
             <div>
-                <p>Aici scrii despre Asociația „Nova Solutions": misiunea, valorile și scopul vostru.</p>
-                <p>Un al doilea paragraf despre cum a luat naștere și ce vreți să schimbați.</p>
+                <p>Asociația Nova Solutions s-a născut din dorința de a fi cu adevărat alături de copiii cu dizabilități fizice și mintale și de familiile care îi îngrijesc zi de zi. Credem că fiecare copil merită sprijin concret, șanse reale și o comunitate care să îl vadă.</p>
+                <p>Suntem o echipă mică și dedicată, la început de drum, dar cu un scop clar: să construim împreună un mediu mai incluziv și mai cald pentru toți cei care au nevoie de noi.</p>
             </div>
             <!-- Inlocuieste cu: <img src="imagini/solutions-despre.jpg" alt="Nova Solutions"> -->
             <div class="foto-placeholder">Adaugă o imagine aici</div>
         </div>
+    </section>
+
+    <!-- ===== Pe cine sprijinim ===== -->
+    <section class="sectiune">
+        <h2>Pe cine sprijinim?</h2>
+        <p>Asociația Nova Solutions sprijină copiii cu dizabilități fizice și mintale, precum și familiile care îi au în îngrijire. Ne adresăm tuturor celor care au nevoie de suport, indiferent de natura sau gradul dizabilității.</p>
+    </section>
+
+    <!-- ===== Ce facem ===== -->
+    <section class="sectiune">
+        <h2>Ce facem?</h2>
+        <p>Prin activitățile noastre, ne propunem să oferim servicii și sprijin direct copiilor cu dizabilități, să organizăm evenimente sociale, culturale și sportive pentru beneficiarii asociației și să colaborăm cu instituții, organizații și voluntari care împărtășesc aceleași valori.</p>
+        <p>Realizăm proiecte de finanțare, programe proprii și parteneriate cu autorități publice, cu scopul de a aduce schimbări reale în comunitate. Efectuăm acte de caritate și implementăm proiecte social-economice care să răspundă nevoilor reale ale familiilor pe care le sprijinim.</p>
     </section>
 
     <!-- ===== Galerie ===== -->
@@ -61,6 +74,21 @@
             <div class="foto-placeholder">Imagine 1</div>
             <div class="foto-placeholder">Imagine 2</div>
             <div class="foto-placeholder">Imagine 3</div>
+        </div>
+    </section>
+
+    <!-- ===== Cum poti ajuta ===== -->
+    <section class="sectiune">
+        <h2>Cum poți ajuta?</h2>
+        <p>Fie că vrei să te implici activ sau să susții cauza noastră, există mai multe moduri în care poți face diferența:</p>
+        <ul class="ajutor-list">
+            <li><strong>🙋 Devino voluntar</strong> — alătură-te echipei noastre și contribuie cu timpul și energia ta la activitățile și evenimentele asociației.</li>
+            <li><strong>💚 Donează</strong> — orice contribuție, oricât de mică, ajută la desfășurarea programelor noastre și la sprijinirea familiilor care au nevoie.</li>
+            <li><strong>📣 Răspândește vestea</strong> — distribuie informațiile despre noi în comunitatea ta. Uneori, cel mai mare ajutor este să faci cunoscută cauza noastră.</li>
+        </ul>
+        <div class="share-btns">
+            <a class="btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://northstar020610-ui.github.io/nova-star-group/nova-solutions.html" target="_blank" rel="noopener">Distribuie pe Facebook</a>
+            <a class="btn share-wa" href="https://wa.me/?text=Sus%C8%9Bine%20Asocia%C8%9Bia%20Nova%20Solutions%3A%20https://northstar020610-ui.github.io/nova-star-group/nova-solutions.html" target="_blank" rel="noopener">Distribuie pe WhatsApp</a>
         </div>
     </section>
 
@@ -148,8 +176,8 @@
     <!-- ===== Interactiuni: donatii + formular voluntari ===== -->
     <script>
         // ===== Donatii Stripe (Google Pay apare automat pe pagina Stripe) =====
-        // INLOCUIESTE cu linkul tau Stripe de donatie (ex: https://donate.stripe.com/xxxxxxxx)
-        const STRIPE_LINK = "";
+        // Linkul Stripe de donatie (Customers choose what to pay)
+        const STRIPE_LINK = "https://buy.stripe.com/28EaEX2nC5B771a1qecQU00";
 
         const donateBtn = document.getElementById("donate-btn");
         if (STRIPE_LINK) donateBtn.href = STRIPE_LINK;
