@@ -504,6 +504,15 @@ img {
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(2px); }
 
+/* rand de butoane (ex: Citeste ghidul + Printeaza) */
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.btn-print {
+    background-color: var(--white);
+    color: var(--accent) !important;
+    border: 2px solid var(--accent);
+    box-shadow: 0 6px 0 -1px rgba(0,0,0,0.10);
+}
+
 /* ============================================================
    FOOTER
    ============================================================ */

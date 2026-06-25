@@ -89,6 +89,35 @@
 
   /* sursa ascunsa cu textul cartii */
   #source { display: none; }
+
+  /* ===== PRINT / SALVEAZA PDF ===== */
+  @media print {
+    html, body { height: auto; overflow: visible; background: #fff; color: #000; }
+    .bar, #stage, .nav, .pageno, #pwa-install { display: none !important; }
+    #source {
+      display: block !important; padding: 0; max-width: 100%;
+      font-family: Georgia, "Times New Roman", serif; color: #000;
+      font-size: 12pt; line-height: 1.5;
+    }
+    #source h1 { font-size: 24pt; text-align: center; margin: 0 0 6px; }
+    #source h2 { font-size: 17pt; page-break-before: always; margin: 0 0 10px; color: #000; }
+    #source h2:first-of-type { page-break-before: avoid; }
+    #source h3 { font-size: 13.5pt; margin: 14px 0 6px; font-weight: bold; }
+    #source h3.fisa { border-top: 1px solid #999; padding-top: 10px; }
+    #source h4 { font-size: 12pt; margin: 10px 0 3px; font-weight: bold; }
+    #source p { margin: 0 0 9px; text-align: justify; }
+    #source .sub { font-style: italic; color: #444; }
+    #source .center { text-align: center; }
+    #source ul, #source ol { margin: 0 0 10px 1.2em; }
+    #source li { margin-bottom: 4px; }
+    #source .box { border: 1px solid #999; background: #f2f2f2; border-radius: 6px; padding: 8px 11px; margin: 10px 0; page-break-inside: avoid; }
+    #source .box p { margin-bottom: 4px; }
+    #source table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 10.5pt; page-break-inside: avoid; }
+    #source th, #source td { border: 1px solid #666; padding: 5px 7px; text-align: left; vertical-align: top; }
+    #source th { background: #e6e6e6; font-weight: bold; }
+    #source .wl { border-bottom: 1px solid #999; height: 1.4em; margin: 4px 0; }
+    @page { margin: 1.6cm; }
+  }
 </style>
 </head>
 <body>
@@ -99,6 +128,7 @@
   <button id="font-down" title="Text mai mic">A−</button>
   <button id="font-up" title="Text mai mare">A+</button>
   <button id="theme-btn" title="Schimbă tema">🌗</button>
+  <button id="print-btn" title="Printează / Salvează ca PDF">🖨️</button>
 </div>
 
 <div id="stage"><div id="book"></div></div>
@@ -773,6 +803,9 @@
     localStorage.setItem("ghid_theme", theme); applyTheme();
   });
 
+  // ---- Printeaza / Salveaza PDF ----
+  document.getElementById("print-btn").addEventListener("click", () => window.print());
+
   // ---- Marime text ----
   let fontSize = parseInt(localStorage.getItem("ghid_font")) || 18;
   function applyFont(){ root.style.setProperty("--reader-font", fontSize+"px"); }
@@ -871,6 +904,11 @@
 
   if (window.St && St.PageFlip) build();
   else pageno.textContent = "Eroare la încărcarea cititorului";
+
+  // deschis cu ?print=1 -> porneste direct fereastra de printare
+  if (new URLSearchParams(location.search).has("print")) {
+    window.addEventListener("load", () => setTimeout(() => window.print(), 400));
+  }
 </script>
 
 </body>
