@@ -1,5 +1,5 @@
 // Service worker Nova-Star Group (PWA)
-const CACHE = "nsg-v2";
+const CACHE = "nsg-v3";
 
 // fisierele de baza (mici) - le tinem pt functionare offline
 const ASSETS = [
@@ -15,6 +15,7 @@ const ASSETS = [
   "./kids.css",
   "./nova-auth.js",
   "./pwa.js",
+  "./page-flip.browser.js",
   "./NovaHubLogo.png",
   "./NovaPlayLearnLogo.jpeg",
   "./NovaSolutionsLogo.jpeg",

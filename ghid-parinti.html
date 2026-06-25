@@ -3,177 +3,874 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghid pentru părinți — Nova Play and Learn</title>
+<title>Ghidul Părintelui Prezent — Nova Play and Learn</title>
 <link rel="icon" href="NovaPlayLearnLogo.jpeg">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b1026">
 <script defer src="pwa.js"></script>
 <style>
   :root {
-    --bg: #ffffff;
-    --text: #2b2b2b;
-    --muted: #8a8a8a;
-    --accent: #ff7a59;
-    --bar: #eee;
+    --bg: #ece4d6;
+    --page: #fdfaf3;
+    --text: #33291d;
+    --muted: #9c8b73;
+    --accent: #c0683f;
     --reader-font: 18px;
   }
-  body.sepia { --bg: #f4ecd8; --text: #5b4636; --muted: #9c8b73; --bar: #e6d8bd; }
-  body.dark  { --bg: #1a1a1a; --text: #dcdcdc; --muted: #888;    --bar: #333; }
+  body.sepia { --bg: #d9c7a3; --page: #f4ecd8; --text: #5b4636; --muted: #9c8b73; --accent: #b5723a; }
+  body.dark  { --bg: #14110d; --page: #1f1b16; --text: #ddd3c4; --muted: #8a7d6a; --accent: #e0976a; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: Georgia, "Times New Roman", serif;
-    line-height: 1.85;
+    font-family: "Segoe UI", Arial, sans-serif;
+    display: flex; flex-direction: column;
     transition: background 0.3s, color 0.3s;
-    padding-bottom: 60px;
+    -webkit-user-select: none; user-select: none;
   }
 
-  /* Bara de progres */
-  #progress {
-    position: fixed; top: 0; left: 0; height: 4px; width: 0%;
-    background: var(--accent); z-index: 30; transition: width 0.1s linear;
-  }
-
-  /* Bara de sus */
-  .toolbar {
-    position: sticky; top: 0; z-index: 20;
+  .bar {
     display: flex; align-items: center; gap: 10px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--bar);
-    padding: 12px 16px;
-    font-family: "Segoe UI", Arial, sans-serif;
+    padding: 10px 14px; background: var(--bg);
+    border-bottom: 1px solid rgba(0,0,0,0.08); flex-shrink: 0;
   }
-  .toolbar a.back { color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; }
-  .toolbar .ttl { flex: 1; text-align: center; font-size: 14px; color: var(--muted); font-weight: 600; }
-  .toolbar button {
-    border: 1px solid var(--bar); background: transparent; color: var(--text);
-    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 700;
+  .bar a.back { color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; }
+  .bar .ttl { flex: 1; text-align: center; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .bar button {
+    border: 1px solid rgba(0,0,0,0.12); background: transparent; color: var(--text);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 700;
   }
-  .toolbar button:hover { border-color: var(--accent); }
+  .bar button:hover { border-color: var(--accent); }
 
-  /* Continut */
-  .reader {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 32px 22px 60px;
-    font-size: var(--reader-font);
-  }
-  .reader h1 { font-size: 2em; line-height: 1.2; margin: 10px 0 6px; color: var(--text); }
-  .reader .author { color: var(--muted); font-style: italic; margin-bottom: 30px; }
-  .reader h2 {
-    font-size: 1.4em; margin: 40px 0 14px; color: var(--accent);
-    scroll-margin-top: 70px;
-  }
-  .reader p { margin-bottom: 18px; text-align: justify; }
-  .reader .lead { font-size: 1.1em; }
+  #stage { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #book { margin: 0 auto; }
 
-  /* Cuprins */
-  .toc {
-    background: var(--bar);
-    border-radius: 14px;
-    padding: 18px 22px;
-    margin: 24px 0 36px;
-    font-family: "Segoe UI", Arial, sans-serif;
+  .page { background: var(--page); }
+  .page-inner {
+    width: 100%; height: 100%; padding: 30px 28px; overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--reader-font); line-height: 1.7; color: var(--text);
   }
-  .toc h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
-  .toc a { display: block; color: var(--text); text-decoration: none; padding: 6px 0; font-size: 15px; }
-  .toc a:hover { color: var(--accent); }
+  .page-inner h1 { font-size: 1.9em; line-height: 1.2; margin: 4px 0 6px; }
+  .page-inner .author { color: var(--muted); font-style: italic; margin-bottom: 22px; }
+  .page-inner h2 { font-size: 1.3em; color: var(--accent); margin: 18px 0 10px; }
+  .page-inner p { margin-bottom: 13px; text-align: justify; hyphens: auto; }
+  .page-inner h2 + p::first-letter {
+    font-size: 2.6em; float: left; line-height: 0.8; padding: 4px 8px 0 0; color: var(--accent); font-weight: bold;
+  }
+  .page-inner h3 { font-size: 1.12em; color: var(--text); margin: 14px 0 7px; font-weight: bold; }
+  .page-inner h3.fisa { color: var(--accent); border-top: 1px solid var(--muted); padding-top: 12px; margin-top: 16px; }
+  .page-inner h4 { font-size: 0.98em; margin: 10px 0 3px; font-weight: bold; }
+  .page-inner ul, .page-inner ol { margin: 0 0 12px 1.15em; }
+  .page-inner li { margin-bottom: 5px; text-align: left; }
+  .page-inner table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 0.86em; }
+  .page-inner th, .page-inner td { border: 1px solid var(--muted); padding: 5px 7px; text-align: left; vertical-align: top; line-height: 1.4; }
+  .page-inner th { background: rgba(127,127,127,0.18); font-weight: bold; }
+  .page-inner .box { background: rgba(127,127,127,0.12); border-left: 4px solid var(--accent); border-radius: 8px; padding: 9px 12px; margin: 12px 0; font-size: 0.94em; }
+  .page-inner .box p { margin-bottom: 5px; }
+  .page-inner .box p:last-child { margin-bottom: 0; }
+  .page-inner .center { text-align: center; }
+  .page-inner .sub { color: var(--muted); font-style: italic; }
+  .page-inner .wl { border-bottom: 1px solid var(--muted); height: 1.35em; margin: 3px 0; opacity: 0.5; }
 
-  .end-note {
-    text-align: center; color: var(--muted); font-style: italic;
-    margin-top: 50px; font-size: 0.95em;
+  .nav {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 42px; height: 42px; border-radius: 50%; border: none;
+    background: var(--accent); color: #fff; font-size: 22px; cursor: pointer; z-index: 50;
+    box-shadow: 0 6px 16px -6px rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
   }
+  .nav.prev { left: 8px; } .nav.next { right: 8px; }
+  .nav:disabled { opacity: 0.25; cursor: default; }
+
+  .pageno { text-align: center; padding: 8px; font-size: 13px; color: var(--muted); flex-shrink: 0; }
+
+  /* sursa ascunsa cu textul cartii */
+  #source { display: none; }
 </style>
 </head>
 <body>
 
-<div id="progress"></div>
-
-<div class="toolbar">
+<div class="bar">
   <a class="back" href="nova-play.html">← Înapoi</a>
-  <span class="ttl">Ghid pentru părinți</span>
+  <span class="ttl">Ghidul Părintelui Prezent</span>
   <button id="font-down" title="Text mai mic">A−</button>
   <button id="font-up" title="Text mai mare">A+</button>
   <button id="theme-btn" title="Schimbă tema">🌗</button>
 </div>
 
-<article class="reader">
-  <h1>Ghid pentru părinți</h1>
-  <p class="author">de Nova Play and Learn</p>
+<div id="stage"><div id="book"></div></div>
 
-  <p class="lead">Acesta este un text de exemplu (placeholder). Când cartea va fi gata, înlocuim conținutul de mai jos cu textul real, pe capitole — restul (cuprins, progres, teme, mărime text) rămâne automat.</p>
+<button class="nav prev" id="prev" aria-label="Pagina anterioară">‹</button>
+<button class="nav next" id="next" aria-label="Pagina următoare">›</button>
 
-  <div class="toc">
-    <h3>Cuprins</h3>
-    <a href="#cap1">1. Introducere</a>
-    <a href="#cap2">2. Cum învață copilul</a>
-    <a href="#cap3">3. Comunicarea cu cei mici</a>
-    <a href="#cap4">4. Sfaturi practice</a>
-  </div>
+<div class="pageno" id="pageno">…</div>
 
-  <h2 id="cap1">1. Introducere</h2>
-  <p>Aici va veni introducerea cărții. Fiecare capitol e o secțiune cu titlu (h2) și paragrafe (p). Textul curge plăcut, cu spațiere confortabilă pentru ochi.</p>
-  <p>Lorem ipsus de exemplu: fiecare copil are ritmul lui, iar rolul părintelui este să-l sprijine cu răbdare și căldură. În paginile următoare vei găsi îndrumări practice.</p>
+<!-- ===== TEXTUL CARTII ===== -->
+<div id="source">
+  <h1>Ghidul Părintelui Prezent</h1>
+  <p class="sub">Cum comunici, cum gestionezi crizele și cum sprijini dezvoltarea emoțională a copilului tău</p>
+  <p class="center">Pentru copii cu vârste între 3 și 10 ani</p>
+  <p class="center"><strong>Evoluție Pas cu Pas</strong></p>
+  <p class="author">Autor — Denisa Lungu<br>Psihopedagog special | Consilier pentru dezvoltare personală</p>
 
-  <h2 id="cap2">2. Cum învață copilul</h2>
-  <p>Conținut de exemplu despre felul în care învață copiii — prin joacă, repetiție și încurajare. Înlocuiește cu textul real.</p>
-  <p>Paragraf suplimentar de umplutură pentru a vedea cum arată cititul pe mai multe rânduri și cum funcționează bara de progres pe măsură ce derulezi.</p>
+  <h2>Cuvânt înainte</h2>
+  <p>Îmi amintesc prima dată când un părinte mi-a spus, la finalul unei ședințe: «Știam că ceva nu merge, dar nu știam cum să numesc ce simt.» Acea frază m-a urmărit mult timp.</p>
+  <p>De-a lungul anilor de lucru cu copiii, adolescenții și familiile lor, am observat un lucru care se repetă mereu: părinții nu duc lipsă de iubire. Duc lipsă de instrumente, de un limbaj, de cineva care să le spună că ceea ce trăiesc este normal — și că există o cale mai ușoară prin mijlocul haosului de zi cu zi.</p>
+  <p>Acest ghid s-a născut din acele conversații. Din întrebările puse în șoaptă («Fac bine?»), din lacrimile de oboseală, din dorința sinceră de a fi mai buni — nu pentru că nu sunt suficienți, ci pentru că iubesc atât de mult.</p>
+  <p>Nu am scris acest ghid ca să îți ofer rețete perfecte. L-am scris ca să îți ofer un punct de sprijin. Un loc în care să găsești răspunsuri clare, fără judecată, fără teorie complicată — doar lucruri pe care le poți aplica chiar de azi, chiar în casa ta.</p>
+  <p><strong>Ești deja un părinte bun. Dovada e că ții această carte în mână.</strong></p>
+  <p class="sub">Cu drag, Denisa Lungu — Psihopedagog special | Consilier pentru dezvoltare personală | Evoluție Pas cu Pas</p>
 
-  <h2 id="cap3">3. Comunicarea cu cei mici</h2>
-  <p>Text de exemplu despre comunicare: cum să asculți, cum să explici, cum să gestionezi momentele dificile cu blândețe.</p>
+  <h2>Câteva cuvinte înainte de a începe</h2>
+  <p>Parentingul nu vine cu manual de instrucțiuni. Dar vine cu ceva mai valoros: dorința de a face mai bine, zi de zi.</p>
+  <p>Acest ghid nu îți spune cum să fii părintele perfect — pentru că acel părinte nu există. Îți oferă în schimb instrumente clare și aplicabile imediat, bazate pe ceea ce știm despre cum funcționează mintea și emoțiile unui copil.</p>
+  <p>Vei găsi în aceste pagini răspunsuri la trei întrebări esențiale:</p>
+  <ul>
+    <li>Cum vorbesc cu copilul meu ca să fiu cu adevărat înțeles?</li>
+    <li>Ce fac când copilul meu face crize sau se comportă dificil?</li>
+    <li>Cum îl ajut să crească emoțional sănătos?</li>
+  </ul>
+  <div class="box"><p><strong>💡 Notă importantă</strong></p><p>Informațiile din acest ghid au caracter educativ și sunt oferite din perspectiva psihopedagogiei speciale și a consilierii pentru dezvoltare personală. Fiecare copil este unic. Dacă ai îngrijorări legate de dezvoltarea copilului tău, consultarea unui specialist este întotdeauna binevenită.</p></div>
 
-  <h2 id="cap4">4. Sfaturi practice</h2>
-  <p>Listă de sfaturi practice (exemplu). Aici pot veni recomandări concrete pentru acasă și pentru școală.</p>
-  <p>După ce termini de citit, poți reveni oricând — cititorul reține unde ai rămas.</p>
+  <h2>Capitolul 1: Cum comunici eficient cu copilul tău</h2>
+  <p>Comunicarea cu un copil mic nu înseamnă doar a vorbi cu el. Înseamnă a vorbi în felul în care el poate să asculte, să înțeleagă și să răspundă.</p>
+  <h3>1.1 De ce nu «funcționează» comunicarea uneori?</h3>
+  <p>Înainte de 7–8 ani, creierul copilului este în plin proces de dezvoltare. Zona responsabilă cu logica, controlul impulsurilor și înțelegerea consecințelor — cortexul prefrontal — nu este încă matură. Asta înseamnă că:</p>
+  <ul>
+    <li>Copilul nu «se face» că nu înțelege — chiar nu poate procesa mesaje lungi și complexe</li>
+    <li>Emoțiile îi copleșesc gândirea înainte de a putea «asculta la minte»</li>
+    <li>Repetiția și consecvența sunt esențiale, nu opționale</li>
+  </ul>
+  <h3>1.2 Principiile unei comunicări eficiente</h3>
+  <h4>Coboară la nivelul lui fizic</h4>
+  <p>Îngenunchează, stai pe jos sau aplecă-te. Contactul vizual la același nivel transmite: «Ești important. Te ascult.» Copiii simt diferența între un adult care vorbește de sus și unul care vine la ei.</p>
+  <h4>Folosește propoziții scurte și clare</h4>
+  <p>În loc de: «Am mai vorbit de o sută de ori despre asta și nu înțeleg de ce tot nu reușești să...» încearcă: «Acum strângem jucăriile. Te ajut eu.»</p>
+  <table>
+    <tr><th>❌ Evită</th><th>✅ Înlocuiește cu</th></tr>
+    <tr><td>«De câte ori ți-am spus?»</td><td>«Regula noastră este... Hai să o facem împreună.»</td></tr>
+    <tr><td>«Nu mai plânge, nu e nimic!»</td><td>«Văd că ești supărat. Sunt aici cu tine.»</td></tr>
+    <tr><td>«Dacă nu... atunci nu...»</td><td>«Poți alege: faci X acum sau Y mai târziu.»</td></tr>
+    <tr><td>«Ești rău / obraznic!»</td><td>«Comportamentul acesta nu este în regulă. Hai să găsim o altă soluție.»</td></tr>
+  </table>
+  <h4>Validează înainte de a corecta</h4>
+  <p>Validarea nu înseamnă că ești de acord cu comportamentul — înseamnă că recunoști emoția din spatele lui. Un copil care se simte înțeles este mult mai receptiv la mesajele ulterioare.</p>
+  <div class="box"><p><strong>💬 Formula practică</strong></p><p>«Înțeleg că ești [emoție] pentru că [motiv]. Și totuși, [limita/regula].»</p><p>Exemplu: «Înțeleg că ești furios că trebuie să oprim jocul. Și totuși, este ora mesei și mâncăm împreună.»</p></div>
+  <h4>Pune întrebări deschise</h4>
+  <p>Întrebările deschise invită la conversație, cele închise o blochează.</p>
+  <table>
+    <tr><th>Întrebare închisă</th><th>Întrebare deschisă</th></tr>
+    <tr><td>«Ai avut o zi bună?»</td><td>«Care a fost cel mai tare lucru azi la grădiniță/școală?»</td></tr>
+    <tr><td>«Ți-a plăcut?»</td><td>«Cum te-ai simțit când ai făcut...?»</td></tr>
+    <tr><td>«Te-ai certat cu Andrei?»</td><td>«Ce s-a întâmplat cu Andrei azi?»</td></tr>
+  </table>
+  <h3>1.3 Ascultarea activă — cel mai puternic instrument</h3>
+  <p>Ascultarea activă înseamnă a fi prezent cu tot corpul și mintea, nu doar a auzi sunete. Iată cum arată în practică:</p>
+  <ul>
+    <li>Lasă telefonul jos când copilul îți vorbește — măcar 5 minute</li>
+    <li>Repetă cu cuvintele tale ce ai înțeles: «Deci tu spui că...»</li>
+    <li>Nu sări să rezolvi imediat — uneori copilul vrea doar să fie ascultat</li>
+    <li>Observă limbajul corpului: tonul vocii, expresia feței, postura</li>
+  </ul>
+  <h3>1.4 Cum spui «nu» fără conflict</h3>
+  <p>«Nu» este un cuvânt necesar. Problema nu este că îl folosim, ci cum îl folosim.</p>
+  <ul>
+    <li>Oferă o explicație scurtă: «Nu acum, pentru că suntem pe drum.»</li>
+    <li>Oferă o alternativă: «Nu ciocolată acum. Poți lua un măr sau un iaurt.»</li>
+    <li>Fii ferm și calm în același timp — tonul contează mai mult decât cuvintele</li>
+    <li>Nu negocia la nesfârșit — o limită clară este mai respectată decât una negociată la epuizare</li>
+  </ul>
+  <h3 class="fisa">✏️ Fișă de reflecție — Comunicare eficientă</h3>
+  <p>1. Care este situația în care îmi vine cel mai greu să rămân calm/ă când vorbesc cu copilul meu?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Ce frază aș vrea să înlocuiesc cu ceva mai blând în comunicarea de zi cu zi?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Când m-am simțit cu adevărat ascultat/ă de copilul meu? Ce am făcut diferit atunci?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
 
-  <p class="end-note">— Sfârșit (text de exemplu) —</p>
-</article>
+  <h2>Capitolul 2: Cum gestionezi crizele și comportamentele dificile</h2>
+  <p>O criză de furie nu este un atac personal la adresa ta ca părinte. Este semnalul că ceva depășește capacitatea copilului de a face față în acel moment.</p>
+  <h3>2.1 Ce se întâmplă în creierul copilului în timpul unei crize?</h3>
+  <p>Când un copil face o criză, amigdala — centrul emoțional al creierului — preia controlul. Cortexul prefrontal (rațiunea) este practic «deconectat». Asta explică de ce:</p>
+  <ul>
+    <li>Argumentele logice nu funcționează în timpul crizei — el nu poate «auzi» logica</li>
+    <li>Pedepsele imediate escaladează situația în loc să o calmeze</li>
+    <li>Copilul nu «o face intenționat» — este copleșit, nu manipulativ</li>
+  </ul>
+  <div class="box"><p><strong>🧠 De reținut</strong></p><p>Un copil în criză nu poate fi «convins» cu argumente. Mai întâi trebuie calmat sistemul nervos, abia apoi poate asculta.</p></div>
+  <h3>2.2 Planul în 5 pași pentru gestionarea crizelor</h3>
+  <h4>Pasul 1: Rămâi calm tu însuți</h4>
+  <p>Copilul tău se reglează emoțional în funcție de tine. Dacă tu escaladezi, el escaladează. Respiră adânc de 3 ori înainte de a reacționa. Nu trebuie să spui nimic în primele 30 de secunde.</p>
+  <h4>Pasul 2: Asigură siguranța fizică</h4>
+  <p>Dacă se lovește sau lovește pe alții, mută-l blând într-un spațiu sigur. Nu forța, nu trage. Spune calm: «Ești în siguranță. Sunt cu tine.»</p>
+  <h4>Pasul 3: Validează emoția (nu comportamentul)</h4>
+  <p>«Văd că ești foarte, foarte supărat.» Nu «ai dreptate să fii supărat pentru că nu ți-am dat ciocolată» — validezi emoția, nu cererea.</p>
+  <h4>Pasul 4: Stai lângă el, tăcut</h4>
+  <p>Prezența ta calmă e suficientă. Nu e nevoie să vorbești. Nu pleca — abandonul fizic în momente de criză creează insecuritate.</p>
+  <h4>Pasul 5: Discutați DUPĂ ce s-a calmat</h4>
+  <p>Abia după ce criza a trecut și copilul este calm, puteți vorbi despre ce s-a întâmplat, ce a simțit și ce ar putea face diferit data viitoare.</p>
+  <h3>2.3 Comportamente dificile frecvente și ce faci</h3>
+  <table>
+    <tr><th>Comportament</th><th>Ce poți face</th></tr>
+    <tr><td>Mințit</td><td>Nu îl prinde în capcană. Creează un mediu în care adevărul nu este pedepsit aspru. Laudă curajul de a spune adevărul.</td></tr>
+    <tr><td>Lovit / mușcat</td><td>Oprește imediat, calm: «Nu lovim. Lovitul doare.» Oferă o alternativă: «Dacă ești furios, bați cu palma în podea.»</td></tr>
+    <tr><td>Refuz constant</td><td>Verifică dacă este oboseală, foame sau suprastimulare. Oferă două opțiuni, nu ordine directe: «Faci asta acum sau în 5 minute?»</td></tr>
+    <tr><td>Gelozie pe frate/soră</td><td>E normală! Asigură timp de calitate 1 la 1 cu fiecare copil. Numește sentimentul: «E greu când pare că cineva primește mai multă atenție.»</td></tr>
+    <tr><td>Nu ascultă la prima solicitare</td><td>Coboară la nivelul lui, contact vizual, ton calm. Nu striga din altă cameră.</td></tr>
+  </table>
+  <h3>2.4 Ce NU funcționează (și de ce)</h3>
+  <ul>
+    <li>Amenințările goale («Dacă mai faci asta, nu mai mergem nicăieri!» și apoi mergeți) — distrug credibilitatea</li>
+    <li>Rușinarea («Ce rușine! Toată lumea se uită la tine!») — atacă stima de sine, nu comportamentul</li>
+    <li>Pedepsele fizice — creează frică, nu înțelegere; copilul învață să se ferească, nu să nu mai facă</li>
+    <li>Cedatul constant la crize — copilul învață că plânsul este instrumentul pentru a obține ce vrea</li>
+  </ul>
+  <h3 class="fisa">✏️ Fișă de reflecție — Crize și comportamente dificile</h3>
+  <p>1. Care este comportamentul copilului meu care mă scoate cel mai mult din fire? De ce cred că este așa?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Cum reacționez de obicei în timpul unei crize? Ce aș vrea să fac diferit?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Ce funcționează deja în casa noastră pentru a calma situațiile tensionate?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
 
+  <h2>Capitolul 3: Cum sprijini dezvoltarea emoțională a copilului</h2>
+  <p>Un copil care știe să își recunoască emoțiile, să și le exprime și să le gestioneze va fi un adult mai echilibrat, mai empatic și mai rezistent la dificultăți.</p>
+  <h3>3.1 Ce este inteligența emoțională și de ce contează?</h3>
+  <p>Inteligența emoțională (IE) include:</p>
+  <ul>
+    <li>Recunoașterea propriilor emoții</li>
+    <li>Înțelegerea că și ceilalți au emoții (empatie)</li>
+    <li>Gestionarea emoțiilor dificile fără a-i răni pe ceilalți</li>
+    <li>Folosirea emoțiilor ca informații, nu ca obstacole</li>
+  </ul>
+  <div class="box"><p><strong>Știai că?</strong></p><p>Studiile arată că inteligența emoțională este un predictor mai bun al succesului în viață decât IQ-ul. Vestea bună: spre deosebire de IQ, inteligența emoțională se poate dezvolta la orice vârstă — și se formează în primul rând acasă.</p></div>
+  <h3>3.2 Etapele dezvoltării emoționale (3–10 ani)</h3>
+  <table>
+    <tr><th>Vârstă</th><th>Ce este normal să observe părintele</th></tr>
+    <tr><td>3–4 ani</td><td>Emoții intense și trecătoare; greu de gestionat frustrarea; egocentrism normal; începe să înțeleagă că și alții au sentimente.</td></tr>
+    <tr><td>4–5 ani</td><td>Poate numi mai multe emoții; jocul simbolic reflectă stări emoționale; apar primele semne de empatie activă.</td></tr>
+    <tr><td>5–6 ani</td><td>Începe să înțeleagă că poți simți două emoții în același timp; vrea să fie «corect»; sensibil la critică.</td></tr>
+    <tr><td>7–10 ani</td><td>Emoții mai complexe (rușine, mândrie, vinovăție); poate reflecta retrospectiv; influența grupului de prieteni crește.</td></tr>
+  </table>
+  <h3>3.3 Ce poți face zilnic pentru inteligența emoțională</h3>
+  <h4>Numește emoțiile — ale lui și ale tale</h4>
+  <p>«Văd că ești fericit că vine bunica. Și eu mă bucur!» Cu cât copilul aude mai des emoțiile numite în context real, cu atât mai ușor le va recunoaște la el.</p>
+  <h4>Fii un model de autoreglare</h4>
+  <p>Copiii nu fac ce li se spune — fac ce văd. Dacă îți exprimi frustrarea țipând, ei vor face la fel. Arată-i cum arată reglarea emoțională:</p>
+  <ul>
+    <li>«Sunt puțin frustrat/ă acum. O să respir și revin.»</li>
+    <li>«Am greșit. Îmi pare rău. Haide să reparăm împreună.»</li>
+  </ul>
+  <h4>Creează ritualuri de conectare</h4>
+  <p>Ritualurile oferă predictibilitate și siguranță — baza dezvoltării emoționale sănătoase.</p>
+  <div class="box"><p><strong>🌿 Exemple de ritualuri simple</strong></p><p>• 10 minute de joc liber cu copilul înainte de culcare — fără telefon, fără agenda ta<br>• «Ce a fost bun azi?» — o întrebare scurtă la cină sau în mașină<br>• Un cod al familiei pentru «am nevoie de ajutor»: un semn, o culoare, un cuvânt<br>• Îmbrățișarea de dimineață înainte de a pleca la grădiniță/școală</p></div>
+  <h3>3.4 Cum vorbești cu copilul despre emoții dificile</h3>
+  <h4>Frica</h4>
+  <p>Nu minimiza («Nu este nimic de speriat!») și nu dramatiza. Validează și explorează: «Înțeleg că ți-e frică de întuneric. Ce ar ajuta? Vrei o luminiță sau să stau eu cu tine un pic?»</p>
+  <h4>Tristețea</h4>
+  <p>Lasă-l să plângă — lacrimile sunt sănătoase. Nu «repara» tristețea imediat. Stai lângă el: «E în regulă să fii trist. Sunt lângă tine.»</p>
+  <h4>Furia</h4>
+  <p>Furia nu este rea — ce facem cu ea poate fi. Ajută-l să găsească evacuări sănătoase:</p>
+  <ul>
+    <li>Bate o pernă</li>
+    <li>Aleargă în jurul mesei</li>
+    <li>Rupe o foaie de hârtie</li>
+    <li>Strigă într-o pernă</li>
+  </ul>
+  <h3>3.5 Stima de sine — fundamentul sănătății emoționale</h3>
+  <p>Stima de sine sănătoasă nu se construiește prin laude la nesfârșit — se construiește prin experiențe de reușită și prin relații sigure.</p>
+  <table>
+    <tr><th>Laudă eficientă</th><th>Laudă ineficientă</th></tr>
+    <tr><td>«Ai depus mult efort la desen — se vede!»</td><td>«Ești cel mai talentat!»</td></tr>
+    <tr><td>«Ai rezolvat singur! Sunt mândru/ă de tine!»</td><td>«Bravo, ești super deștept!»</td></tr>
+    <tr><td>«Îmi place cum ai găsit o soluție diferită.»</td><td>«Tot ce faci e perfect!»</td></tr>
+  </table>
+  <p>Laudele care vizează efortul, procesul și alegerile — nu trăsăturile fixe («ești deștept») — construiesc reziliență și motivație internă.</p>
+  <h3 class="fisa">✏️ Fișă de reflecție — Dezvoltare emoțională</h3>
+  <p>1. Ce emoție îi este cel mai greu copilului meu să o gestioneze?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Cum îmi exprim eu emoțiile în fața copilului? Ce model îi ofer?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Ce ritual de conectare emoțională aș vrea să introduc în rutina noastră?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+
+  <h2>Capitolul 4: Diferențele de temperament</h2>
+  <p>Nu toți copiii sunt la fel — și nici nu ar trebui să fie. Temperamentul este modul înnăscut în care copilul tău percepe și reacționează la lume. Nu este ceva ce ai făcut tu bine sau greșit ca părinte. Este pur și simplu cine este el.</p>
+  <h3>4.1 Ce este temperamentul?</h3>
+  <p>Temperamentul descrie trăsăturile stabile ale personalității cu care copilul se naște: cât de intens reacționează, cât de ușor se adaptează la schimbări, cât de multă stimulare tolerează, cât de persistent este.</p>
+  <h3>4.2 Copilul sensibil</h3>
+  <div class="box"><p><strong>🌸 Îl recunoști după:</strong></p><p>• Reacționează intens la zgomote, lumini puternice, texturi, gusturi noi<br>• Se supără profund la critici sau conflicte — chiar și minore<br>• Are nevoie de mult timp pentru a se adapta la situații noi<br>• Este empatic și observă emoțiile celorlalți cu ușurință<br>• Poate fi copleșit de activități sociale prelungite și are nevoie de timp singur<br>• Pune întrebări multe și profunde — simte lumea intens</p></div>
+  <h4>Cum îl sprijini pe copilul sensibil</h4>
+  <ul>
+    <li>Anticipează tranzițiile: anunță-l din timp ce urmează, nu îl lua prin surprindere</li>
+    <li>Creează un «spațiu de reîncărcare» acasă — un colț liniștit unde se poate retrage</li>
+    <li>Validează intensitatea: «Știu că pentru tine a fost foarte mult. E în regulă.»</li>
+    <li>Nu îl forța în situații sociale înainte să fie pregătit — lasă-l să observe mai întâi</li>
+    <li>Sensibilitatea lui este un dar, nu o problemă de rezolvat — spune-i asta explicit</li>
+    <li>Redu stimularea înainte de culcare: ecrane, zgomot, activitate intensă</li>
+  </ul>
+  <h3>4.3 Copilul energic</h3>
+  <div class="box"><p><strong>⚡ Îl recunoști după:</strong></p><p>• Are energie fizică aproape inepuizabilă — mereu în mișcare<br>• Se plictisește rapid și are nevoie de stimulare constantă<br>• Reacționează impulsiv — acționează înainte să gândească<br>• Testează limitele în mod persistent — nu din răutate, ci din curiozitate<br>• Este carismatic, spontan și plin de entuziasm<br>• Are dificultăți cu tranzițiile și cu așteptatul</p></div>
+  <h4>Cum îl sprijini pe copilul energic</h4>
+  <ul>
+    <li>Oferă-i mișcare înainte de activități care cer concentrare: 10 minute de alergat înainte de teme</li>
+    <li>Structurează ziua cu activități variate și scurte — de 20–30 de minute</li>
+    <li>Transformă regulile în joc: «Cine strânge jucăriile mai repede?»</li>
+    <li>Dă-i roluri de responsabilitate: copiii energici înfloresc când au o misiune clară</li>
+    <li>Nu interpreta impulsivitatea ca rea-voință — creierul lui procesează diferit, nu defectuos</li>
+    <li>Consecvența limitelor este esențială — fiecare excepție va fi testată de 10 ori</li>
+  </ul>
+  <h3>4.4 Potrivirea dintre temperamentul copilului și al părintelui</h3>
+  <table>
+    <tr><th>Combinație</th><th>Ce ajută</th></tr>
+    <tr><td>Părinte calm + copil energic</td><td>Înțelege că energia nu este un atac la adresa ta. Găsește bucurie în vitalitatea lui.</td></tr>
+    <tr><td>Părinte energic + copil sensibil</td><td>Coboară ritmul când ești cu el. Vocea ta puternică îl poate copleși fără să vrei.</td></tr>
+    <tr><td>Amândoi sensibili</td><td>Riscul este să vă amplificați reciproc anxietatea. Cultivați activ calmul.</td></tr>
+    <tr><td>Amândoi energici</td><td>Riscul este escaladarea rapidă. Stabiliți reguli clare înainte de conflict.</td></tr>
+  </table>
+  <h3>4.5 Ce nu este temperamentul</h3>
+  <ul>
+    <li>Nu este o scuză pentru orice comportament: «Este energic, nu poate să stea» — poate sta, dar are nevoie de mai mult sprijin</li>
+    <li>Nu este fix pentru totdeauna: temperamentul se modelează prin experiențe, relații și mediu</li>
+    <li>Nu definește viitorul copilului: copiii sensibili devin adulți empatici și creativi; copiii energici devin lideri și inovatori</li>
+    <li>Nu este vina nimănui: nici a ta, nici a copilului</li>
+  </ul>
+  <div class="box"><p><strong>💡 De reținut</strong></p><p>Scopul nu este să schimbi temperamentul copilului — ci să construiești un mediu în care temperamentul lui să devină o forță, nu un obstacol.</p></div>
+  <h3 class="fisa">✏️ Fișă de reflecție — Diferențe de temperament</h3>
+  <p>1. Cum aș descrie temperamentul copilului meu în 3 cuvinte?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Există momente în care temperamentul nostru intră în conflict? Cum arată acelea?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Ce calitate a temperamentului copilului meu apreciez cel mai mult?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+
+  <h2>Capitolul 5: Rutine și limite sănătoase</h2>
+  <p>Copiii nu au nevoie de libertate totală — au nevoie de predictibilitate. Rutinele și limitele clare nu îl îngrădesc pe copil, îl eliberează.</p>
+  <h3>5.1 De ce sunt rutinele atât de importante?</h3>
+  <p>Creierul copilului consumă resurse enorme pentru a procesa lumea din jur. O rutină reduce incertitudinea și îi eliberează energie pentru explorare, joc și învățare.</p>
+  <p>Rutinele nu înseamnă rigiditate — înseamnă că copilul știe la ce să se aștepte. Un copil care știe că după baie urmează povestea și apoi somnul nu va mai lupta cu somnul — lupta devine inutilă.</p>
+  <h3>5.2 Cum construiești o rutină care funcționează</h3>
+  <ul>
+    <li>Alege 2–3 momente-ancoră ale zilei: dimineața, după grădiniță/școală, seara</li>
+    <li>Stabilește pașii în ordine fixă — și respectă-i tu primul</li>
+    <li>Implică copilul în crearea rutinei: «Cum vrei să aranjăm dimineața?»</li>
+    <li>Vizualizează rutina: un poster cu imagini sau desene în camera lui</li>
+    <li>Dă-i avertizare înainte de tranziție: «Mai avem 5 minute, apoi ne pregătim de baie.»</li>
+  </ul>
+  <h3>5.3 Rutina de seară — cea mai importantă</h3>
+  <p>Calitatea somnului influențează direct comportamentul, atenția și starea emoțională a copilului a doua zi.</p>
+  <table>
+    <tr><th>Pas</th><th>Detaliu practic</th></tr>
+    <tr><td>Cu 60 min înainte</td><td>Ecranele se opresc. Lumina se reduce. Activitățile devin calme.</td></tr>
+    <tr><td>Baie / spălat pe dinți</td><td>Ritual fix — în aceeași ordine în fiecare seară.</td></tr>
+    <tr><td>Poveste sau conversație</td><td>10–15 minute de timp de calitate 1 la 1.</td></tr>
+    <tr><td>Ritual de noapte bună</td><td>Un cuvânt, o îmbrățișare, același lucru în fiecare seară.</td></tr>
+    <tr><td>Lumină stinsă / luminiță</td><td>La aceeași oră — creierul copilului iubește ora fixă de somn.</td></tr>
+  </table>
+  <h3>5.4 Limite sănătoase — ce înseamnă și cum le setezi</h3>
+  <p>O limită sănătoasă nu este o pedeapsă — este un cadru de siguranță. Copilul testează limitele nu pentru că este «rău», ci pentru că vrea să știe unde este marginea — și că tu ești acolo să o ții.</p>
+  <h4>Caracteristicile unei limite eficiente</h4>
+  <ul>
+    <li>Este clară: copilul știe exact ce este permis și ce nu</li>
+    <li>Este consecventă: aceeași regulă, indiferent de zi sau dispoziție</li>
+    <li>Este explicată simplu: «Nu sărim pe canapea pentru că ne putem lovi.»</li>
+    <li>Are o consecință logică, nu arbitrară: dacă aruncă cu mâncarea, masa se termină</li>
+    <li>Este ținută de ambii părinți — inconsecvența între părinți anulează orice limită</li>
+  </ul>
+  <h4>Cum răspunzi când limita este testată</h4>
+  <ol>
+    <li>Reamintește limita calm și ferm: «Știi că regula este să nu lovim.»</li>
+    <li>Aplică consecința anunțată — fără furie, fără negociere.</li>
+    <li>Nu explica la nesfârșit — o explicație scurtă este suficientă.</li>
+    <li>Nu ceda sub presiunea plânsului — cedatul învață că plânsul funcționează.</li>
+    <li>Reafirmă legătura după: «Te iubesc. Și regula rămâne.»</li>
+  </ol>
+  <h3 class="fisa">✏️ Fișă de reflecție — Rutine și limite</h3>
+  <p>1. Care este momentul zilei cel mai haotic în casa noastră? Ce ar putea ajuta?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Există o limită pe care o tot cedez și aș vrea să o țin mai ferm?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Cum reacționează copilul meu la rutina existentă? Ce funcționează deja?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+
+  <h2>Capitolul 6: Relația cu ecranele</h2>
+  <p>Ecranele nu sunt inamicul — modul în care le folosim poate fi. Scopul nu este să eliminăm tehnologia din viața copilului, ci să o integrăm sănătos.</p>
+  <h3>6.1 Ce spun recomandările actuale</h3>
+  <table>
+    <tr><th>Vârstă</th><th>Recomandare generală</th></tr>
+    <tr><td>Sub 2 ani</td><td>Fără ecrane, cu excepția apelurilor video cu persoane dragi.</td></tr>
+    <tr><td>2–3 ani</td><td>Maximum 1 oră/zi, conținut de calitate, cu un adult prezent.</td></tr>
+    <tr><td>3–6 ani</td><td>Maximum 1 oră/zi; conținut ales cu grijă; nu înainte de somn.</td></tr>
+    <tr><td>6–10 ani</td><td>Maximum 2 ore/zi; reguli clare despre tip de conținut și context.</td></tr>
+  </table>
+  <p>Acestea sunt recomandări orientative, nu reguli rigide. Contează mai mult calitatea și contextul decât minutele exacte.</p>
+  <h3>6.2 Nu toate ecranele sunt la fel</h3>
+  <ul>
+    <li>Conținut pasiv (YouTube aleatoriu, reclame): cel mai puțin recomandat — stimulare rapidă, fără implicare</li>
+    <li>Conținut educativ (documentare, aplicații interactive): acceptabil, mai ales cu adult prezent</li>
+    <li>Jocuri interactive cu logică sau creativitate: mai valoroase decât simple animații</li>
+    <li>Apeluri video cu bunici sau prieteni: au valoare socială reală</li>
+  </ul>
+  <h3>6.3 Semnale că ecranul a devenit o problemă</h3>
+  <ul>
+    <li>Copilul face crize intense când ecranul se oprește</li>
+    <li>Nu mai e interesat de jocul liber sau de alte activități</li>
+    <li>Somnul este perturbat</li>
+    <li>Iritabilitate crescută după utilizare</li>
+    <li>Folosește ecranul ca «recompensă» sau «consolare» în orice situație dificilă</li>
+  </ul>
+  <p>Dacă recunoști aceste semne, nu este momentul pentru pedepse — este momentul pentru resetare treptată: reduceți timpul cu 15 minute pe zi, înlocuind cu activități atractive offline.</p>
+  <h3>6.4 Cum stabilești un plan sănătos cu ecranele</h3>
+  <ul>
+    <li>Stabilește ore fixe de ecran — nu ca recompensă, ci ca parte din program</li>
+    <li>Nu folosi ecranul ca să liniștești copilul în crize — întărește asocierea greșită</li>
+    <li>Urmărește împreună și discutați ce vede: «Ce crezi că va face personajul?»</li>
+    <li>Creează zone fără ecran: masa, dormitorul, prima oră după trezire</li>
+    <li>Fii tu însuți modelul — copilul observă cât timp petreci tu cu telefonul</li>
+  </ul>
+  <h3>6.5 Ce faci când copilul refuză să oprească ecranul</h3>
+  <p>Refuzul la oprire este normal — ecranele stimulează dopamina și tranziția este grea. Câteva strategii:</p>
+  <ul>
+    <li>Anunță cu 5 minute înainte: «Mai ai 5 minute, apoi oprim.»</li>
+    <li>Lasă-l să oprească el: «Ești gata să apeși tu butonul?»</li>
+    <li>Nu smulge dispozitivul — escaladează. Stai calm și ține limita.</li>
+    <li>Tranziționează spre o activitate atractivă: «Oprim și facem puzzle-ul ăla.»</li>
+  </ul>
+  <h3>6.6 Tu și telefonul tău — oglinda pe care copilul o vede</h3>
+  <p>Acesta este probabil cel mai incomod subcapitol din ghid — și tocmai de aceea este cel mai important.</p>
+  <p>Copiii nu fac ce li se spune. Fac ce văd. Dacă telefonul tău este primul lucru pe care îl iei dimineața și ultimul pe care îl pui jos seara, copilul tău înregistrează acest lucru — zi de zi, an de an.</p>
+  <div class="box"><p><strong>🪞 Întreabă-te sincer:</strong></p><p>• Câte ore pe zi petrec eu în fața unui ecran?<br>• Când copilul meu îmi vorbește, mă uit la el sau la telefon?<br>• Am verificat telefonul în timp ce îi citeam o poveste?<br>• Copilul meu a cerut atenția mea și i-am spus «un minut» — care a durat mult mai mult?</p></div>
+  <p>Nu este vorba de vinovăție. Este vorba de conștientizare. Telefoanele sunt proiectate de echipe întregi de experți ca să fie cât mai greu de lăsat jos — nu este o luptă pe care o câștigăm cu voință. O câștigăm cu intenție.</p>
+  <h4>Ce poți face concret</h4>
+  <ul>
+    <li>Stabilește și pentru tine ore fără telefon — aceleași pe care le ceri copilului</li>
+    <li>Când ești cu copilul, telefonul stă cu fața în jos sau în altă cameră — nu pe masă</li>
+    <li>Anunță-l când trebuie să răspunzi urgent: «Am nevoie de 2 minute, apoi sunt doar al tău.»</li>
+    <li>Creează un ritual de «deconectare» seara — încarcă telefonul în altă cameră</li>
+    <li>Dacă verifici compulsiv telefonul, șterge notificările sau pune-l pe silențios în orele de familie</li>
+  </ul>
+  <p>Nu trebuie să fii perfect/ă. Trebuie să fii conștient/ă. Un părinte care spune «Am observat că stau prea mult pe telefon și vreau să schimb asta» îi oferă copilului un model de autoreflecție — mai valoros decât orice regulă.</p>
+  <h3 class="fisa">✏️ Fișă de reflecție — Relația cu ecranele</h3>
+  <p>1. Câte ore pe zi estimez că petrece copilul meu în fața unui ecran?</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>2. Cum reacționează copilul meu când ecranul se oprește? Ce spune asta?</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>3. Ce activitate offline i-ar plăcea copilului meu la fel de mult ca ecranul?</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>4. Câte ore petrec eu pe telefon în prezența copilului meu? Ce vreau să schimb?</p>
+  <div class="wl"></div><div class="wl"></div>
+
+  <h2>Capitolul 7: Tranziții dificile</h2>
+  <p>Schimbările sunt dificile pentru toată lumea — dar pentru un copil mic, o tranziție se poate simți ca o bulversare a întregii sale lumi. Rolul tău nu este să elimini schimbarea, ci să îl ajuți să o traverseze.</p>
+  <h3>7.1 De ce sunt tranzițiile atât de grele pentru copii?</h3>
+  <p>Copiii au un simț al timpului diferit de al adulților și o capacitate mai redusă de a anticipa și gestiona incertitudinea. Orice schimbare — chiar și una pozitivă — poate declanșa anxietate, regresie sau comportamente dificile.</p>
+  <div class="box"><p><strong>💛 De reținut</strong></p><p>Regresia este normală în perioade de tranziție: un copil de 5 ani poate reîncepe să sugă degetul sau să aibă accidente. Acesta este un semnal de stres, nu de «răsfăț». Răspundeți cu blândețe, nu cu sancțiuni.</p></div>
+  <h3>7.2 Adaptarea la grădiniță sau școală nouă</h3>
+  <ul>
+    <li>Vizitați împreună spațiul înainte de prima zi — familiarizarea reduce frica de necunoscut</li>
+    <li>Vorbiți pozitiv și calm despre grădiniță/școală — anxietatea ta se transmite</li>
+    <li>Creați un ritual de adio scurt și previzibil — o îmbrățișare, un cuvânt, și pleci ferm</li>
+    <li>Nu prelungi despărțirea — cu cât stai mai mult ezitând, cu atât crește anxietatea</li>
+    <li>Întreabă seara întrebări specifice: «Cu cine ai stat la masă?» nu «Cum a fost?»</li>
+  </ul>
+  <h3>7.3 Apariția unui frate sau a unei surori</h3>
+  <p>Pentru un copil care a fost singurul, venirea unui bebeluș este una dintre cele mai mari provocări emoționale. Gelozia, regresia și comportamentele de atragere a atenției sunt reacții complet normale.</p>
+  <table>
+    <tr><th>Ce evitați</th><th>Ce funcționează</th></tr>
+    <tr><td>«Acum ești cel mare, trebuie să fii cuminte.»</td><td>«Ești important/ă pentru mine exact la fel ca înainte.»</td></tr>
+    <tr><td>Să ignorați gelozia sau să o pedepsiți.</td><td>Numiți-o: «Este greu să împarți atenția. Înțeleg.»</td></tr>
+    <tr><td>Să lăsați copilul mare complet deoparte.</td><td>Implicați-l: «Tu ești expert/ă în îngrijirea bebelușului!»</td></tr>
+    <tr><td>Să comparați comportamentele.</td><td>Timp dedicat 1 la 1, fie și 15 minute pe zi.</td></tr>
+  </table>
+  <h3>7.4 Separarea sau divorțul părinților</h3>
+  <ul>
+    <li>Spuneți-i copilului împreună, simplu și clar: «Mama și tata nu mai trăiesc împreună. Asta nu se schimbă niciodată: te iubim amândoi.»</li>
+    <li>Nu puneți copilul în mijloc — el nu este mesagerul, mediatorul sau aliatul nimănui</li>
+    <li>Vorbiți respectuos despre celălalt părinte în fața copilului — negativitatea îl rănește pe el</li>
+    <li>Mențineți rutinele cât mai stabile posibil — predictibilitatea protejează</li>
+    <li>Fiți atenți la semnale: izolare, coșmaruri, refuz de mâncare, regresie marcată — apelați la un specialist dacă persistă</li>
+  </ul>
+  <h3>7.5 Pierderea și doliul</h3>
+  <ul>
+    <li>Folosiți cuvinte clare: «A murit» — nu «a adormit», «a plecat» — acestea pot crea confuzie sau frici</li>
+    <li>Lăsați copilul să pună întrebări — răspundeți simplu și sincer</li>
+    <li>Plânsul în fața copilului este firesc — arată că emoțiile sunt normale</li>
+    <li>Implicați copilul în ritualuri de adio, dacă este potrivit vârstei — îl ajută să proceseze</li>
+    <li>Nu grăbiți doliul — «Acum trebuie să fii fericit» nu ajută. Doliul are nevoie de timp</li>
+  </ul>
+  <h3>7.6 Intrarea în clasa 0 sau clasa I — o tranziție majoră</h3>
+  <p>Intrarea în școala primară este una dintre cele mai mari schimbări din viața unui copil mic. Nu este doar o schimbare de mediu — este o schimbare de identitate. Din «cel de la grădiniță» devine «școlar», cu așteptări noi, reguli noi, o lume cu totul diferită.</p>
+  <p>Mulți părinți subestimează această tranziție pentru că o văd ca pe un pas firesc. Pentru copil însă, poate fi copleșitoare — chiar dacă este și entuziasmantă.</p>
+  <h4>Ce se schimbă pentru copil</h4>
+  <ul>
+    <li>Programul devine mai lung și mai structurat — mai puțin timp liber, mai multă concentrare</li>
+    <li>Apare evaluarea — pentru prima dată, copilul simte că poate «greși» în fața unui adult care nu este părintele lui</li>
+    <li>Colectivul este nou — prietenii de la grădiniță pot fi în clase diferite</li>
+    <li>Așteptările cresc brusc: «Ești școlar acum» poate suna ca o povară</li>
+    <li>Oboseala se acumulează — primele săptămâni sunt epuizante chiar și pentru copiii entuziaști</li>
+  </ul>
+  <div class="box"><p><strong>⚠️ Semnale că adaptarea este dificilă:</strong></p><p>• Refuz repetat de a merge la școală (nu doar în primele zile)<br>• Dureri de burtă sau de cap fără cauză medicală — mai ales dimineața<br>• Regresie: comportamente mai «mici» decât vârsta lui<br>• Agresivitate sau izolare după școală<br>• Schimbări de somn sau apetit<br>• «Nu vreau să vorbesc despre școală» — mai ales dacă înainte era comunicativ/ă</p></div>
+  <h4>Ce poți face ca părinte</h4>
+  <ul>
+    <li>Pregătește tranziția din vară: vizitați școala, vorbiți pozitiv despre ce va urma</li>
+    <li>Menține rutina de somn — un copil odihnit face față mult mai bine</li>
+    <li>Creează un ritual de întâmpinare după școală: un moment de «decompresie» (gustare, timp liber, nu teme imediat)</li>
+    <li>Nu întreba «Ce note ai luat?» — întreabă «Ce ți-a plăcut azi?», «Ce a fost greu?»</li>
+    <li>Nu compara cu alți copii sau cu frații — fiecare copil are propriul ritm</li>
+    <li>Vorbește cu învățătoarea/învățătorul — o relație bună este un factor protector</li>
+  </ul>
+  <div class="box"><p><strong>🌿 Cuvinte care ajută</strong></p><p>«E normal să fie greu la început. Și tu vei găsi ritmul tău.»<br>«Nu trebuie să știi totul de la început. Școala este locul în care înveți.»<br>«Dacă este ceva greu sau supărător, poți să îmi spui. Sunt aici.»</p></div>
+  <table>
+    <tr><th>Ce evitați</th><th>Ce ajută</th></tr>
+    <tr><td>«Trebuia să știi deja asta de la grădiniță!»</td><td>«Hai să vedem împreună cum funcționează.»</td></tr>
+    <tr><td>«Colegul tău a rezolvat, de ce tu nu?»</td><td>«Tu ai rezolvat după felul tău. Asta contează.»</td></tr>
+    <tr><td>«Nu este voie să plângi, ești mare acum.»</td><td>«Îmi dai voie să stau lângă tine un pic?»</td></tr>
+    <tr><td>Teme imediat după școală, fără pauză.</td><td>15–30 de minute de joc liber înainte de teme.</td></tr>
+  </table>
+  <h3 class="fisa">✏️ Fișă de reflecție — Tranziții dificile</h3>
+  <p>1. Ce schimbare a fost cel mai greu de traversat pentru copilul meu?</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>2. Există o tranziție viitoare pentru care mă pregătesc deja?</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>3. Cum îl ajut pe copilul meu să facă față incertitudinii?</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>4. Dacă copilul meu urmează să înceapă clasa 0 sau I, ce îngrijorare am eu ca părinte?</p>
+  <div class="wl"></div><div class="wl"></div>
+
+  <h2>Capitolul 8: Somnul copilului — de ce contează și cum îl sprijini</h2>
+  <p>Somnul nu este o pauză din viața copilului. Este locul în care creierul lui procesează tot ce a trăit, consolidează ce a învățat și se pregătește pentru ziua următoare. Un copil odihnit este un copil mai fericit, mai capabil să facă față frustrărilor și mai receptiv la tine.</p>
+  <h3>8.1 Cât somn are nevoie copilul tău?</h3>
+  <table>
+    <tr><th>Vârstă</th><th>Ore de somn (inclusiv siesta)</th></tr>
+    <tr><td>1–2 ani</td><td>11–14 ore</td></tr>
+    <tr><td>3–5 ani</td><td>10–13 ore</td></tr>
+    <tr><td>6–9 ani</td><td>9–11 ore</td></tr>
+    <tr><td>10–12 ani</td><td>9–10 ore</td></tr>
+  </table>
+  <div class="box"><p><strong>💡 De reținut</strong></p><p>Aceste cifre sunt medii. Cel mai bun indicator nu este ceasul — este comportamentul copilului ziua. Un copil odihnit este activ, cu bună dispoziție și poate face față frustrărilor.</p></div>
+  <h3>8.2 Ce se întâmplă când copilul nu doarme suficient?</h3>
+  <p>Paradoxul somnului la copii: spre deosebire de adulți, un copil obosit nu pare somnoros — pare hiperactiv, agitat, dificil. De multe ori, crizele de după-amiază sunt, de fapt, semne de oboseală acumulată.</p>
+  <ul>
+    <li>Atenția și concentrarea scad semnificativ</li>
+    <li>Reglarea emoțională se deteriorează — crizele apar mai frecvent</li>
+    <li>Memoria de consolidare este afectată — ce a învățat se fixează mai greu</li>
+    <li>Sistemul imunitar slăbește — copiii cu somn insuficient se îmbolnăvesc mai des</li>
+    <li>Apetitul se dezechilibrează — oboseala crește pofta pentru dulciuri</li>
+  </ul>
+  <h3>8.3 Probleme frecvente de somn și ce faci</h3>
+  <h4>Nu vrea să meargă la culcare</h4>
+  <ul>
+    <li>Verifică ora de culcare — mulți copii sunt puși la culcare prea târziu, când sunt deja suprasolicitați</li>
+    <li>Rutina de seară trebuie să înceapă cu cel puțin 45–60 minute înainte</li>
+    <li>Activitățile din ultimele 60 minute: calme, fără ecrane</li>
+    <li>Oferă un sentiment de control: «Vrei să citim o poveste sau două?»</li>
+  </ul>
+  <h4>Se trezește noaptea</h4>
+  <ul>
+    <li>Sub 3 ani: trezirile sunt comune — prezența ta calmă este suficientă</li>
+    <li>Peste 3 ani: caută un factor declanșator (anxietate, schimbare, vise urâte)</li>
+    <li>Nu aprinde lumina puternică — menține condiția de «noapte»</li>
+    <li>Reașează-l calm, cu puține cuvinte: «Ești în siguranță. Este noapte. Dormi.»</li>
+    <li>O luminiță de noapte și un obiect de atașament pot reduce anxietatea</li>
+  </ul>
+  <h4>Coșmaruri și terori nocturne</h4>
+  <table>
+    <tr><th>Coșmaruri</th><th>Terori nocturne</th></tr>
+    <tr><td>Apar în a doua jumătate a nopții (REM)</td><td>Apar în prima treime a nopții (somn profund)</td></tr>
+    <tr><td>Copilul se trezește speriat și își amintește visul</td><td>Pare treaz dar nu este — țipă, agitat, nu te recunoaște</td></tr>
+    <tr><td>Are nevoie de liniștire și prezența ta</td><td>Nu-l trezi și nu-l ține. Stai lângă el fără să intervii</td></tr>
+    <tr><td>Discutați dimineața despre ce l-a speriat</td><td>Dimineața nu își amintește nimic</td></tr>
+  </table>
+  <h4>Refuzul siestei (2–5 ani)</h4>
+  <ul>
+    <li>Dacă refuză siesta dar devine agitat — înlocuiește cu «timp de odihnă»: 30 min în pat, cu cărți</li>
+    <li>Nu elimina siesta brusc dacă copilul este la grădiniță — coordonează-te cu educatoarea</li>
+    <li>Un copil care a renunțat la siesă are nevoie de culcare mai devreme seara</li>
+  </ul>
+  <h3>8.4 Mediul de somn — detalii care contează</h3>
+  <ul>
+    <li>Temperatura camerei: 18–20°C este intervalul optim</li>
+    <li>Lumina: camera cât mai întunecată — cortinele opace fac diferența</li>
+    <li>Zgomotul: zgomotul alb poate ajuta copiii sensibili</li>
+    <li>Patul este pentru dormit — evitați jocul activ, mâncatul sau ecranele în pat</li>
+    <li>O baie caldă scade temperatura corpului după și favorizează adormirea</li>
+  </ul>
+  <h3>8.5 Somnul și anxietatea de separare</h3>
+  <p>Multe probleme de somn sunt, în realitate, anxietate de separare. Copilul nu se teme de întuneric — se teme să fie departe de tine. Aceasta este o nevoie reală, nu o manipulare.</p>
+  <div class="box"><p><strong>🌿 Tehnica prezenței treptate</strong></p><p>3–5 ani: Stai lângă patul lui până adoarme.<br>4–6 ani: Stai pe un scaun lângă ușă.<br>7–9 ani: Stai în afara ușii deschise.<br>10+ ani: Spune-i că ești aproape și verifici peste 5 minute.</p></div>
+  <p>Progresul nu este liniar — în perioadele de stres (boală, schimbare) poate fi nevoie să revii câteva trepte. Este normal.</p>
+  <h3>8.6 Când să consulți un specialist</h3>
+  <ul>
+    <li>Sforăit puternic, respirație întreruptă sau gură deschisă constant în somn</li>
+    <li>Treziri nocturne foarte frecvente după 3 ani (mai mult de 3–4 ori pe noapte)</li>
+    <li>Terori nocturne foarte frecvente sau asociate cu somnambulism</li>
+    <li>Copilul este constant obosit ziua în ciuda unui somn suficient</li>
+    <li>Anxietatea de separare la culcare perturbă întreaga familie de mai multe săptămâni</li>
+  </ul>
+  <h3 class="fisa">✏️ Fișă de reflecție — Somnul copilului</h3>
+  <p>1. Câte ore doarme copilul meu în medie? Cum se simte dimineața?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Care este cea mai mare dificultate legată de somn în casa noastră?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Ce element din rutina de seară funcționează deja bine?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+
+  <h2>Capitolul 9: Îngrijirea părintelui</h2>
+  <p>Nu poți turna dintr-un vas gol. Îngrijirea ta nu este un lux — este o condiție esențială pentru a fi prezent, răbdător și empatic cu copilul tău.</p>
+  <h3>9.1 Ce este burnout-ul parental?</h3>
+  <p>Burnout-ul parental nu este o slăbiciune de caracter. Este rezultatul unui dezechilibru prelungit între ceea ce dai și ceea ce primești — sau îți permiți să primești.</p>
+  <div class="box"><p><strong>⚠️ Semnale că ai putea fi în burnout parental:</strong></p><p>• Te trezești obosit/ă chiar și după o noapte de somn<br>• Te simți detașat/ă emoțional — ca pe «pilot automat»<br>• Lucruri mici te iau pe neașteptate — reacționezi disproporționat<br>• Simți că ești permanent în urmă, că nu ești niciodată suficient/ă<br>• Ai pierdut plăcerea față de lucruri care înainte îți făceau bine</p></div>
+  <p>Dacă te regăsești în mai multe dintre acestea, nu este momentul să te judeci — este momentul să îți acorzi atenție. Exact cum i-ai acorda-o copilului tău.</p>
+  <h3>9.2 Vinovăția parentală — cel mai comun dușman</h3>
+  <p>Aproape fiecare părinte se simte vinovat la un moment dat. Vinovat că a țipat, că a greșit, că a lucrat prea mult, că nu s-a jucat destul.</p>
+  <table>
+    <tr><th>Vinovăție toxică</th><th>Responsabilitate sănătoasă</th></tr>
+    <tr><td>«Sunt un părinte groaznic.»</td><td>«Am greșit în acel moment. Ce pot face diferit?»</td></tr>
+    <tr><td>Ruminare prelungită fără acțiune</td><td>Recunoaștere, reparare, continuare</td></tr>
+    <tr><td>Autopedepsire și critică internă</td><td>Autocompasiune și dorință de creștere</td></tr>
+    <tr><td>«Copilul meu va suferi din cauza mea.»</td><td>«Copilul meu mă vede că încerc și repar.»</td></tr>
+  </table>
+  <p>Repararea după o greșeală este, în sine, o lecție valoroasă pentru copil. Vede că adulții greșesc și că greșelile pot fi reparate — abilitate esențială pentru viață.</p>
+  <h3>9.3 Cum îți reîncarci energia — practic</h3>
+  <h4>Micro-pauze — pentru zilele în care nu ai timp</h4>
+  <ul>
+    <li>3 respirații lente și adânci înainte de a răspunde unei crize</li>
+    <li>O ceașcă de ceai băută fără telefon în mână</li>
+    <li>2 minute de plimbare singur/ă până la cutia poștală</li>
+    <li>O melodie preferată ascultată cu căști, cu ochii închiși</li>
+  </ul>
+  <h4>Nevoi de bază — fundamentale, nu opționale</h4>
+  <p>Somnul: dacă dormi constant sub 6 ore, capacitatea ta de reglare emoțională scade drastic. Nu este o chestiune de voință — este biologie. Mâncatul regulat și 20 de minute de mers pe jos reduc cortizolul mai eficient decât orice altă strategie.</p>
+  <h4>Conexiunea cu adulții</h4>
+  <ul>
+    <li>Planifică lunar o ieșire cu prietenii — fără copii</li>
+    <li>Alătură-te unui grup de părinți — validarea comunitară are efect terapeutic</li>
+    <li>Vorbește cu partenerul despre tine — nu doar despre copil și logistica casei</li>
+  </ul>
+  <h3>9.4 Relația de cuplu în contextul parentingului</h3>
+  <p>Cea mai bună investiție în sănătatea emoțională a copilului este o relație stabilă și caldă între părinți.</p>
+  <ul>
+    <li>Rezervați săptămânal 30 de minute de conversație fără subiect «copii» sau «casă»</li>
+    <li>Spuneți-vă aprecierile cu voce tare — copiii aud și asimilează modelul</li>
+    <li>Dezacordurile de parenting rezolvați-le în privat, prezentați un front comun</li>
+    <li>Cereți ajutor când simțiți că relația suferă — nu așteptați criza</li>
+  </ul>
+  <h3>9.5 Când să ceri ajutor profesional</h3>
+  <div class="box"><p><strong>💙 Ia în considerare sprijin profesional dacă:</strong></p><p>• Simți că ești permanent copleșit/ă și nimic nu se îmbunătățește<br>• Ai gânduri recurente că nu ești bun/ă de nimic<br>• Relația cu partenerul este constant conflictuală sau rece<br>• Copilul prezintă semne persistente de anxietate sau regresie<br>• Treci printr-o tranziție majoră și simți că nu faci față singur/ă</p></div>
+  <p>Consilierii pentru dezvoltare personală, psihopedagogii și specialiștii în sănătate mintală sunt resurse valoroase — nu semne de slăbiciune.</p>
+  <h3 class="fisa">✏️ Fișă de reflecție — Îngrijirea părintelui</h3>
+  <p>1. Pe o scară de la 1 la 10, cât de bine mă îngrijesc pe mine în această perioadă?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>2. Ce activitate care îmi face bine am abandonat de când am devenit părinte?</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p>3. Un lucru concret pe care îl pot face pentru mine această săptămână:</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div>
+
+  <h2>Anexă: Jurnalul Părintelui</h2>
+  <p>Un spațiu doar al tău — pentru gânduri, observații și momente de care vrei să îți amintești.</p>
+  <div class="box"><p><strong>📖 Cum folosești acest jurnal</strong></p><p>Nu există reguli. Poți scrie zilnic, săptămânal sau ori de câte ori simți nevoia. Jurnalul nu este pentru nimeni altcineva — este pentru tine.</p></div>
+  <h3>Ziua mea ca părinte</h3>
+  <p class="sub">Reflecție de seară — 5 minute pentru tine. Data: ____________</p>
+  <p>Un moment de azi de care sunt mândru/ă:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Un moment de azi pe care l-aș face diferit:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Cum m-am simțit azi ca părinte? (o emoție, un cuvânt):</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Ceva ce am observat la copilul meu azi:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <h3>O situație dificilă</h3>
+  <p class="sub">Ce s-a întâmplat și ce am învățat. Data: ____________</p>
+  <p>Descrie situația pe scurt:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Cum am reacționat în acel moment:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Ce aș face diferit data viitoare:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Ce am înțeles despre mine sau despre copilul meu:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <h3>Un moment frumos</h3>
+  <p class="sub">Momente mici care merită păstrate. Data: ____________</p>
+  <p>Descrie momentul — ce s-a întâmplat, ce a spus sau făcut copilul:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Ce am simțit în acel moment:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>De ce este acest moment important pentru mine:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <h3>Copilul meu în această perioadă</h3>
+  <p class="sub">Observații despre cum crește și se schimbă. Data: ____________</p>
+  <p>Ce m-a surprins la copilul meu în ultima vreme:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>O frază sau un cuvânt spus de el/ea pe care vreau să nu îl uit:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Cum s-a schimbat față de acum 3–6 luni:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Ce îl bucură cel mai mult în această perioadă:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <h3>Eu ca om, nu doar ca părinte</h3>
+  <p class="sub">Pentru că exiști și în afara rolului de mamă/tată. Data: ____________</p>
+  <p>Cum mă simt cu adevărat în această perioadă a vieții mele:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Un lucru pe care mi l-am dăruit mie în ultima săptămână:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Ceva de care am nevoie și nu am cerut încă:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <p>Un vis, un plan sau un gând care îmi aparține doar mie:</p>
+  <div class="wl"></div><div class="wl"></div>
+  <h3>Scrisoare pentru copilul meu</h3>
+  <p>Scrie-i copilului tău o scrisoare pe care poate o va citi cândva. Spune-i ce simți, ce îți dorești pentru el, ce vrei să știe.</p>
+  <p>Dragul/Draga mea ____________,</p>
+  <div class="wl"></div><div class="wl"></div><div class="wl"></div><div class="wl"></div><div class="wl"></div>
+  <p class="sub">Cu toată dragostea, ____________ &nbsp; Data: ____________</p>
+
+  <h2>În loc de concluzie</h2>
+  <p>Ai ajuns la sfârșitul acestui ghid — dar nu la sfârșitul drumului. Parentingul nu are un punct de sosire. Are doar momente: unele reușite, altele mai puțin, toate valoroase.</p>
+  <p>Dacă este un singur lucru pe care să îl iei cu tine din aceste pagini, acesta este:</p>
+  <div class="box"><p><strong>Nu ai nevoie să fii un părinte perfect. Ai nevoie să fii un părinte prezent, care încearcă, greșește și repară.</strong></p></div>
+  <p>Copilul tău nu va crește amintindu-și că ai răspuns perfect în fiecare situație. Va crește știind că erai acolo — și că a contat pentru tine.</p>
+  <h3>Cum continui de aici</h3>
+  <p>Nu schimba totul deodată. Creierul uman — al tău și al copilului — se adaptează cel mai bine la schimbări mici și consecvente, nu la revoluții bruște.</p>
+  <ol>
+    <li>Alege un singur lucru din acest ghid și aplică-l timp de 7 zile.</li>
+    <li>Observă ce se schimbă — nu neapărat în copilul tău, ci în tine.</li>
+    <li>Revino la ghid ori de câte ori simți că ai nevoie.</li>
+    <li>Fii blând/ă cu tine însuți/ți în zilele grele. Asta nu înseamnă că ai eșuat — înseamnă că ești uman/ă.</li>
+  </ol>
+  <h3>Un cuvânt despre imperfecțiune</h3>
+  <p>De-a lungul anilor de lucru cu familii, am observat că părinții care se descurcă cel mai bine nu sunt cei care greșesc cel mai puțin. Sunt cei care revin cel mai repede.</p>
+  <p>Revin la copilul lor după o reacție nepotrivită și spun: «Am greșit. Îmi pare rău.» Revin la ei înșiși după o zi grea și se întreabă: «De ce am nevoie acum?» Revin la relație, chiar și când relația scârțâie.</p>
+  <p>Această revenire — această alegere de a nu abandona — este, de fapt, cel mai puternic mesaj pe care îl poți transmite copilului tău: că legăturile merită efortul, că greșelile pot fi reparate și că iubirea nu dispare la primul conflict.</p>
+  <p><strong>Copilul tău nu are nevoie de un părinte perfect. Are nevoie de tine — prezent/ă, onest/ă și dispus/ă să continui să înveți alături de el.</strong></p>
+  <h3>Rămânem în contact</h3>
+  <p>Acest ghid este un punct de plecare, nu un punct final. Dacă ai întrebări, dacă o situație te depășește sau dacă vrei să aprofundezi oricare dintre teme, sunt aici.</p>
+  <p>Evoluție Pas cu Pas este mai mult decât un brand — este un spațiu construit cu grijă pentru părinți ca tine, care vor să facă mai bine, zi de zi, pas cu pas.</p>
+  <p class="sub">Cu drag și recunoștință pentru că ai parcurs aceste pagini, Denisa Lungu — Psihopedagog special | Consilier pentru dezvoltare personală | Evoluție Pas cu Pas</p>
+</div>
+
+<script src="page-flip.browser.js"></script>
 <script>
-  const body = document.body;
-  const root = document.documentElement;
+  const body = document.body, root = document.documentElement;
+  const stage = document.getElementById("stage");
+  const book = document.getElementById("book");
+  const source = document.getElementById("source");
+  const pageno = document.getElementById("pageno");
+  const btnPrev = document.getElementById("prev");
+  const btnNext = document.getElementById("next");
+  const PADX = 28, PADY = 30;
 
-  // ---- Tema (light / sepia / dark) ----
-  const THEMES = ["light", "sepia", "dark"];
+  let pf = null, total = 1;
+
+  // ---- Tema ----
+  const THEMES = ["light","sepia","dark"];
   let theme = localStorage.getItem("ghid_theme") || "light";
-  function applyTheme() {
-    body.classList.remove("sepia", "dark");
-    if (theme !== "light") body.classList.add(theme);
-  }
+  function applyTheme(){ body.classList.remove("sepia","dark"); if(theme!=="light") body.classList.add(theme); }
   applyTheme();
   document.getElementById("theme-btn").addEventListener("click", () => {
-    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
-    localStorage.setItem("ghid_theme", theme);
-    applyTheme();
+    theme = THEMES[(THEMES.indexOf(theme)+1)%THEMES.length];
+    localStorage.setItem("ghid_theme", theme); applyTheme();
   });
 
   // ---- Marime text ----
   let fontSize = parseInt(localStorage.getItem("ghid_font")) || 18;
-  function applyFont() { root.style.setProperty("--reader-font", fontSize + "px"); }
+  function applyFont(){ root.style.setProperty("--reader-font", fontSize+"px"); }
   applyFont();
-  document.getElementById("font-up").addEventListener("click", () => {
-    fontSize = Math.min(fontSize + 1, 26); localStorage.setItem("ghid_font", fontSize); applyFont();
-  });
-  document.getElementById("font-down").addEventListener("click", () => {
-    fontSize = Math.max(fontSize - 1, 14); localStorage.setItem("ghid_font", fontSize); applyFont();
-  });
+  document.getElementById("font-up").addEventListener("click", () => { fontSize=Math.min(fontSize+1,26); localStorage.setItem("ghid_font",fontSize); applyFont(); rebuild(); });
+  document.getElementById("font-down").addEventListener("click", () => { fontSize=Math.max(fontSize-1,14); localStorage.setItem("ghid_font",fontSize); applyFont(); rebuild(); });
 
-  // ---- Bara de progres + salvare pozitie ----
-  const progress = document.getElementById("progress");
-  function onScroll() {
-    const h = document.documentElement.scrollHeight - window.innerHeight;
-    const p = h > 0 ? (window.scrollY / h) * 100 : 0;
-    progress.style.width = p + "%";
-    localStorage.setItem("ghid_scroll", window.scrollY);
+  // ---- Imparte textul pe pagini (dupa inaltime) ----
+  function buildPages(w, h) {
+    const meas = document.createElement("div");
+    meas.className = "page-inner";
+    meas.style.position = "absolute"; meas.style.left = "-10000px"; meas.style.top = "0";
+    meas.style.width = w+"px"; meas.style.height = h+"px"; meas.style.padding = "0"; meas.style.overflow = "visible";
+    document.body.appendChild(meas);
+    const out = [];
+    const flush = () => { if (meas.innerHTML.trim()) { out.push(meas.innerHTML); meas.innerHTML = ""; } };
+    const splitWords = (node) => {
+      const tag = node.tagName.toLowerCase();
+      const cls = node.getAttribute("class") || "";
+      const words = (node.textContent || "").split(/\s+/).filter(Boolean);
+      let el = document.createElement(tag); if (cls) el.className = cls;
+      meas.appendChild(el); let buf = [];
+      for (const wd of words) {
+        buf.push(wd); el.textContent = buf.join(" ");
+        if (meas.scrollHeight > h + 1) {
+          buf.pop();
+          if (buf.length) el.textContent = buf.join(" ");
+          out.push(meas.innerHTML); meas.innerHTML = "";
+          el = document.createElement(tag); if (cls) el.className = cls;
+          meas.appendChild(el); buf = [wd]; el.textContent = wd;
+        }
+      }
+    };
+    const add = (node) => {
+      meas.appendChild(node);
+      if (meas.scrollHeight > h + 1) {
+        meas.removeChild(node);
+        if (meas.childNodes.length === 0) { splitWords(node); }
+        else {
+          flush(); meas.appendChild(node);
+          if (meas.scrollHeight > h + 1) { meas.removeChild(node); splitWords(node); }
+        }
+      }
+    };
+    Array.from(source.children).forEach((c) => add(c.cloneNode(true)));
+    flush(); meas.remove();
+    return out.length ? out : ["<p>(gol)</p>"];
   }
-  window.addEventListener("scroll", onScroll);
 
-  // revine unde ai ramas
-  const saved = parseInt(localStorage.getItem("ghid_scroll"));
-  if (saved) window.scrollTo(0, saved);
-  onScroll();
+  function updateNo(i) {
+    pageno.textContent = (i+1) + " / " + total;
+    btnPrev.disabled = i <= 0;
+    btnNext.disabled = i >= total-1;
+  }
+
+  function build() {
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    let pageH = Math.max(360, sh - 6);
+    let pageW = Math.min(sw - 6, Math.round(pageH * 0.70), 720);
+    const htmls = buildPages(pageW - 2*PADX, pageH - 2*PADY);
+
+    if (pf) { try { pf.destroy(); } catch(e){} pf = null; }
+    book.innerHTML = "";
+    htmls.forEach((html) => {
+      const p = document.createElement("div"); p.className = "page";
+      const inner = document.createElement("div"); inner.className = "page-inner"; inner.innerHTML = html;
+      p.appendChild(inner); book.appendChild(p);
+    });
+
+    pf = new St.PageFlip(book, {
+      width: pageW, height: pageH, size: "fixed",
+      usePortrait: true, showCover: false, mobileScrollSupport: false,
+      maxShadowOpacity: 0.45, drawShadow: true, flippingTime: 650, swipeDistance: 25
+    });
+    pf.loadFromHTML(book.querySelectorAll(".page"));
+    total = pf.getPageCount();
+
+    let start = parseInt(localStorage.getItem("ghid_page")) || 0;
+    if (start > total-1) start = total-1;
+    if (start > 0) { try { pf.turnToPage(start); } catch(e){} }
+    updateNo(pf.getCurrentPageIndex());
+    pf.on("flip", (e) => { updateNo(e.data); localStorage.setItem("ghid_page", e.data); });
+  }
+
+  let rt;
+  function rebuild() { clearTimeout(rt); rt = setTimeout(build, 80); }
+
+  btnPrev.addEventListener("click", () => { if (pf) pf.flipPrev(); });
+  btnNext.addEventListener("click", () => { if (pf) pf.flipNext(); });
+  document.addEventListener("keydown", (e) => {
+    if (!pf) return;
+    if (e.key === "ArrowLeft") pf.flipPrev();
+    if (e.key === "ArrowRight") pf.flipNext();
+  });
+  window.addEventListener("resize", rebuild);
+
+  if (window.St && St.PageFlip) build();
+  else pageno.textContent = "Eroare la încărcarea cititorului";
 </script>
 
 </body>
