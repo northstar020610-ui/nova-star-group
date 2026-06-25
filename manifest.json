@@ -1,0 +1,16 @@
+{
+  "name": "Nova-Star Group",
+  "short_name": "Nova-Star",
+  "description": "Hub-ul Nova-Star Group: Nova Play and Learn, Asociația Nova Solutions, NorthStar Studio — prezentare, jocuri, donații.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1026",
+  "theme_color": "#0b1026",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

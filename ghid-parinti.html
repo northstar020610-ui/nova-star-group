@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghid pentru părinți — Nova Play and Learn</title>
+<link rel="icon" href="NovaPlayLearnLogo.jpeg">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b1026">
+<script defer src="pwa.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #2b2b2b;
+    --muted: #8a8a8a;
+    --accent: #ff7a59;
+    --bar: #eee;
+    --reader-font: 18px;
+  }
+  body.sepia { --bg: #f4ecd8; --text: #5b4636; --muted: #9c8b73; --bar: #e6d8bd; }
+  body.dark  { --bg: #1a1a1a; --text: #dcdcdc; --muted: #888;    --bar: #333; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.85;
+    transition: background 0.3s, color 0.3s;
+    padding-bottom: 60px;
+  }
+
+  /* Bara de progres */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+    background: var(--accent); z-index: 30; transition: width 0.1s linear;
+  }
+
+  /* Bara de sus */
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--bar);
+    padding: 12px 16px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .toolbar a.back { color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; }
+  .toolbar .ttl { flex: 1; text-align: center; font-size: 14px; color: var(--muted); font-weight: 600; }
+  .toolbar button {
+    border: 1px solid var(--bar); background: transparent; color: var(--text);
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 700;
+  }
+  .toolbar button:hover { border-color: var(--accent); }
+
+  /* Continut */
+  .reader {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 22px 60px;
+    font-size: var(--reader-font);
+  }
+  .reader h1 { font-size: 2em; line-height: 1.2; margin: 10px 0 6px; color: var(--text); }
+  .reader .author { color: var(--muted); font-style: italic; margin-bottom: 30px; }
+  .reader h2 {
+    font-size: 1.4em; margin: 40px 0 14px; color: var(--accent);
+    scroll-margin-top: 70px;
+  }
+  .reader p { margin-bottom: 18px; text-align: justify; }
+  .reader .lead { font-size: 1.1em; }
+
+  /* Cuprins */
+  .toc {
+    background: var(--bar);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 24px 0 36px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .toc h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+  .toc a { display: block; color: var(--text); text-decoration: none; padding: 6px 0; font-size: 15px; }
+  .toc a:hover { color: var(--accent); }
+
+  .end-note {
+    text-align: center; color: var(--muted); font-style: italic;
+    margin-top: 50px; font-size: 0.95em;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div class="toolbar">
+  <a class="back" href="nova-play.html">← Înapoi</a>
+  <span class="ttl">Ghid pentru părinți</span>
+  <button id="font-down" title="Text mai mic">A−</button>
+  <button id="font-up" title="Text mai mare">A+</button>
+  <button id="theme-btn" title="Schimbă tema">🌗</button>
+</div>
+
+<article class="reader">
+  <h1>Ghid pentru părinți</h1>
+  <p class="author">de Nova Play and Learn</p>
+
+  <p class="lead">Acesta este un text de exemplu (placeholder). Când cartea va fi gata, înlocuim conținutul de mai jos cu textul real, pe capitole — restul (cuprins, progres, teme, mărime text) rămâne automat.</p>
+
+  <div class="toc">
+    <h3>Cuprins</h3>
+    <a href="#cap1">1. Introducere</a>
+    <a href="#cap2">2. Cum învață copilul</a>
+    <a href="#cap3">3. Comunicarea cu cei mici</a>
+    <a href="#cap4">4. Sfaturi practice</a>
+  </div>
+
+  <h2 id="cap1">1. Introducere</h2>
+  <p>Aici va veni introducerea cărții. Fiecare capitol e o secțiune cu titlu (h2) și paragrafe (p). Textul curge plăcut, cu spațiere confortabilă pentru ochi.</p>
+  <p>Lorem ipsus de exemplu: fiecare copil are ritmul lui, iar rolul părintelui este să-l sprijine cu răbdare și căldură. În paginile următoare vei găsi îndrumări practice.</p>
+
+  <h2 id="cap2">2. Cum învață copilul</h2>
+  <p>Conținut de exemplu despre felul în care învață copiii — prin joacă, repetiție și încurajare. Înlocuiește cu textul real.</p>
+  <p>Paragraf suplimentar de umplutură pentru a vedea cum arată cititul pe mai multe rânduri și cum funcționează bara de progres pe măsură ce derulezi.</p>
+
+  <h2 id="cap3">3. Comunicarea cu cei mici</h2>
+  <p>Text de exemplu despre comunicare: cum să asculți, cum să explici, cum să gestionezi momentele dificile cu blândețe.</p>
+
+  <h2 id="cap4">4. Sfaturi practice</h2>
+  <p>Listă de sfaturi practice (exemplu). Aici pot veni recomandări concrete pentru acasă și pentru școală.</p>
+  <p>După ce termini de citit, poți reveni oricând — cititorul reține unde ai rămas.</p>
+
+  <p class="end-note">— Sfârșit (text de exemplu) —</p>
+</article>
+
+<script>
+  const body = document.body;
+  const root = document.documentElement;
+
+  // ---- Tema (light / sepia / dark) ----
+  const THEMES = ["light", "sepia", "dark"];
+  let theme = localStorage.getItem("ghid_theme") || "light";
+  function applyTheme() {
+    body.classList.remove("sepia", "dark");
+    if (theme !== "light") body.classList.add(theme);
+  }
+  applyTheme();
+  document.getElementById("theme-btn").addEventListener("click", () => {
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    localStorage.setItem("ghid_theme", theme);
+    applyTheme();
+  });
+
+  // ---- Marime text ----
+  let fontSize = parseInt(localStorage.getItem("ghid_font")) || 18;
+  function applyFont() { root.style.setProperty("--reader-font", fontSize + "px"); }
+  applyFont();
+  document.getElementById("font-up").addEventListener("click", () => {
+    fontSize = Math.min(fontSize + 1, 26); localStorage.setItem("ghid_font", fontSize); applyFont();
+  });
+  document.getElementById("font-down").addEventListener("click", () => {
+    fontSize = Math.max(fontSize - 1, 14); localStorage.setItem("ghid_font", fontSize); applyFont();
+  });
+
+  // ---- Bara de progres + salvare pozitie ----
+  const progress = document.getElementById("progress");
+  function onScroll() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+    progress.style.width = p + "%";
+    localStorage.setItem("ghid_scroll", window.scrollY);
+  }
+  window.addEventListener("scroll", onScroll);
+
+  // revine unde ai ramas
+  const saved = parseInt(localStorage.getItem("ghid_scroll"));
+  if (saved) window.scrollTo(0, saved);
+  onScroll();
+</script>
+
+</body>
+</html>
