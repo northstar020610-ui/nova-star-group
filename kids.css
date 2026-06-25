@@ -289,6 +289,21 @@ img {
 }
 .contact-box a:hover { text-decoration: underline; }
 
+/* social media icons */
+.social-row { display: flex; gap: 12px; margin-top: 16px; }
+.social-row a {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #ffffff; text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.social-row a:hover { transform: translateY(-2px); opacity: 0.9; }
+.social-row svg { width: 20px; height: 20px; }
+.sc-fb { background: #1877F2; }
+.sc-ig { background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); }
+.sc-yt { background: #FF0000; }
+.sc-tt { background: #111111; }
+
 /* ===== Sectiune donatii ===== */
 .donatii { text-align: center; }
 .suma-btns {
@@ -368,6 +383,29 @@ img {
 .share-btns { display: flex; flex-wrap: wrap; gap: 12px; }
 .share-fb { background: #1877f2; color: #ffffff !important; }
 .share-wa { background: #25d366; color: #ffffff !important; }
+
+/* ===== Sponsori & parteneri ===== */
+.sponsori {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin: 14px 0 20px;
+}
+.sponsor-slot {
+    background: #ffffff;
+    border: 2px dashed var(--accent);
+    border-radius: 16px;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+}
+.sponsor-slot img { max-width: 100%; max-height: 70px; border-radius: 8px; }
 
 /* ===== Coming soon (evenimente) ===== */
 .coming-soon {

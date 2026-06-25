@@ -539,6 +539,21 @@ img {
 .contact-box a { color: var(--logo); text-decoration: none; font-weight: 600; }
 .contact-box a:hover { text-decoration: underline; }
 
+/* social media icons */
+.social-row { display: flex; gap: 12px; margin-top: 16px; }
+.social-row a {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #ffffff; text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.social-row a:hover { transform: translateY(-2px); opacity: 0.9; }
+.social-row svg { width: 20px; height: 20px; }
+.sc-fb { background: #1877F2; }
+.sc-ig { background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); }
+.sc-yt { background: #FF0000; }
+.sc-tt { background: #111111; }
+
 /* ============================================================
    FOOTER
    ============================================================ */
