@@ -20,7 +20,7 @@
 
     <!-- ===== Banner notificare actualizari ===== -->
     <div id="update-banner" class="update-banner" hidden>
-        <span>🔔 Noutăți! Jocurile și site-ul au fost actualizate.</span>
+        <span>🔔 Noutăți! A apărut „Ghidul Părintelui Prezent" — îl poți citi sau printa la Nova Play and Learn.</span>
         <button id="update-close" aria-label="Închide">×</button>
     </div>
 
@@ -329,7 +329,7 @@
 
     <!-- ===== Notificare actualizari (banner) ===== -->
     <script>
-        const SITE_VERSION = "2026-06-25-1";
+        const SITE_VERSION = "2026-06-25-2";
         if (localStorage.getItem("nsg_version") !== SITE_VERSION) {
             const b = document.getElementById("update-banner");
             if (b) {

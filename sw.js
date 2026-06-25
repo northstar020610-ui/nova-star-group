@@ -1,5 +1,5 @@
 // Service worker Nova-Star Group (PWA)
-const CACHE = "nsg-v3";
+const CACHE = "nsg-v4";
 
 // fisierele de baza (mici) - le tinem pt functionare offline
 const ASSETS = [
@@ -29,7 +29,12 @@ self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(CACHE).then((c) => c.addAll(ASSETS)).catch(() => {})
   );
-  self.skipWaiting();
+  // NU mai facem skipWaiting automat: asteptam ca userul sa apese "Actualizeaza"
+});
+
+// pagina ne cere sa activam versiunea noua (dupa apasarea pe "Actualizeaza")
+self.addEventListener("message", (e) => {
+  if (e.data === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("activate", (e) => {
