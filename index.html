@@ -15,6 +15,12 @@
         <span class="shooting s2"></span>
     </div>
 
+    <!-- ===== Banner notificare actualizari ===== -->
+    <div id="update-banner" class="update-banner" hidden>
+        <span>🔔 Noutăți! Jocurile și site-ul au fost actualizate.</span>
+        <button id="update-close" aria-label="Închide">×</button>
+    </div>
+
     <!-- ===== Bara de sus: logo (Home) + cele 3 firme ===== -->
     <header class="navbar">
         <a href="index.html" class="logo"><img src="NovaHubLogo.png" class="logo-img" alt=""> Nova-Star Group</a>
@@ -316,6 +322,21 @@
         document.getElementById("modal-close").addEventListener("click", () => { modal.hidden = true; });
         modal.addEventListener("click", (e) => { if (e.target === modal) modal.hidden = true; });
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") modal.hidden = true; });
+    </script>
+
+    <!-- ===== Notificare actualizari (banner) ===== -->
+    <script>
+        const SITE_VERSION = "2026-06-25-1";
+        if (localStorage.getItem("nsg_version") !== SITE_VERSION) {
+            const b = document.getElementById("update-banner");
+            if (b) {
+                b.hidden = false;
+                document.getElementById("update-close").addEventListener("click", () => {
+                    b.hidden = true;
+                    localStorage.setItem("nsg_version", SITE_VERSION);
+                });
+            }
+        }
     </script>
 
     <!-- ===== Sistemul de login (comun pe toate paginile) ===== -->

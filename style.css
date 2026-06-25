@@ -556,6 +556,42 @@ footer a {
 }
 
 /* ============================================================
+   BANNER NOTIFICARE ACTUALIZARI
+   ============================================================ */
+.update-banner[hidden] { display: none; }
+.update-banner {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(90deg, #3b63c4, #8ea2ff);
+    color: #ffffff;
+    padding: 11px 16px;
+    border-radius: 999px;
+    box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: 600;
+    max-width: 92vw;
+}
+.update-banner button {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    color: #ffffff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.update-banner button:hover { background: rgba(255, 255, 255, 0.4); }
+
+/* ============================================================
    PAGINI DE CONT (login / register)
    ============================================================ */
 .auth {
