@@ -25,34 +25,56 @@
     <script defer src="pwa.js"></script>
     <link rel="stylesheet" href="kids.css">
     <style>
-      /* ===== Formular 230 ===== */
+      /* ===== Formulare ===== */
       .asoc-date { background: rgba(127,127,127,0.10); border-radius: 14px; padding: 12px 16px; margin: 14px 0; }
       .asoc-date p { margin: 5px 0; }
       .form-voluntar select { padding: 10px 12px; border-radius: 12px; border: 2px solid #e3d4c0; font: inherit; background: #fff; }
       .form-voluntar label.check { flex-direction: row; align-items: center; gap: 9px; font-weight: 400; }
       .form-voluntar label.check input { width: auto; }
 
-      #f230-print { display: none; }
+      /* ===== Previzualizare document (pe ecran) ===== */
+      #doc-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 10px; }
+      #sign-area { margin: 16px auto 4px; max-width: 520px; }
+      #sign-area > p { margin: 0 0 8px; }
+      #sign-pad { width: 100%; max-width: 500px; height: 160px; background: #fff; border: 2px dashed var(--accent, #c0683f); border-radius: 10px; touch-action: none; cursor: crosshair; display: block; }
+      #sign-buttons { display: flex; gap: 10px; margin-top: 8px; }
+      .semn-img { max-height: 70px; max-width: 230px; }
+      .semn-slot { display: inline-block; }
+      #f230-print {
+        background: #fff; color: #000; font-family: "Times New Roman", Georgia, serif;
+        padding: 26px 28px; border-radius: 10px; box-shadow: 0 10px 30px -8px rgba(0,0,0,0.35);
+        max-width: 780px; margin: 10px auto 0;
+      }
+      .f230-doc { font-size: 15px; line-height: 1.45; }
+      .f230-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 6px; }
+      .f230-anaf { font-weight: bold; font-size: 22px; letter-spacing: 3px; }
+      .f230-code { font-size: 16px; }
+      .f230-doc h1 { text-align: center; font-size: 24px; margin: 14px 0 2px; letter-spacing: 2px; }
+      .f230-sub { text-align: center; font-size: 14px; margin: 0 0 6px; }
+      .f230-an { text-align: center; margin: 0 0 14px; }
+      .f230-doc h2 { font-size: 15px; background: #ececec; padding: 5px 8px; margin: 16px 0 7px; border: 1px solid #000; }
+      .f230-t { width: 100%; border-collapse: collapse; }
+      .f230-t td { border: 1px solid #000; padding: 6px 8px; font-size: 14px; }
+      .f230-t td.lbl { background: #f5f5f5; font-weight: bold; width: 24%; }
+      .cnp { display: flex; gap: 3px; flex-wrap: wrap; }
+      .cnp-box { border: 1px solid #000; width: 24px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+      .f230-check { margin: 10px 0; font-weight: bold; font-size: 15px; }
+      .f230-foot { display: flex; justify-content: space-between; margin-top: 42px; font-size: 14px; }
+      .f230-note { margin-top: 26px; font-size: 12px; color: #444; text-align: center; }
+      .ctr-doc { font-size: 15px; line-height: 1.55; color: #000; }
+      .ctr-doc h1 { text-align: center; font-size: 21px; margin: 0 0 4px; letter-spacing: 1px; }
+      .ctr-sub { text-align: center; font-size: 13px; font-style: italic; margin: 0 0 4px; }
+      .ctr-nr { text-align: center; margin: 0 0 16px; }
+      .ctr-doc h2 { font-size: 15px; margin: 16px 0 6px; }
+      .ctr-doc p { margin: 0 0 9px; text-align: justify; }
+      .ctr-foot { display: flex; justify-content: space-between; margin-top: 44px; text-align: center; font-size: 14px; }
+      .ctr-foot div { width: 46%; }
 
       @media print {
-        body > *:not(#f230-print) { display: none !important; }
-        #f230-print { display: block !important; color: #000; font-family: "Times New Roman", Georgia, serif; }
-        .f230-doc { font-size: 11.5pt; line-height: 1.4; }
-        .f230-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 6px; }
-        .f230-anaf { font-weight: bold; font-size: 16pt; letter-spacing: 3px; }
-        .f230-code { font-size: 12pt; }
-        .f230-doc h1 { text-align: center; font-size: 18pt; margin: 14px 0 2px; letter-spacing: 2px; }
-        .f230-sub { text-align: center; font-size: 10.5pt; margin: 0 0 6px; }
-        .f230-an { text-align: center; margin: 0 0 14px; }
-        .f230-doc h2 { font-size: 11pt; background: #ececec; padding: 5px 8px; margin: 16px 0 7px; border: 1px solid #000; }
-        .f230-t { width: 100%; border-collapse: collapse; }
-        .f230-t td { border: 1px solid #000; padding: 6px 8px; font-size: 11pt; }
-        .f230-t td.lbl { background: #f5f5f5; font-weight: bold; width: 24%; }
-        .cnp { display: flex; gap: 3px; }
-        .cnp-box { border: 1px solid #000; width: 22px; height: 27px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .f230-check { margin: 10px 0; font-weight: bold; font-size: 11.5pt; }
-        .f230-foot { display: flex; justify-content: space-between; margin-top: 42px; font-size: 11pt; }
-        .f230-note { margin-top: 26px; font-size: 9pt; color: #444; text-align: center; }
+        body * { visibility: hidden; }
+        #f230-print, #f230-print * { visibility: visible; }
+        #f230-print { position: absolute; left: 0; top: 0; width: 100%; max-width: none; margin: 0; padding: 0; box-shadow: none; border-radius: 0; }
+        #doc-actions, #doc-send-msg, #sign-area, #doc-preview > h2, #doc-preview > p { display: none !important; }
         @page { margin: 1.4cm; }
       }
     </style>
@@ -197,11 +219,12 @@
                     <option value="2">2 ani</option>
                 </select>
             </label>
-            <label class="check"><input type="checkbox" id="f-acord" required> Sunt de acord ca datele să fie folosite pentru completarea Formularului 230.</label>
-            <button type="submit" class="btn">📋 Generează Formularul 230</button>
+            <label class="check"><input type="checkbox" id="f-acord" required> Sunt de acord ca datele mele să fie trimise asociației pentru redirecționarea a 3,5%.</label>
+            <button type="submit" class="btn">📋 Generează formularul</button>
             <p id="f230-msg" class="form-msg"></p>
         </form>
-        <p class="donate-note">După generare: <strong>printează sau salvează ca PDF</strong>, semnează, apoi depune-l la ANAF sau trimite-l semnat la <a href="mailto:asociatianovasolutions@gmail.com">asociatianovasolutions@gmail.com</a>. Termen uzual: <strong>25 mai</strong>.</p>
+        <p class="donate-note">Apeși „Generează", <strong>verifici formularul pe ecran</strong>, îl semnezi, apoi îl trimiți la asociație sau îl printezi. Termen uzual: <strong>25 mai</strong>.</p>
+        <p class="donate-note">ℹ️ <strong>Nu ai nevoie de niciun cont</strong> ca să redirecționezi: completează, semnează și trimite-l asociației — depunerea o facem noi. <em>(Ai cont SPV pe anaf.ro? Îl poți depune și singur.)</em></p>
     </section>
 
     <!-- ===== Sponsori & parteneri ===== -->
@@ -215,6 +238,55 @@
             <div class="sponsor-slot">Locul tău aici 🤝</div>
         </div>
         <a class="btn" href="mailto:asociatianovasolutions@gmail.com?subject=Sponsorizare%20%2F%20Parteneriat" target="_blank" rel="noopener">🤝 Devino sponsor / partener</a>
+    </section>
+
+    <!-- ===== Sponsorizare firme (contract) ===== -->
+    <section class="sectiune">
+        <h2>Sponsorizează ca firmă 🏢</h2>
+        <p>Firmele pot sponsoriza asociația și <strong>scădea suma din impozitul pe profit</strong> — până la 20% din impozit, dar maxim 0,75% din cifra de afaceri. Asociația este înscrisă în <strong>Registrul ANAF</strong> pentru deduceri fiscale. ✅</p>
+        <p>Completează datele firmei și generezi <strong>contractul de sponsorizare</strong> pre-completat, gata de semnat:</p>
+
+        <div class="asoc-date">
+            <p><strong>Beneficiar:</strong> Asociația „Nova Solutions" · CIF 54559185</p>
+            <p>IBAN: RO88 RNCB 0149 1856 8131 0001 (BCR)</p>
+        </div>
+
+        <form id="ctr-form" class="form-voluntar">
+            <label>Denumirea firmei <input type="text" id="c-den" placeholder="ex: SC Exemplu SRL" required></label>
+            <label>CUI <input type="text" id="c-cui" placeholder="ex: RO12345678" required></label>
+            <label>Nr. Reg. Comerțului (opțional) <input type="text" id="c-reg" placeholder="ex: J01/123/2020"></label>
+            <label>Sediul firmei <input type="text" id="c-sediu" placeholder="adresa completă" required></label>
+            <label>Reprezentant legal <input type="text" id="c-reprez" placeholder="Nume și prenume" required></label>
+            <label>Funcția reprezentantului <input type="text" id="c-functie" placeholder="ex: Administrator"></label>
+            <label>Suma sponsorizării (lei) <input type="number" id="c-suma" min="1" placeholder="ex: 1000"></label>
+            <label>Scopul sponsorizării (opțional) <input type="text" id="c-scop" placeholder="implicit: sprijinirea copiilor cu dizabilități"></label>
+            <label>Nr. contract (opțional) <input type="text" id="c-nr" placeholder="ex: 5"></label>
+            <label>Data <input type="date" id="c-data"></label>
+            <button type="submit" class="btn">🏢 Generează contractul</button>
+            <p id="ctr-msg" class="form-msg"></p>
+        </form>
+        <p class="donate-note">Apeși „Generează", <strong>verifici contractul pe ecran</strong>, apoi îl trimiți la asociație sau îl printezi. Întrebări? <a href="mailto:asociatianovasolutions@gmail.com">asociatianovasolutions@gmail.com</a></p>
+    </section>
+
+    <!-- ===== Previzualizare document (verificare) ===== -->
+    <section id="doc-preview" class="sectiune" hidden>
+        <h2>Verifică și semnează ✍️</h2>
+        <p>Verifică datele de mai jos, <strong>semnează în chenar</strong>, apoi trimite pe email sau printează. Data semnării se completează automat.</p>
+        <div id="f230-print" aria-live="polite"></div>
+        <div id="sign-area">
+            <p>✍️ <strong>Semnează aici</strong> (cu degetul pe telefon sau cu mouse-ul pe calculator):</p>
+            <canvas id="sign-pad" width="500" height="160"></canvas>
+            <div id="sign-buttons">
+                <button type="button" id="sign-clear" class="btn btn-print">🧹 Șterge</button>
+                <button type="button" id="sign-apply" class="btn">✍️ Aplică semnătura</button>
+            </div>
+        </div>
+        <div id="doc-actions">
+            <button type="button" id="btn-trimite" class="btn">📧 Trimite pe email asociației</button>
+            <button type="button" id="btn-print" class="btn btn-print">🖨️ Printează / PDF</button>
+            <button type="button" id="btn-modifica" class="btn btn-print">✏️ Modifică datele</button>
+        </div>
+        <p id="doc-send-msg" class="form-msg"></p>
     </section>
 
     <!-- ===== Inscriere voluntari ===== -->
@@ -263,9 +335,6 @@
             <a class="sc-li" href="#" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a1.94 1.94 0 1 1-3.88 0 1.94 1.94 0 0 1 3.88 0zM3.4 8.4h3.1V21H3.4zM9.4 8.4h3v1.7h.04c.42-.8 1.45-1.7 2.98-1.7 3.2 0 3.78 2.1 3.78 4.8V21h-3.1v-5.4c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9.4z"/></svg></a>
         </div>
     </section>
-
-    <!-- container Formular 230 generat (vizibil doar la printare) -->
-    <div id="f230-print" aria-hidden="true"></div>
 
     <!-- ===== Footer ===== -->
     <footer>
@@ -334,29 +403,33 @@
 
         const esc230 = (s) => String(s || "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 
-        document.getElementById("f230-form").addEventListener("submit", (e) => {
-            e.preventDefault();
+        // ===== Trimitere la asociatie =====
+        const ASOC_EMAIL = "asociatianovasolutions@gmail.com";
+        let cur = null; // documentul curent pregatit pentru trimitere/printare
+
+        // ---- citeste + valideaza datele formularului 230 ----
+        function f230Data() {
             const msg = document.getElementById("f230-msg");
             const cnp = document.getElementById("f-cnp").value.trim();
-            if (!/^[0-9]{13}$/.test(cnp)) {
-                msg.textContent = "CNP-ul trebuie să aibă exact 13 cifre.";
-                return;
-            }
-            const d = {
+            if (!/^[0-9]{13}$/.test(cnp)) { msg.textContent = "CNP-ul trebuie să aibă exact 13 cifre."; return null; }
+            return {
                 nume: document.getElementById("f-nume").value.trim(),
                 initiala: document.getElementById("f-initiala").value.trim(),
                 prenume: document.getElementById("f-prenume").value.trim(),
+                cnp: cnp,
                 adresa: document.getElementById("f-adresa").value.trim(),
                 email: document.getElementById("f-email").value.trim(),
                 tel: document.getElementById("f-tel").value.trim(),
                 an: document.getElementById("f-an").value.trim(),
                 per: document.getElementById("f-perioada").value
             };
-            const cnpBoxes = cnp.split("").map((n) => '<span class="cnp-box">' + n + "</span>").join("");
+        }
+        // ---- construieste documentul (pt PDF / print) ----
+        function f230Render(d) {
+            const cnpBoxes = d.cnp.split("").map((n) => '<span class="cnp-box">' + n + "</span>").join("");
             const un = "1" === d.per ? "X" : "&nbsp;";
             const doi = "2" === d.per ? "X" : "&nbsp;";
             const dataAn = d.an ? (parseInt(d.an) + 1) : "______";
-
             document.getElementById("f230-print").innerHTML =
                 '<div class="f230-doc">' +
                   '<div class="f230-top"><div class="f230-anaf">A N A F</div><div class="f230-code">Formular <strong>230</strong></div></div>' +
@@ -375,15 +448,167 @@
                   '<p class="f230-check">[X] 3,5% &nbsp;&nbsp;&nbsp; Perioada: [' + un + "] 1 an &nbsp;&nbsp; [" + doi + "] 2 ani</p>" +
                   '<table class="f230-t">' +
                     '<tr><td class="lbl">Denumire entitate</td><td colspan="3">' + esc230(ASOC230.denumire) + "</td></tr>" +
-                    '<tr><td class="lbl">Cod de identificare fiscală (CIF)</td><td colspan="3">' + (esc230(ASOC230.cif) || "____________________") + "</td></tr>" +
-                    '<tr><td class="lbl">Cont bancar (IBAN)</td><td colspan="3">' + (esc230(ASOC230.iban) || "________________________________") + "</td></tr>" +
+                    '<tr><td class="lbl">Cod de identificare fiscală (CIF)</td><td colspan="3">' + esc230(ASOC230.cif) + "</td></tr>" +
+                    '<tr><td class="lbl">Cont bancar (IBAN)</td><td colspan="3">' + esc230(ASOC230.iban) + "</td></tr>" +
                   "</table>" +
-                  '<div class="f230-foot"><div>Data<br><br>____ / ____ / ' + dataAn + "</div><div>Semnătura contribuabilului<br><br>____________________________</div></div>" +
+                  '<div class="f230-foot"><div>Data semnării<br><br><span id="doc-data">__________</span></div><div>Semnătura contribuabilului<br><br><span id="doc-semn" class="semn-slot">____________________________</span></div></div>' +
                   '<p class="f230-note">Document generat de pe site-ul Asociației „Nova Solutions". Verifică datele înainte de depunere. Formularul oficial: anaf.ro</p>' +
                 "</div>";
+        }
+        // ---- SUBMIT = genereaza documentul + arata previzualizarea ----
+        document.getElementById("f230-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const d = f230Data(); if (!d) return;
+            f230Render(d);
+            const numeComplet = (d.nume + " " + d.initiala + " " + d.prenume).replace(/\s+/g, " ").trim();
+            cur = {
+                subject: "Formular 230 — " + numeComplet,
+                body: "Bună ziua,\n\nDoresc să redirecționez 3,5% din impozit către Asociația Nova Solutions (Formular 230).\n\n"
+                    + "Nume: " + numeComplet + "\n"
+                    + "CNP: " + d.cnp + "\n"
+                    + "Domiciliu: " + d.adresa + "\n"
+                    + "E-mail: " + d.email + "\n"
+                    + "Telefon: " + d.tel + "\n"
+                    + "Anul: " + d.an + "\n"
+                    + "Perioada: " + d.per + " an(i)\n\n"
+                    + "(Dacă am printat formularul, îl atașez semnat.)",
+                form: document.getElementById("f230-form"),
+                after: () => { document.getElementById("f-an").value = new Date().getFullYear() - 1; }
+            };
+            openPreview();
+        });
 
-            msg.textContent = "Formular generat! Se deschide fereastra de printare (poți alege „Salvează ca PDF").";
-            setTimeout(() => window.print(), 300);
+        // ===== Contract de sponsorizare (firme) =====
+        const BENEF = {
+            denumire: 'Asociația „Nova Solutions"',
+            sediu: "Sat Drăgutești, nr. 103, jud. Gorj",
+            cif: "54559185",
+            iban: "RO88 RNCB 0149 1856 8131 0001",
+            banca: "BCR",
+            reprez: "Răducan Dumitru Cristian",
+            functie: "Președinte"
+        };
+
+        (function () {
+            const dt = document.getElementById("c-data");
+            if (dt) dt.valueAsDate = new Date();
+        })();
+
+        const cv = (id) => document.getElementById(id).value.trim();
+        // ---- citeste + valideaza datele firmei ----
+        function ctrData() {
+            const msg = document.getElementById("ctr-msg");
+            const den = cv("c-den");
+            if (!den) { msg.textContent = "Completează cel puțin denumirea firmei."; return null; }
+            return {
+                den: den, cui: cv("c-cui"), reg: cv("c-reg"), sediu: cv("c-sediu"),
+                reprez: cv("c-reprez"), functie: cv("c-functie") || "Administrator",
+                suma: cv("c-suma"),
+                scop: cv("c-scop") || "sprijinirea activităților asociației în beneficiul copiilor cu dizabilități",
+                nr: cv("c-nr"), data: cv("c-data")
+            };
+        }
+        // ---- construieste contractul (pt PDF / print) ----
+        function ctrRender(c) {
+            const dataAfis = c.data ? c.data.split("-").reverse().join(".") : "__________";
+            document.getElementById("f230-print").innerHTML =
+                '<div class="ctr-doc">' +
+                  "<h1>CONTRACT DE SPONSORIZARE</h1>" +
+                  '<p class="ctr-sub">încheiat în temeiul Legii nr. 32/1994 privind sponsorizarea, cu modificările și completările ulterioare</p>' +
+                  '<p class="ctr-nr">Nr. ' + (esc230(c.nr) || "______") + " din data de " + dataAfis + "</p>" +
+                  "<h2>I. PĂRȚILE CONTRACTANTE</h2>" +
+                  "<p><strong>1. SPONSOR:</strong> " + esc230(c.den) + ", cu sediul în " + esc230(c.sediu) + ", CUI " + esc230(c.cui) +
+                    (c.reg ? (", înregistrată la Registrul Comerțului sub nr. " + esc230(c.reg)) : "") +
+                    ", reprezentată legal prin " + esc230(c.reprez) + ", în calitate de " + esc230(c.functie) + ", denumită în continuare <strong>Sponsor</strong>.</p>" +
+                  "<p><strong>2. BENEFICIAR:</strong> " + esc230(BENEF.denumire) + ", cu sediul în " + esc230(BENEF.sediu) + ", CIF " + esc230(BENEF.cif) +
+                    ", cont IBAN " + esc230(BENEF.iban) + " deschis la " + esc230(BENEF.banca) +
+                    ", reprezentată legal prin " + esc230(BENEF.reprez) + ", în calitate de " + esc230(BENEF.functie) + ", denumită în continuare <strong>Beneficiar</strong>.</p>" +
+                  "<h2>II. OBIECTUL CONTRACTULUI</h2>" +
+                  "<p><strong>Art. 1.</strong> Obiectul contractului îl constituie sponsorizarea Beneficiarului de către Sponsor cu suma de <strong>" + (esc230(c.suma) || "__________") + " lei</strong>.</p>" +
+                  "<p><strong>Art. 2.</strong> Scopul sponsorizării: " + esc230(c.scop) + ".</p>" +
+                  "<h2>III. OBLIGAȚIILE PĂRȚILOR</h2>" +
+                  "<p><strong>Art. 3.</strong> Sponsorul se obligă să vireze suma menționată în contul Beneficiarului, în termen de 30 de zile de la semnarea prezentului contract.</p>" +
+                  "<p><strong>Art. 4.</strong> Beneficiarul se obligă să utilizeze sponsorizarea exclusiv în scopul prevăzut la Art. 2 și să facă dovada utilizării, la solicitarea Sponsorului.</p>" +
+                  "<p><strong>Art. 5.</strong> Beneficiarul poate aduce la cunoștința publicului sponsorizarea, prin promovarea numelui sau a mărcii Sponsorului.</p>" +
+                  "<h2>IV. DISPOZIȚII FINALE</h2>" +
+                  "<p><strong>Art. 6.</strong> Prezentul contract intră în vigoare la data semnării de către ambele părți.</p>" +
+                  "<p><strong>Art. 7.</strong> Eventualele litigii se soluționează pe cale amiabilă, iar în caz contrar de către instanțele competente.</p>" +
+                  "<p><strong>Art. 8.</strong> Prezentul contract a fost încheiat astăzi, " + dataAfis + ", în două exemplare originale, câte unul pentru fiecare parte.</p>" +
+                  '<div class="ctr-foot"><div><strong>SPONSOR</strong><br>' + esc230(c.den) + '<br>Data: <span id="doc-data">__________</span><br><span id="doc-semn" class="semn-slot">______________________</span><br>(semnătura și ștampila)</div>' +
+                    '<div><strong>BENEFICIAR</strong><br>' + esc230(BENEF.denumire) + "<br><br>______________________<br>(semnătura și ștampila)</div></div>" +
+                "</div>";
+        }
+        // ---- SUBMIT = genereaza contractul + arata previzualizarea ----
+        document.getElementById("ctr-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const c = ctrData(); if (!c) return;
+            ctrRender(c);
+            cur = {
+                subject: "Contract sponsorizare — " + c.den,
+                body: "Bună ziua,\n\nDorim să sponsorizăm Asociația Nova Solutions (contract de sponsorizare).\n\n"
+                    + "Firma: " + c.den + "\n"
+                    + "CUI: " + c.cui + "\n"
+                    + "Reg. Com.: " + c.reg + "\n"
+                    + "Sediu: " + c.sediu + "\n"
+                    + "Reprezentant: " + c.reprez + " (" + c.functie + ")\n"
+                    + "Sumă: " + (c.suma || "-") + " lei\n"
+                    + "Scop: " + c.scop + "\n\n"
+                    + "(Dacă am printat contractul, îl atașez semnat.)",
+                form: document.getElementById("ctr-form"),
+                after: () => { const dt = document.getElementById("c-data"); if (dt) dt.valueAsDate = new Date(); }
+            };
+            openPreview();
+        });
+
+        // ===== Pad de semnatura =====
+        const pad = document.getElementById("sign-pad");
+        const pctx = pad.getContext("2d");
+        pctx.lineWidth = 2.5; pctx.lineCap = "round"; pctx.lineJoin = "round"; pctx.strokeStyle = "#111";
+        let drawing = false, signed = false;
+        function padPos(e) {
+            const r = pad.getBoundingClientRect();
+            const t = e.touches ? e.touches[0] : e;
+            return { x: (t.clientX - r.left) * (pad.width / r.width), y: (t.clientY - r.top) * (pad.height / r.height) };
+        }
+        function padStart(e) { drawing = true; const p = padPos(e); pctx.beginPath(); pctx.moveTo(p.x, p.y); e.preventDefault(); }
+        function padMove(e) { if (!drawing) return; const p = padPos(e); pctx.lineTo(p.x, p.y); pctx.stroke(); signed = true; e.preventDefault(); }
+        function padEnd() { drawing = false; }
+        pad.addEventListener("mousedown", padStart);
+        pad.addEventListener("mousemove", padMove);
+        window.addEventListener("mouseup", padEnd);
+        pad.addEventListener("touchstart", padStart, { passive: false });
+        pad.addEventListener("touchmove", padMove, { passive: false });
+        pad.addEventListener("touchend", padEnd);
+        function clearSign() { pctx.clearRect(0, 0, pad.width, pad.height); signed = false; }
+        document.getElementById("sign-clear").addEventListener("click", clearSign);
+        document.getElementById("sign-apply").addEventListener("click", () => {
+            const st = document.getElementById("doc-send-msg");
+            if (!signed) { st.textContent = "Semnează întâi în chenar (cu degetul sau cu mouse-ul)."; return; }
+            const semn = document.getElementById("doc-semn");
+            if (semn) semn.innerHTML = '<img class="semn-img" src="' + pad.toDataURL("image/png") + '" alt="semnătură">';
+            const dt = document.getElementById("doc-data");
+            if (dt) dt.textContent = new Date().toLocaleDateString("ro-RO");
+            st.textContent = "✍️ Semnătură aplicată, cu data de azi. Acum poți trimite pe email sau printa.";
+        });
+
+        // ===== Previzualizare: Trimite / Printeaza / Modifica =====
+        const docPreview = document.getElementById("doc-preview");
+        function openPreview() {
+            document.getElementById("doc-send-msg").textContent = "";
+            clearSign();
+            docPreview.hidden = false;
+            docPreview.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        document.getElementById("btn-print").addEventListener("click", () => window.print());
+        document.getElementById("btn-modifica").addEventListener("click", () => {
+            docPreview.hidden = true;
+            if (cur && cur.form) cur.form.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+        document.getElementById("btn-trimite").addEventListener("click", () => {
+            if (!cur) return;
+            const link = "mailto:" + ASOC_EMAIL + "?subject=" + encodeURIComponent(cur.subject) + "&body=" + encodeURIComponent(cur.body);
+            window.location.href = link;
+            document.getElementById("doc-send-msg").textContent = "📧 Se deschide aplicația de email (Gmail) către asociație — verifică datele și apasă Trimite acolo.";
         });
     </script>
 

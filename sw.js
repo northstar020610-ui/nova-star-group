@@ -1,5 +1,5 @@
 // Service worker Nova-Star Group (PWA)
-const CACHE = "nsg-v8";
+const CACHE = "nsg-v15";
 
 // fisierele de baza (mici) - le tinem pt functionare offline
 const ASSETS = [
