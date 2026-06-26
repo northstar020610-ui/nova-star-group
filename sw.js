@@ -1,5 +1,5 @@
 // Service worker Nova-Star Group (PWA)
-const CACHE = "nsg-v6";
+const CACHE = "nsg-v8";
 
 // fisierele de baza (mici) - le tinem pt functionare offline
 const ASSETS = [
@@ -22,6 +22,10 @@ const ASSETS = [
   "./NorthStarStudioLogo.jpeg",
   "./mindgames-logo.png",
   "./CopertaGhidPentruParinti.jpg",
+  "./og-hub.jpg",
+  "./og-play.jpg",
+  "./og-solutions.jpg",
+  "./og-northstar.jpg",
   "./icon-192.png",
   "./icon-512.png"
 ];

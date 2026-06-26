@@ -7,8 +7,55 @@
     <link rel="icon" href="NovaSolutionsLogo.jpeg">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b1026">
+    <meta name="description" content="Asociația Nova Solutions — sprijin pentru copiii cu dizabilități. Donează, devino voluntar sau sponsor.">
+    <!-- Open Graph (preview la share) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ro_RO">
+    <meta property="og:site_name" content="Nova-Star Group">
+    <meta property="og:title" content="Asociația Nova Solutions">
+    <meta property="og:description" content="Sprijin pentru copiii cu dizabilități. Donează, devino voluntar sau sponsor.">
+    <meta property="og:url" content="https://northstar020610-ui.github.io/nova-star-group/nova-solutions.html">
+    <meta property="og:image" content="https://northstar020610-ui.github.io/nova-star-group/og-solutions.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Asociația Nova Solutions">
+    <meta name="twitter:description" content="Sprijin pentru copiii cu dizabilități.">
+    <meta name="twitter:image" content="https://northstar020610-ui.github.io/nova-star-group/og-solutions.jpg">
     <script defer src="pwa.js"></script>
     <link rel="stylesheet" href="kids.css">
+    <style>
+      /* ===== Formular 230 ===== */
+      .asoc-date { background: rgba(127,127,127,0.10); border-radius: 14px; padding: 12px 16px; margin: 14px 0; }
+      .asoc-date p { margin: 5px 0; }
+      .form-voluntar select { padding: 10px 12px; border-radius: 12px; border: 2px solid #e3d4c0; font: inherit; background: #fff; }
+      .form-voluntar label.check { flex-direction: row; align-items: center; gap: 9px; font-weight: 400; }
+      .form-voluntar label.check input { width: auto; }
+
+      #f230-print { display: none; }
+
+      @media print {
+        body > *:not(#f230-print) { display: none !important; }
+        #f230-print { display: block !important; color: #000; font-family: "Times New Roman", Georgia, serif; }
+        .f230-doc { font-size: 11.5pt; line-height: 1.4; }
+        .f230-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 6px; }
+        .f230-anaf { font-weight: bold; font-size: 16pt; letter-spacing: 3px; }
+        .f230-code { font-size: 12pt; }
+        .f230-doc h1 { text-align: center; font-size: 18pt; margin: 14px 0 2px; letter-spacing: 2px; }
+        .f230-sub { text-align: center; font-size: 10.5pt; margin: 0 0 6px; }
+        .f230-an { text-align: center; margin: 0 0 14px; }
+        .f230-doc h2 { font-size: 11pt; background: #ececec; padding: 5px 8px; margin: 16px 0 7px; border: 1px solid #000; }
+        .f230-t { width: 100%; border-collapse: collapse; }
+        .f230-t td { border: 1px solid #000; padding: 6px 8px; font-size: 11pt; }
+        .f230-t td.lbl { background: #f5f5f5; font-weight: bold; width: 24%; }
+        .cnp { display: flex; gap: 3px; }
+        .cnp-box { border: 1px solid #000; width: 22px; height: 27px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .f230-check { margin: 10px 0; font-weight: bold; font-size: 11.5pt; }
+        .f230-foot { display: flex; justify-content: space-between; margin-top: 42px; font-size: 11pt; }
+        .f230-note { margin-top: 26px; font-size: 9pt; color: #444; text-align: center; }
+        @page { margin: 1.4cm; }
+      }
+    </style>
 </head>
 <body class="theme-solutions">
 
@@ -117,6 +164,46 @@
         </div>
     </section>
 
+    <!-- ===== Redirectioneaza 3,5% (Formular 230) ===== -->
+    <section class="sectiune">
+        <h2>Redirecționează 3,5% din impozit 📋</h2>
+        <p>Poți direcționa <strong>3,5% din impozitul tău pe venit</strong> către asociație. <strong>Nu te costă nimic</strong> — banii oricum merg la stat, tu doar alegi să ajungă la noi. Durează 2 minute!</p>
+
+        <ul class="de-ce-list">
+            <li>✅ <strong>Gratuit</strong> — nu plătești nimic în plus</li>
+            <li>✅ <strong>Simplu</strong> — completezi datele, generezi formularul, îl semnezi</li>
+            <li>✅ <strong>Privat</strong> — datele tale rămân pe dispozitivul tău, nu se trimit nicăieri</li>
+        </ul>
+
+        <div class="asoc-date">
+            <p><strong>Datele asociației</strong> (apar pe formular):</p>
+            <p>📛 Denumire: <strong>Asociația „Nova Solutions"</strong></p>
+            <p>🔢 CIF: <strong id="asoc-cif">__________</strong></p>
+            <p>🏦 IBAN: <strong id="asoc-iban">__________</strong></p>
+        </div>
+
+        <form id="f230-form" class="form-voluntar">
+            <label>Nume <input type="text" id="f-nume" placeholder="Numele de familie" required></label>
+            <label>Inițiala tatălui <input type="text" id="f-initiala" maxlength="3" placeholder="ex: I."></label>
+            <label>Prenume <input type="text" id="f-prenume" placeholder="Prenumele tău" required></label>
+            <label>CNP <input type="text" id="f-cnp" inputmode="numeric" maxlength="13" placeholder="13 cifre" required></label>
+            <label>Adresă completă (domiciliu) <input type="text" id="f-adresa" placeholder="stradă, nr, bloc, ap, localitate, județ" required></label>
+            <label>Email (opțional) <input type="email" id="f-email" placeholder="email@exemplu.ro"></label>
+            <label>Telefon (opțional) <input type="tel" id="f-tel" placeholder="07xx xxx xxx"></label>
+            <label>Anul pentru care redirecționezi <input type="number" id="f-an" min="2020" max="2099"></label>
+            <label>Perioada
+                <select id="f-perioada">
+                    <option value="1">1 an</option>
+                    <option value="2">2 ani</option>
+                </select>
+            </label>
+            <label class="check"><input type="checkbox" id="f-acord" required> Sunt de acord ca datele să fie folosite pentru completarea Formularului 230.</label>
+            <button type="submit" class="btn">📋 Generează Formularul 230</button>
+            <p id="f230-msg" class="form-msg"></p>
+        </form>
+        <p class="donate-note">După generare: <strong>printează sau salvează ca PDF</strong>, semnează, apoi depune-l la ANAF sau trimite-l semnat la <a href="mailto:asociatianovasolutions@gmail.com">asociatianovasolutions@gmail.com</a>. Termen uzual: <strong>25 mai</strong>.</p>
+    </section>
+
     <!-- ===== Sponsori & parteneri ===== -->
     <section class="sectiune">
         <h2>Sponsori & Parteneri 🤝</h2>
@@ -177,6 +264,9 @@
         </div>
     </section>
 
+    <!-- container Formular 230 generat (vizibil doar la printare) -->
+    <div id="f230-print" aria-hidden="true"></div>
+
     <!-- ===== Footer ===== -->
     <footer>
         <p>© 2026 Asociația „Nova Solutions" · parte din <a href="index.html">Nova-Star Group</a></p>
@@ -221,6 +311,79 @@
             document.getElementById("vol-msg").textContent =
                 "Mulțumim, " + nume + "! Se deschide WhatsApp ca să trimiți înscrierea.";
             formVol.reset();
+        });
+    </script>
+
+    <!-- ===== Formular 230 (redirectionare 3,5%) ===== -->
+    <script>
+        // DATELE ASOCIATIEI - completeaza CIF si IBAN cand le ai
+        const ASOC230 = {
+            denumire: 'Asociația „Nova Solutions"',
+            cif: "54559185",
+            iban: "RO88 RNCB 0149 1856 8131 0001"
+        };
+
+        (function () {
+            const c = document.getElementById("asoc-cif");
+            const i = document.getElementById("asoc-iban");
+            if (c) c.textContent = ASOC230.cif || "__________ (de completat)";
+            if (i) i.textContent = ASOC230.iban || "__________ (de completat)";
+            const an = document.getElementById("f-an");
+            if (an) an.value = new Date().getFullYear() - 1;
+        })();
+
+        const esc230 = (s) => String(s || "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+
+        document.getElementById("f230-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const msg = document.getElementById("f230-msg");
+            const cnp = document.getElementById("f-cnp").value.trim();
+            if (!/^[0-9]{13}$/.test(cnp)) {
+                msg.textContent = "CNP-ul trebuie să aibă exact 13 cifre.";
+                return;
+            }
+            const d = {
+                nume: document.getElementById("f-nume").value.trim(),
+                initiala: document.getElementById("f-initiala").value.trim(),
+                prenume: document.getElementById("f-prenume").value.trim(),
+                adresa: document.getElementById("f-adresa").value.trim(),
+                email: document.getElementById("f-email").value.trim(),
+                tel: document.getElementById("f-tel").value.trim(),
+                an: document.getElementById("f-an").value.trim(),
+                per: document.getElementById("f-perioada").value
+            };
+            const cnpBoxes = cnp.split("").map((n) => '<span class="cnp-box">' + n + "</span>").join("");
+            const un = "1" === d.per ? "X" : "&nbsp;";
+            const doi = "2" === d.per ? "X" : "&nbsp;";
+            const dataAn = d.an ? (parseInt(d.an) + 1) : "______";
+
+            document.getElementById("f230-print").innerHTML =
+                '<div class="f230-doc">' +
+                  '<div class="f230-top"><div class="f230-anaf">A N A F</div><div class="f230-code">Formular <strong>230</strong></div></div>' +
+                  "<h1>CERERE</h1>" +
+                  '<p class="f230-sub">privind destinația sumei reprezentând până la 3,5% din impozitul anual datorat</p>' +
+                  '<p class="f230-an">Anul <strong>' + esc230(d.an) + "</strong></p>" +
+                  "<h2>I. Date de identificare a contribuabilului</h2>" +
+                  '<table class="f230-t">' +
+                    '<tr><td class="lbl">Nume</td><td>' + esc230(d.nume) + '</td><td class="lbl">Inițiala tatălui</td><td>' + esc230(d.initiala) + "</td></tr>" +
+                    '<tr><td class="lbl">Prenume</td><td colspan="3">' + esc230(d.prenume) + "</td></tr>" +
+                    '<tr><td class="lbl">Cod numeric personal</td><td colspan="3"><div class="cnp">' + cnpBoxes + "</div></td></tr>" +
+                    '<tr><td class="lbl">Domiciliu</td><td colspan="3">' + esc230(d.adresa) + "</td></tr>" +
+                    '<tr><td class="lbl">E-mail</td><td>' + esc230(d.email) + '</td><td class="lbl">Telefon</td><td>' + esc230(d.tel) + "</td></tr>" +
+                  "</table>" +
+                  "<h2>II. Destinația sumei de până la 3,5% din impozit, pentru susținerea entităților nonprofit</h2>" +
+                  '<p class="f230-check">[X] 3,5% &nbsp;&nbsp;&nbsp; Perioada: [' + un + "] 1 an &nbsp;&nbsp; [" + doi + "] 2 ani</p>" +
+                  '<table class="f230-t">' +
+                    '<tr><td class="lbl">Denumire entitate</td><td colspan="3">' + esc230(ASOC230.denumire) + "</td></tr>" +
+                    '<tr><td class="lbl">Cod de identificare fiscală (CIF)</td><td colspan="3">' + (esc230(ASOC230.cif) || "____________________") + "</td></tr>" +
+                    '<tr><td class="lbl">Cont bancar (IBAN)</td><td colspan="3">' + (esc230(ASOC230.iban) || "________________________________") + "</td></tr>" +
+                  "</table>" +
+                  '<div class="f230-foot"><div>Data<br><br>____ / ____ / ' + dataAn + "</div><div>Semnătura contribuabilului<br><br>____________________________</div></div>" +
+                  '<p class="f230-note">Document generat de pe site-ul Asociației „Nova Solutions". Verifică datele înainte de depunere. Formularul oficial: anaf.ro</p>' +
+                "</div>";
+
+            msg.textContent = "Formular generat! Se deschide fereastra de printare (poți alege „Salvează ca PDF").";
+            setTimeout(() => window.print(), 300);
         });
     </script>
 
