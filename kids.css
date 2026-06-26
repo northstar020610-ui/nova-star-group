@@ -504,6 +504,18 @@ img {
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(2px); }
 
+/* coperta ghidului */
+.ghid-coperta {
+    width: 100%;
+    max-width: 280px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 14px;
+    box-shadow: 0 16px 36px -10px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease;
+}
+.ghid-coperta:hover { transform: translateY(-4px) rotate(-1deg); }
+
 /* rand de butoane (ex: Citeste ghidul + Printeaza) */
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
 .btn-print {
